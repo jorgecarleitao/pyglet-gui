@@ -1,8 +1,10 @@
-Pyglet-gui is an extension of pyglet for graphical user interfaces.
+Pyglet-gui is an extension of [Pyglet](http://www.pyglet.org/) for graphical user interfaces (GUIs).
 Thanks for checking it out.
 
 This project started as a fork of [Kytten](https://code.google.com/p/kytten/),
-but ended up being a new project since the API changed dramatically.
+but ended up being a new project by its own right since the API changed dramatically.
+
+This project is in pre-alpha.
 
 Main features
 --------------
