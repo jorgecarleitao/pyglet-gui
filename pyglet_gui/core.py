@@ -91,6 +91,7 @@ class Controller(Managed, metaclass=ABCMeta):
 
     def delete(self):
         self._manager.remove_controller(self)
+        super().delete()
 
 
 class Manager(pyglet.event.EventDispatcher):
@@ -141,10 +142,8 @@ class Manager(pyglet.event.EventDispatcher):
             self.set_next_focus(direction)
             return True  # we only change focus on the dialog we are in.
 
-        # don't allow ESCAPE
-        elif symbol != pyglet.window.key.ESCAPE:
-            if self.focus is not None and hasattr(self.focus, 'on_key_press'):
-                return self.focus.on_key_press(symbol, modifiers)
+        if self.focus is not None and hasattr(self.focus, 'on_key_press'):
+            return self.focus.on_key_press(symbol, modifiers)
 
     def on_key_release(self, symbol, modifiers):
         if self.focus is not None and hasattr(self.focus, 'on_key_release'):
