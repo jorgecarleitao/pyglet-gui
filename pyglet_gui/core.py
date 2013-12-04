@@ -98,8 +98,10 @@ class Manager(pyglet.event.EventDispatcher):
     def __init__(self):
         pyglet.event.EventDispatcher.__init__(self)
         self.controllers = []  # list of controllers.
-        self.hover = None  # the control that is being hovered
-        self.focus = None  # the control that has the focus
+
+        self._hover = None  # the control that is being hovered
+        self._focus = None  # the control that has the focus
+
         self.wheel_target = None  # the primary control to receive wheel events.
         self.wheel_hint = None    # the secondary control to receive wheel events.
 
@@ -110,9 +112,9 @@ class Manager(pyglet.event.EventDispatcher):
     def remove_controller(self, controller):
         assert controller in self.controllers
         self.controllers.remove(controller)
-        if self.hover == controller:
+        if self._hover == controller:
             self.set_hover(None)
-        if self.focus == controller:
+        if self._focus == controller:
             self.set_focus(None)
 
     def set_next_focus(self, direction):
@@ -123,8 +125,8 @@ class Manager(pyglet.event.EventDispatcher):
         if not focusable:
             return
 
-        if self.focus is not None and self.focus in focusable:
-            index = focusable.index(self.focus)
+        if self._focus is not None and self._focus in focusable:
+            index = focusable.index(self._focus)
         else:
             index = 0 - direction
 
@@ -142,16 +144,16 @@ class Manager(pyglet.event.EventDispatcher):
             self.set_next_focus(direction)
             return True  # we only change focus on the dialog we are in.
 
-        if self.focus is not None and hasattr(self.focus, 'on_key_press'):
-            return self.focus.on_key_press(symbol, modifiers)
+        if self._focus is not None and hasattr(self._focus, 'on_key_press'):
+            return self._focus.on_key_press(symbol, modifiers)
 
     def on_key_release(self, symbol, modifiers):
-        if self.focus is not None and hasattr(self.focus, 'on_key_release'):
-            return self.focus.on_key_release(symbol, modifiers)
+        if self._focus is not None and hasattr(self._focus, 'on_key_release'):
+            return self._focus.on_key_release(symbol, modifiers)
 
     def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
-        if self.focus is not None and hasattr(self.focus, 'on_mouse_drag'):
-            return self.focus.on_mouse_drag(x, y, dx, dy, buttons, modifiers)
+        if self._focus is not None and hasattr(self._focus, 'on_mouse_drag'):
+            return self._focus.on_mouse_drag(x, y, dx, dy, buttons, modifiers)
 
     def on_mouse_motion(self, x, y, dx, dy):
         new_hover = None
@@ -161,17 +163,17 @@ class Manager(pyglet.event.EventDispatcher):
                 break
         self.set_hover(new_hover)
 
-        if self.hover is not None and hasattr(self.hover, 'on_mouse_motion'):
-            return self.hover.on_mouse_motion(x, y, dx, dy)
+        if self._hover is not None and hasattr(self._hover, 'on_mouse_motion'):
+            return self._hover.on_mouse_motion(x, y, dx, dy)
 
     def on_mouse_press(self, x, y, button, modifiers):
-        self.set_focus(self.hover)
-        if self.focus and hasattr(self.focus, 'on_mouse_press'):
-            return self.focus.on_mouse_press(x, y, button, modifiers)
+        self.set_focus(self._hover)
+        if self._focus and hasattr(self._focus, 'on_mouse_press'):
+            return self._focus.on_mouse_press(x, y, button, modifiers)
 
     def on_mouse_release(self, x, y, button, modifiers):
-        if self.focus is not None and hasattr(self.focus, 'on_mouse_release'):
-            return self.focus.on_mouse_release(x, y, button, modifiers)
+        if self._focus is not None and hasattr(self._focus, 'on_mouse_release'):
+            return self._focus.on_mouse_release(x, y, button, modifiers)
 
     def on_mouse_scroll(self, x, y, scroll_x, scroll_y):
         if self.wheel_target in self.controllers:
@@ -182,33 +184,33 @@ class Manager(pyglet.event.EventDispatcher):
             return True
 
     def on_text(self, text):
-        if self.focus and text != '\r' and hasattr(self.focus, 'on_text'):
-            return self.focus.on_text(text)
+        if self._focus and text != '\r' and hasattr(self._focus, 'on_text'):
+            return self._focus.on_text(text)
 
     def on_text_motion(self, motion):
-        if self.focus and hasattr(self.focus, 'on_text_motion'):
-            return self.focus.on_text_motion(motion)
+        if self._focus and hasattr(self._focus, 'on_text_motion'):
+            return self._focus.on_text_motion(motion)
 
     def on_text_motion_select(self, motion):
-        if self.focus and hasattr(self.focus, 'on_text_motion_select'):
-            return self.focus.on_text_motion_select(motion)
+        if self._focus and hasattr(self._focus, 'on_text_motion_select'):
+            return self._focus.on_text_motion_select(motion)
 
     def set_focus(self, focus):
-        if self.focus == focus:
+        if self._focus == focus:
             return
-        if self.focus is not None and hasattr(self.focus, 'on_lose_focus'):
-            self.focus.on_lose_focus()
-        self.focus = focus
-        if focus is not None and hasattr(self.focus, 'on_gain_focus'):
-            self.focus.on_gain_focus()
+        if self._focus is not None and hasattr(self._focus, 'on_lose_focus'):
+            self._focus.on_lose_focus()
+        self._focus = focus
+        if focus is not None and hasattr(self._focus, 'on_gain_focus'):
+            self._focus.on_gain_focus()
 
     def set_hover(self, hover):
-        if self.hover == hover:
+        if self._hover == hover:
             return
-        if self.hover is not None and hasattr(self.hover, 'on_lose_highlight'):
-            self.hover.on_lose_highlight()
-        self.hover = hover
-        if hover is not None and hasattr(self.hover, 'on_gain_highlight'):
+        if self._hover is not None and hasattr(self._hover, 'on_lose_highlight'):
+            self._hover.on_lose_highlight()
+        self._hover = hover
+        if hover is not None and hasattr(self._hover, 'on_gain_highlight'):
             hover.on_gain_highlight()
 
     def set_wheel_hint(self, control):
@@ -219,7 +221,7 @@ class Manager(pyglet.event.EventDispatcher):
 
     def delete(self):
         self.controllers = []
-        self.focus = None
-        self.hover = None
+        self._focus = None
+        self._hover = None
         self.wheel_hint = None
         self.wheel_target = None
