@@ -25,9 +25,6 @@ class Rectangle():
     def y(self, value):
         self._y = value
 
-    def hit_test(self, x, y):
-        return self.x <= x < self.x + self.width and self.y <= y < self.y + self.height
-
     def set_position(self, x, y):
         self._x = x
         self._y = y

@@ -54,6 +54,9 @@ class Slider(ContinuousStateController, Widget):
             marker.unload()
         self._markers = []
 
+    def hit_test(self, x, y):
+        return self.x <= x < self.x + self.width and self.y <= y < self.y + self.height
+
     def _set_knob_pos(self, pos):
         """
         A setter for value, but using normalized values.

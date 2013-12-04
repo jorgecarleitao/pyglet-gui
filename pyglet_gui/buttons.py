@@ -22,12 +22,8 @@ class Button(TwoStateController, Widget):
         self.reset_size()
         self._on_press(self._is_pressed)
 
-    def compute_size(self):
-        # Treat the height of the label as ascent + descent
-        font = self._label.document.get_font()
-        height = font.ascent - font.descent
-
-        return self._button.get_needed_size(self._label.content_width, height)
+    def hit_test(self, x, y):
+        return self.x <= x < self.x + self.width and self.y <= y < self.y + self.height
 
     def on_mouse_press(self, x, y, button, modifiers):
         self.change_state()
@@ -60,6 +56,13 @@ class Button(TwoStateController, Widget):
         if self._label is not None:
             self._label.unload()
             self._label = None
+
+    def compute_size(self):
+        # Treat the height of the label as ascent + descent
+        font = self._label.document.get_font()
+        height = font.ascent - font.descent
+
+        return self._button.get_needed_size(self._label.content_width, height)
 
     def layout(self):
         Widget.layout(self)
