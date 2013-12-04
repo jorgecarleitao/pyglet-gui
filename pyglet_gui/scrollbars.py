@@ -44,7 +44,7 @@ class ScrollBar(Slider):
         """
         raise NotImplementedError
 
-    def _set_knob_pos(self, pos):
+    def set_knob_pos(self, pos):
         pos = max(min(pos, 1 - self._knob_size/2), self._knob_size/2)
 
         self._value = self._min_value + (self._max_value - self._min_value) * pos
@@ -86,14 +86,14 @@ class HScrollbar(ScrollBar):
         absolute_distance = float(x - bar_x)
         relative_distance = absolute_distance/bar_width
 
-        self._set_knob_pos(relative_distance)
+        self.set_knob_pos(relative_distance)
         self._scrolled = 10
         self.re_layout()
         return True
 
     def on_mouse_scroll(self, x, y, scroll_x, scroll_y):
         self._scrolled += abs(scroll_x)
-        self._set_knob_pos(self._knob_pos() - float(scroll_x) / self.width)
+        self.set_knob_pos(self._knob_pos() - float(scroll_x) / self.width)
         self.re_layout()
         return True
 
@@ -101,7 +101,7 @@ class HScrollbar(ScrollBar):
         self._knob_size = float(width)/max_width
 
         # update the knob position given the new knob size.
-        self._set_knob_pos(self._knob_pos())
+        self.set_knob_pos(self._knob_pos())
 
     def compute_size(self):
         return self.width, self._bar.height
@@ -132,14 +132,14 @@ class VScrollbar(ScrollBar):
 
         absolute_distance = float(y - bar_y)
         relative_distance = absolute_distance/bar_height
-        self._set_knob_pos(1 - relative_distance)
+        self.set_knob_pos(1 - relative_distance)
         self._scrolled = 10
         self.re_layout()
         return True
 
     def on_mouse_scroll(self, x, y, scroll_x, scroll_y):
         self._scrolled += abs(scroll_y)
-        self._set_knob_pos(self._knob_pos() + float(scroll_y) / self.height)
+        self.set_knob_pos(self._knob_pos() + float(scroll_y) / self.height)
         self.re_layout()
         return True
 
@@ -147,7 +147,7 @@ class VScrollbar(ScrollBar):
         self._knob_size = float(height)/max_height
 
         # update the knob position given the new knob size.
-        self._set_knob_pos(self._knob_pos())
+        self.set_knob_pos(self._knob_pos())
 
     def compute_size(self):
         return self._bar.width, self.height

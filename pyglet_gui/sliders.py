@@ -57,7 +57,7 @@ class Slider(ContinuousStateController, Widget):
     def hit_test(self, x, y):
         return self.x <= x < self.x + self.width and self.y <= y < self.y + self.height
 
-    def _set_knob_pos(self, pos):
+    def set_knob_pos(self, pos):
         """
         A setter for value, but using normalized values.
         """
@@ -84,7 +84,7 @@ class Slider(ContinuousStateController, Widget):
         assert self.steps is not None
         pos = float(int(self._knob_pos() * self.steps + 0.5))/self.steps
 
-        self._set_knob_pos(pos)
+        self.set_knob_pos(pos)
 
     def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
         raise NotImplementedError
@@ -141,7 +141,7 @@ class HorizontalSlider(Slider):
 
     def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
         bar_x, bar_y, bar_width, bar_height = self._bar.get_content_region()
-        self._set_knob_pos(float(x - bar_x) / bar_width)
+        self.set_knob_pos(float(x - bar_x) / bar_width)
         return True
 
     def compute_size(self):
