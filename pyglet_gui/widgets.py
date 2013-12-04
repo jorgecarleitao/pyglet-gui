@@ -112,9 +112,9 @@ class Graphic(Widget):
             self._graphic = None
 
     def expand(self, width, height):
-        if self._expandable:
-            self.width, self.height = width, height
-            self._graphic.update(self.x, self.y, self.width, self.height)
+        assert self._expandable
+        self.width, self.height = width, height
+        self._graphic.update(self.x, self.y, self.width, self.height)
 
     def is_expandable(self):
         return self._expandable
