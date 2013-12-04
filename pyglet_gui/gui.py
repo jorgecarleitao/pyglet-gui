@@ -79,7 +79,7 @@ class FoldingSection(VerticalLayout, Controller):
             return ["section", "closed"]
 
     def hit_test(self, x, y):
-        return self.header.hit_test(x, y)
+        return self.header.is_inside(x, y)
 
     def on_mouse_press(self, x, y, button, modifiers):
         self.is_open = not self.is_open

@@ -23,7 +23,7 @@ class Button(TwoStateController, Widget):
         self._on_press(self._is_pressed)
 
     def hit_test(self, x, y):
-        return self.x <= x < self.x + self.width and self.y <= y < self.y + self.height
+        return self.is_inside(x, y)
 
     def on_mouse_press(self, x, y, button, modifiers):
         self.change_state()

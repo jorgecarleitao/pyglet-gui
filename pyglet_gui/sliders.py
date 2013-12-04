@@ -55,7 +55,7 @@ class Slider(ContinuousStateController, Widget):
         self._markers = []
 
     def hit_test(self, x, y):
-        return self.x <= x < self.x + self.width and self.y <= y < self.y + self.height
+        return self.is_inside(x, y)
 
     def set_knob_pos(self, pos):
         """

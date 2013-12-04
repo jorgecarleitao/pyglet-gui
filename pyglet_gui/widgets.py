@@ -29,6 +29,8 @@ class Rectangle():
         self._x = x
         self._y = y
 
+    def is_inside(self, x, y):
+        return self.x <= x < self.x + self.width and self.y <= y < self.y + self.height
 
 class Widget(Rectangle, Viewer):
     def __init__(self, width=0, height=0):

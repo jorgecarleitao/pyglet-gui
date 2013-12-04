@@ -1,7 +1,7 @@
 import pyglet
 
 from pyglet_gui.scrollbars import VScrollbar
-from pyglet_gui.widgets import Widget
+from pyglet_gui.widgets import Widget, Rectangle
 from pyglet_gui.controllers import Controller
 
 
@@ -27,8 +27,10 @@ class Document(Controller, Widget):
 
     def hit_test(self, x, y):
         if self._content is not None:
-            return self._content.x <= x < self._content.x + self._content.width and\
-                self._content.y <= y < self._content.y + self._content.height
+            return Rectangle(self._content.x,
+                             self._content.y,
+                             self._content.width,
+                             self._content.height).is_inside(x, y)
         else:
             return False
 

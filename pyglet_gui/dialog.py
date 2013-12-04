@@ -155,7 +155,7 @@ class Dialog(Wrapper, Manager):
         return self
 
     def hit_test(self, x, y):
-        return self.x <= x < self.x + self.width and self.y <= y < self.y + self.height
+        return self.is_inside(x, y)
 
     def on_key_press(self, symbol, modifiers):
         retval = Manager.on_key_press(self, symbol, modifiers)
