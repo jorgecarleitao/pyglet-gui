@@ -68,7 +68,7 @@ class Widget(Rectangle, Viewer):
         self.layout()
         # we only reset parent if the parent exists and
         # the flag to reset it is set.
-        if changed and reset_parent and self.parent is not None:
+        if changed and reset_parent:
             self.parent.reset_size(reset_parent)
 
 
