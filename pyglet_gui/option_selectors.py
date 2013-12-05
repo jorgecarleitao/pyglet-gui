@@ -89,6 +89,7 @@ class Dropdown(Selector, OneTimeButton):
         self._delete_pulldown_menu()
         self.reload()
         self.reset_size()
+        self.layout()
 
     def on_mouse_press(self, x, y, button, modifiers):
         """

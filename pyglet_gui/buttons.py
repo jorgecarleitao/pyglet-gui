@@ -20,6 +20,7 @@ class Button(TwoStateController, Widget):
         self._is_pressed = not self._is_pressed
         self.reload()
         self.reset_size()
+        self.layout()
         self._on_press(self._is_pressed)
 
     def hit_test(self, x, y):

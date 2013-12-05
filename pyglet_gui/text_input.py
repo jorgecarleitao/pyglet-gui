@@ -131,6 +131,7 @@ class TextInput(FocusMixin, Widget):
 
         self.reload()
         self.reset_size()
+        self.layout()
 
     def on_lose_focus(self):
         FocusMixin.on_lose_focus(self)
@@ -139,6 +140,7 @@ class TextInput(FocusMixin, Widget):
 
         self.reload()
         self.reset_size()
+        self.layout()
 
     def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
         if self._caret is not None:

@@ -513,8 +513,7 @@ class Frame(Wrapper):
 
     def expand(self, width, height):
         if self.content.is_expandable():
-            content_width, content_height = \
-                self._frame.get_content_size(width, height)
+            content_width, content_height = self._frame.get_content_size(width, height)
             self.content.expand(content_width, content_height)
         self.width, self.height = width, height
 
