@@ -142,6 +142,9 @@ class TextInput(FocusMixin, Widget):
         self.reset_size()
         self.layout()
 
+    def hit_test(self, x, y):
+        return self.is_inside(x, y)
+
     def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
         if self._caret is not None:
             return self._caret.on_mouse_drag(x, y, dx, dy, buttons, modifiers)
