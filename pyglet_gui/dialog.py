@@ -143,6 +143,10 @@ class Dialog(Wrapper, Manager):
 
         return x, y
 
+    def reset_size(self, reset_parent=True):
+        # Dialog never has parent and thus never reset_parent.
+        super().reset_size(reset_parent=False)
+
     def layout(self):
         super().layout()
         self.needs_layout = False
