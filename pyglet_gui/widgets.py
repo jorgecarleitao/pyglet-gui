@@ -148,7 +148,7 @@ class Label(Widget):
             self.label = pyglet.text.Label(self.text,
                                            bold=self.bold,
                                            italic=self.italic,
-                                           color=self.color or theme['gui_color'],
+                                           color=self.color or theme['text_color'],
                                            font_name=self.font_name or theme['font'],
                                            font_size=self.font_size or theme['font_size'],
                                            **self.get_batch('background'))
