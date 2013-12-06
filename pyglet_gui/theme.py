@@ -1,19 +1,8 @@
 from abc import ABCMeta, abstractmethod
-import os
 import json
 
 import pyglet
 from pyglet import gl
-
-
-DEFAULT_THEME_SETTINGS = {
-    "font": "Lucida Grande",
-    "font_size": 12,
-    "font_size_small": 10,
-    "text_color": [255, 255, 255, 255],
-    "gui_color": [255, 255, 255, 255],
-    "highlight_color": [255, 255, 255, 64],
-    "disabled_color": [160, 160, 160, 255]}
 
 
 class ThemeTextureGroup(pyglet.graphics.TextureGroup):
@@ -286,72 +275,37 @@ class ScopedDict(dict):
 
 
 class Theme(ScopedDict):
-    """
-    Theme is a dictionary-based class that converts any elements beginning
-    with 'image' into a GraphicElementTemplate.  This allows us to specify
-    both simple textures and 9-patch textures, and more complex elements.
-    """
 
-    def __init__(self, arg, override=None,
-                 default=DEFAULT_THEME_SETTINGS,
-                 name='theme.json'):
-        """
-        Creates a new Theme.
+    def __init__(self, dictionary, resources_path):
+        ScopedDict.__init__(self, dictionary, None)
 
-        @param arg The initializer for Theme.  May be:
-            * another Theme - we'll use the same graphic library but
-                              apply an override for its dictionary.
-            * a dictionary - interpret any subdirectories where the key
-                     begins with 'image' as a GraphicElementTemplate
-            * a filename - read the JSON file as a dictionary
-        @param override Replace some dictionary entries with these
-        @param default Initial dictionary entries before handling input
-        """
-        if override is None:
-            override = {}
+        self.loader = pyglet.resource.Loader(resources_path)
 
-        ScopedDict.__init__(self, default, None)
+        self._textures = {}
+        self._update_with_images(self, dictionary)
 
-        self.groups = {}
+    @property
+    def resources_path(self):
+        return self.loader.path
 
-        if isinstance(arg, Theme):
-            self.textures = arg.textures
-            for k, v in arg.items():
-                self.__setitem__(k, v)
-            self.update(override)
-            return
+    @resources_path.setter
+    def resources_path(self, path):
+        self.loader = pyglet.resource.Loader(path)
 
-        if isinstance(arg, dict):
-            self.loader = pyglet.resource.Loader(os.getcwd())
-            json_input = arg
-        else:
-            if os.path.isfile(arg) or os.path.isdir(arg):
-                self.loader = pyglet.resource.Loader(path=arg)
-                try:
-                    theme_file = self.loader.file(name)
-                    json_input = json.loads(theme_file.read().decode("utf-8"))
-                    theme_file.close()
-                except pyglet.resource.ResourceNotFoundException:
-                    json_input = {}
-            else:
-                json_input = {}
-
-        self.textures = {}
-        self._update_with_images(self, json_input)
-        self.update(override)
+    def update(self, E=None, **F):
+        super().update(E, **F)
+        self._update_with_images(self, E)
 
     def _get_texture(self, filename):
         """
-        Returns the texture associated with a filename.  Loads it from
-        resources if we haven't previously fetched it.
-
-        @param filename The filename of the texture
+        Returns the texture associated with the filename. Loads it from
+        resources if it haven't done before.
         """
-        if filename not in self.textures:
+        if filename not in self._textures:
             texture = self.loader.texture(filename)
             texture.src = filename
-            self.textures[filename] = texture
-        return self.textures[filename]
+            self._textures[filename] = texture
+        return self._textures[filename]
 
     def _get_texture_region(self, filename, x, y, width, height):
         """
@@ -401,3 +355,14 @@ class Theme(ScopedDict):
                 target[k] = temp
             else:
                 target[k] = v
+
+
+class ThemeFromPath(Theme):
+
+    def __init__(self, resources_path):
+        theme_file = pyglet.resource.Loader(resources_path).file('theme.json')
+        try:
+            dictionary = json.loads(theme_file.read().decode("utf-8"))
+        finally:
+            theme_file.close()
+        super().__init__(dictionary, resources_path)
