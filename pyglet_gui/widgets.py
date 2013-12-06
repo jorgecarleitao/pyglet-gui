@@ -32,6 +32,7 @@ class Rectangle():
     def is_inside(self, x, y):
         return self.x <= x < self.x + self.width and self.y <= y < self.y + self.height
 
+
 class Widget(Rectangle, Viewer):
     def __init__(self, width=0, height=0):
         Rectangle.__init__(self, 0, 0, width, height)
@@ -64,7 +65,7 @@ class Widget(Rectangle, Viewer):
         if self.width != width or self.height != height:
             self.width, self.height = width, height
             changed = True
-
+        self.layout()
         # we only reset parent if the parent exists and
         # the flag to reset it is set.
         if changed and reset_parent:
