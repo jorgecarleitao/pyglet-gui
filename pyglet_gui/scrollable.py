@@ -188,7 +188,6 @@ class Scrollable(Wrapper, Controller, Manager):
             scroll_width, _ = self._vscrollbar.compute_size()
 
             width += scroll_width
-
         return width, height
 
     def reset_size(self, reset_parent=True):
@@ -197,7 +196,6 @@ class Scrollable(Wrapper, Controller, Manager):
             self._hscrollbar.reset_size(reset_parent=False)
         if self._vscrollbar is not None:
             self._vscrollbar.reset_size(reset_parent=False)
-
 
     def delete(self):
         Wrapper.delete(self)
