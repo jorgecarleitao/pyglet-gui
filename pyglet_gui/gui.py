@@ -69,8 +69,18 @@ class FoldingSection(VerticalLayout, Controller):
 
     def set_manager(self, manager):
         Controller.set_manager(self, manager)
+
         self.folding_content.set_manager(manager)
+        self.folding_content.parent = self
+
         self.header.set_manager(manager)
+        self.header.parent = self
+
+        for item in self._content:
+            if item in [self.folding_content, self.header]:
+                continue
+            item.set_manager(self._manager)
+            item.parent = self
 
     def _get_image_path(self):
         if self.is_open:
