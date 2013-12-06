@@ -501,9 +501,7 @@ class Frame(Wrapper):
         theme = self.theme[self.get_path()]
         if self._frame is None:
             template = theme[self._image_name]
-            self._frame = template.generate(
-                theme['gui_color'],
-                **self.get_batch('panel'))
+            self._frame = template.generate(theme['gui_color'], **self.get_batch('panel'))
 
     def unload(self):
         if self._frame is not None:
