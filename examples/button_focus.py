@@ -5,6 +5,47 @@ from pyglet_gui.mixins import FocusMixin
 from pyglet_gui.dialog import Dialog
 from pyglet_gui.containers import VerticalLayout
 from pyglet_gui.widgets import Label
+from pyglet_gui.theme import Theme
+
+theme = Theme({
+    "font": "Lucida Grande",
+    "font_size": 12,
+    "font_size_small": 10,
+    "gui_color": [255, 255, 255, 255],
+    "disabled_color": [160, 160, 160, 255],
+    "text_color": [255, 255, 255, 255],
+    "focus_color": [255, 255, 255, 64],
+    "button": {
+        "down": {
+            "focus": {
+                "image": {
+                    "source": "button-highlight.png",
+                    "frame": [8, 6, 2, 2],
+                    "padding": [18, 18, 8, 6]
+                }
+            },
+            "image": {
+                "source": "button-down.png",
+                "frame": [8, 6, 2, 2],
+                "padding": [18, 18, 8, 6]
+            },
+            "text_color": [0, 0, 0, 255]
+        },
+        "up": {
+            "focus": {
+                "image": {
+                    "source": "button-highlight.png",
+                    "frame": [8, 6, 2, 2],
+                    "padding": [18, 18, 8, 6]
+                }
+            },
+            "image": {
+                "source": "button.png",
+                "frame": [6, 5, 6, 3],
+                "padding": [18, 18, 8, 6]
+            }
+        }
+    }}, resources_path='../theme/')
 
 
 class FocusButton(Button, FocusMixin):

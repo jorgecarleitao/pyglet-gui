@@ -3,13 +3,7 @@ import sys
 sys.path.insert(0, os.path.abspath('../'))
 
 import pyglet
-import pyglet_gui.theme
 
-# define a theme
-theme = pyglet_gui.theme.Theme(os.path.join(sys.path[0], 'theme'), override={
-    "gui_color": [64, 128, 255, 255],
-    "font_size": 12
-})
 
 window = pyglet.window.Window(640, 480, resizable=True, vsync=True)
 batch = pyglet.graphics.Batch()
