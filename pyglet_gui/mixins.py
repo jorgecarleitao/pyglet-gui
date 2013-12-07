@@ -66,7 +66,7 @@ class FocusMixin(Controller, Widget):
     def load(self):
         theme = self.theme[self.get_path()]
         if self._focus is None and self._focus_flag:
-            self._focus = theme['highlight']['image'].generate(theme['highlight_color'], **self.get_batch('highlight'))
+            self._focus = theme['focus']['image'].generate(theme['focus_color'], **self.get_batch('highlight'))
 
     def unload(self):
         if self._focus is not None:
