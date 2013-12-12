@@ -25,13 +25,13 @@ theme = Theme({"font": "Lucida Grande",
                        }
                    }
                }
-               }, resources_path='../theme/')
+              }, resources_path='../theme/')
 
 
 # Set up a Dialog
 dialog = Dialog(VerticalButtonSelector(options=["Option %d" % x for x in range(1, 6)]),
-    window=window,
-    batch=batch,
-    theme=theme)
+                window=window,
+                batch=batch,
+                theme=theme)
 
 pyglet.app.run()
