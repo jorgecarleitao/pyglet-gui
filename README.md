@@ -44,7 +44,18 @@ Documentation
 
 (Under construction)
 
-The documentation can be found in the [read the docs](https://readthedocs.org/builds/pyglet-gui/).
+The documentation can be found in the [read the docs](http://pyglet-gui.readthedocs.org/en/latest/index.html).
+
+Running tests
+--------------
+
+You can run the test suite of pyglet-gui from the root using
+
+    python -m tests.runtests
+
+If you just want to run a specific module, you can use
+
+    python -m tests.specificModule
 
 Contributors
 --------------
