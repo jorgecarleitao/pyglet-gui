@@ -6,8 +6,8 @@ from pyglet_gui.dialog import Dialog
 
 class TestViewer(TestPygletGUI):
     """
-    This test case tests resize functionality of
-    viewer. We use widget to perform this.
+    This test case tests basic functionality of
+    viewer+dialog. We use an empty widget for this.
     """
 
     def setUp(self):
@@ -38,9 +38,15 @@ class TestViewer(TestPygletGUI):
         self.widget.parent.reset_size()
         self.assertEqual(self.dialog.width, self.widget.width)
 
-        # widget and dialog were re-centered in the window
+        # widget and dialog are re-centered in the window
         self.assertEqual(self.widget.x, self.window.width/2 - self.widget.width/2)
         self.assertEqual(self.dialog.x, self.window.width/2 - self.dialog.width/2)
+
+    def test_deletion(self):
+        self.dialog.delete()
+
+        # confirm that widget is also deleted
+        self.assertTrue(not self.widget.has_manager())
 
     def tearDown(self):
         self.dialog.delete()
