@@ -36,7 +36,7 @@ Installation
 
 1. Get a copy of the source from [GitHub](https://github.com/jorgecarleitao/pyglet-gui).
 
-2. Copy the source to the working directory of your project.
+2. python setup.py install
 
 
 Documentation
