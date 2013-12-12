@@ -46,16 +46,16 @@ class Widget(Rectangle, Viewer):
         raise NotImplementedError
 
     def load(self):
-        raise NotImplementedError
+        pass
 
     def unload(self):
-        raise NotImplementedError
+        pass
 
     def layout(self):
         pass
 
     def compute_size(self):
-        raise NotImplementedError(self)
+        return self.width, self.height
 
     def reset_size(self, reset_parent=True):
         width, height = self.compute_size()
