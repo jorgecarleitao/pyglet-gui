@@ -18,9 +18,10 @@ Pyglet-gui provides two ways to draw a GUI: top-down and bottom-up.
 
 Top-down is a recursion in the tree used when :class:`~pyglet_gui.dialog.Dialog` wants
 to draw itself (e.g. initialization):
-the dialog :meth:`loads <pyglet_gui.core.Viewer.load>` the children, and this call is propagated up to the leaves.
+the dialog :meth:`loads <pyglet_gui.core.Viewer.load>` the children's graphics
+(which is propagated to the children of the children).
 With the graphics loaded, its size is computed by computing the size
-of each children (:meth:`~pyglet_gui.core.Viewer.compute_size`), which is again propagated down to the leaves.
+of each child (:meth:`~pyglet_gui.core.Viewer.compute_size`), again propagated.
 Finally, it sets the positions of the children and his position in the window (:meth:`~pyglet_gui.core.Viewer.set_position`).
 This process is wrapped in the functions :meth:`~pyglet_gui.core.Viewer.reload` and :meth:`~pyglet_gui.core.Viewer.reset_size`.
 
