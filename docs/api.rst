@@ -116,7 +116,6 @@ Viewers:
 Controllers:
     * TwoStateController: a controller with two states.
     * ContinuousStateController: a controller with a float value state.
-    * Slider: a ContinuousStateController with continuous or discrete states and 3 graphic elements: a bar, a knob and markers.
 
 Containers:
     * Vertical: widgets inside are arranged vertically.
@@ -131,5 +130,6 @@ End-user controllers:
     * Button: a On/Off button with a label and graphics placed on top off each other.
     * Checkbox: a Button where the label is placed next to the graphics (and graphics is a checkbox like button).
     * OneTimeButton: a Button which turns off when is released.
+    * Slider: a ContinuousStateController with continuous or discrete states and 3 graphic elements: a bar, a knob and markers.
     * HorizontalSlider: an implementation of an Horizontal Slider.
     * TextInput: a box for writing text.
