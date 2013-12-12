@@ -326,7 +326,7 @@ class Theme(ScopedDict):
             json_input = arg
         else:
             if os.path.isfile(arg) or os.path.isdir(arg):
-                self.loader = pyglet.resource.Loader(path=arg)
+                self.loader = pyglet.resource.Loader(path=arg, script_home=os.getcwd())
                 try:
                     theme_file = self.loader.file(name)
                     json_input = json.loads(theme_file.read().decode("utf-8"))
