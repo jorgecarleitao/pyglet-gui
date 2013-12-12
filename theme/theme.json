@@ -159,6 +159,12 @@
                 "source": "input-highlight.png"
             }
         },
+        "focus": {
+            "image": {
+                "source": "input-highlight.png"
+            }
+        },
+        "focus_color": [255, 0, 0, 64],
         "image": {
             "source": "input.png",
             "frame": [3, 3, 2, 2],
