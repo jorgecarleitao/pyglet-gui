@@ -194,17 +194,12 @@ class FrameTextureGraphicElement(GraphicElement):
 
 class ScopedDict(dict):
     """
-    ScopedDicts differ in several useful ways from normal dictionaries.
-
-    First, they are 'scoped' - if a key exists in a parent ScopedDict but
-    not in the child ScopedDict, we return the parent value when asked for it.
-
-    Second, we can use paths for keys, so we could do this:
-        path = ['button', 'down', 'highlight']
-        color = theme[path]['highlight_color']
-
-    This would return the highlight color assigned to the highlight a button
-    should have when it is clicked.
+    ScopedDict is a special type of dict with two additional features:
+    - It is 'scoped' - if a key exists in a parent ScopedDict but
+    not in the child ScopedDict, it returns the parent value.
+    -  keys can be a list such that:
+        sdict[['button', 'down', 'highlight']] is equivalent
+        to sdict['button']['down']['highlight'].
     """
 
     def __init__(self, arg=None, parent=None):
@@ -275,7 +270,13 @@ class ScopedDict(dict):
 
 
 class Theme(ScopedDict):
-
+    """
+    A theme is a scoped dictionary that
+    maps specific keys to specific templates.
+    It is initialized by a dictionary (json-like) and by a resource path.
+    It maps resources in the dictionary to resources in the path,
+    initializing the correct template accordingly.
+    """
     def __init__(self, dictionary, resources_path):
         ScopedDict.__init__(self, dictionary, None)
 
@@ -309,13 +310,8 @@ class Theme(ScopedDict):
 
     def _get_texture_region(self, filename, x, y, width, height):
         """
-        Returns a texture region.
-
-        @param filename The filename of the texture
-        @param x X coordinate of lower left corner of region
-        @param y Y coordinate of lower left corner of region
-        @param width Width of region
-        @param height Height of region
+        Same as _get_texture, but limits the texture for a region
+        x, y, width, height.
         """
         texture = self._get_texture(filename)
         retval = texture.get_region(x, y, width, height).get_texture()
@@ -324,28 +320,32 @@ class Theme(ScopedDict):
         return retval
 
     def _update_with_images(self, target, input_dict):
-        # Update a ScopedDict with the input dictionary. Translate
-        # images into texture templates.
+        """
+        The main function of theme. Called after initialization,
+        it crawls the scoped dict and populates
+        'target' with templates built from the dict.
+        """
         for k, v in input_dict.items():
             if k.startswith('image'):
                 if isinstance(v, dict):
                     width = height = None
 
                     # if it has a region, we create a texture from that region.
+                    # else, we use a full texture.
                     if 'region' in v:
                         texture = self._get_texture_region(v['source'], *v['region'])
-                    # else, we use a full texture
                     else:
                         texture = self._get_texture(v['source'])
 
                     # if it has frame, it is a FrameTexture
+                    # else, it is a simple texture.
                     if 'frame' in v:
                         target[k] = FrameTextureGraphicElementTemplate(
                             texture,
                             v['frame'],
                             v.get('padding', [0, 0, 0, 0]),  # if padding, else 0.
                             width=width, height=height)
-                    else:  # else, it is a simple texture.
+                    else:
                         target[k] = TextureGraphicElementTemplate(texture, width=width, height=height)
                 else:
                     target[k] = TextureGraphicElementTemplate(self, self._get_texture(v))
@@ -358,7 +358,11 @@ class Theme(ScopedDict):
 
 
 class ThemeFromPath(Theme):
-
+    """
+    A theme that is loaded from a json in a path.
+    The convention is that the json file is called 'theme.json' and lives
+    inside the resources_path given.
+    """
     def __init__(self, resources_path):
         theme_file = pyglet.resource.Loader(resources_path).file('theme.json')
         try:
