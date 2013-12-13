@@ -106,7 +106,6 @@ class Dialog(Wrapper, Manager):
                       'foreground': pyglet.graphics.OrderedGroup(30, self.root_group),
                       'highlight': pyglet.graphics.OrderedGroup(40, self.root_group)}
 
-        self.needs_layout = True
         self._is_dragging = False
 
         if window is None:
@@ -151,7 +150,6 @@ class Dialog(Wrapper, Manager):
 
     def layout(self):
         super().layout()
-        self.needs_layout = False
 
     def draw(self):
         assert self._has_own_batch
