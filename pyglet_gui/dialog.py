@@ -237,9 +237,7 @@ class Dialog(Wrapper, Manager):
             self.window.push_handlers(self)
 
     def delete(self):
-        if self.content is not None:
-            self.content.delete()
-            self.content = None
+        Wrapper.delete(self)
         if self.window is not None:
             self.window.remove_handlers(self)
             self.window = None
