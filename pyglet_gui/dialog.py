@@ -1,7 +1,7 @@
 import pyglet
 from pyglet import gl
 
-from pyglet_gui.core import Manager, Managed, Controller
+from pyglet_gui.core import Manager, Managed
 from pyglet_gui.widgets import Rectangle
 from pyglet_gui.constants import GetRelativePoint, ANCHOR_CENTER
 from pyglet_gui.containers import Wrapper
