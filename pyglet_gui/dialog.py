@@ -88,7 +88,7 @@ class Dialog(Wrapper, Manager):
 
         self.window = window
         self.anchor = anchor
-        self.offset = offset
+        self._offset = offset
         self._theme = theme
         self._manager = self
         self.is_movable = movable
@@ -118,6 +118,17 @@ class Dialog(Wrapper, Manager):
         self.reset_size(reset_parent=False)
         self.set_position(*self.get_position())
 
+    @property
+    def offset(self):
+        return self._offset
+
+    @offset.setter
+    def offset(self, offset):
+        assert isinstance(offset, tuple)
+        assert len(offset) == 2
+        self._offset = offset
+        self.set_position(*self.get_position())
+
     @Managed.theme.getter
     def theme(self):
         return self._theme
@@ -129,10 +140,10 @@ class Dialog(Wrapper, Manager):
         x, y = GetRelativePoint(self.screen, self.anchor, self, None, (0, 0))
         max_offset_x = self.screen.width - self.width - x
         max_offset_y = self.screen.height - self.height - y
-        offset_x, offset_y = self.offset
+        offset_x, offset_y = self._offset
         offset_x = max(min(offset_x, max_offset_x), -x)
         offset_y = max(min(offset_y, max_offset_y), -y)
-        self.offset = (offset_x, offset_y)
+        self._offset = (offset_x, offset_y)
         x += offset_x
         y += offset_y
 
@@ -156,8 +167,8 @@ class Dialog(Wrapper, Manager):
     def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
         if not Manager.on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
             if self.is_movable and self._is_dragging:
-                x, y = self.offset
-                self.offset = (int(x + dx), int(y + dy))
+                x, y = self._offset
+                self._offset = (int(x + dx), int(y + dy))
                 self.set_position(*self.get_position())
                 return pyglet.event.EVENT_HANDLED
 
