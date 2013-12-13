@@ -3,8 +3,10 @@ from .setup import TestPygletGUI
 from pyglet_gui.widgets import Widget
 from pyglet_gui.dialog import Dialog
 
+import pyglet_gui.constants
 
-class TestViewer(TestPygletGUI):
+
+class TestDialog(TestPygletGUI):
     """
     This test case tests basic functionality of
     viewer+dialog. We use an empty widget for this.
@@ -69,6 +71,19 @@ class TestViewer(TestPygletGUI):
 
         # dialog is still centered.
         self.assertEqual(self.dialog.x, self.window.width/2 - self.dialog.width/2)
+
+    def test_change_offset(self):
+        self.dialog.offset = (10, 0)
+
+        # dialog is still centered.
+        self.assertEqual(self.dialog.x - 10, self.window.width/2 - self.dialog.width/2)
+
+    def test_change_anchor(self):
+        self.dialog.anchor = pyglet_gui.constants.ANCHOR_TOP_LEFT
+
+        # dialog is still centered.
+        self.assertEqual(self.dialog.x, 0)
+
 
     def test_deletion(self):
         self.dialog.delete()
