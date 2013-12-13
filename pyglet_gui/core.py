@@ -73,11 +73,12 @@ class Viewer(Managed, metaclass=ABCMeta):
 
     @abstractmethod
     def layout(self):
-        # used to layout the children or graphics of the viewer in position
+        # used to layout graphics of the viewer
         pass
 
     def delete(self):
         self.unload()
+        self.parent = None
         Managed.delete(self)
 
 
@@ -134,7 +135,7 @@ class Manager(pyglet.event.EventDispatcher):
         self.set_focus(new_focus)
 
     def on_key_press(self, symbol, modifiers):
-        ## move between focusable widgets.
+        ## move between focusable controllers.
         if symbol == pyglet.window.key.TAB:
             if modifiers & pyglet.window.key.MOD_SHIFT:
                 direction = -1
