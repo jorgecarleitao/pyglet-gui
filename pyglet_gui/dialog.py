@@ -122,9 +122,6 @@ class Dialog(Wrapper, Manager):
     def theme(self):
         return self._theme
 
-    def set_size(self, width, height, _):
-        self.width, self.height = width, height
-
     def get_position(self):
         # Calculate our position relative to our containing window,
         # making sure that we fit completely on the window.  If our offset
