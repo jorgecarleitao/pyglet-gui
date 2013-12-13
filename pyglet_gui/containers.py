@@ -426,28 +426,43 @@ class Wrapper(Widget):
     """
     def __init__(self, content, is_expandable=False, anchor=ANCHOR_CENTER, offset=(0, 0)):
         Widget.__init__(self)
-        self.content = content
-        self.content.parent = self
+        self._content = content
+        self._content.parent = self
 
         self.expandable = is_expandable
 
         self.anchor = anchor
         self.content_offset = offset
 
+    @property
+    def content(self):
+        return self._content
+
+    @content.setter
+    def content(self, content):
+        assert isinstance(content, Widget)
+        if self._content is not None:
+            self._content.delete()
+
+        self._content = content
+        self._content.set_manager(self._manager)
+        self._content.parent = self
+        self.reset_size()
+
     def set_manager(self, manager):
         Widget.set_manager(self, manager)
-        self.content.set_manager(manager)
-        self.content.parent = self
+        self._content.set_manager(manager)
+        self._content.parent = self
 
     def load(self):
-        self.content.load()
+        self._content.load()
 
     def unload(self):
-        self.content.unload()
+        self._content.unload()
 
     def expand(self, width, height):
-        if self.content.is_expandable():
-            self.content.expand(width, height)
+        if self._content.is_expandable():
+            self._content.expand(width, height)
         self.width = width
         self.height = height
 
@@ -455,25 +470,25 @@ class Wrapper(Widget):
         return self.expandable
 
     def compute_size(self):
-        return self.content.width, self.content.height
+        return self._content.width, self._content.height
 
     def reset_size(self, reset_parent=True):
         if not reset_parent:
-            self.content.reset_size(reset_parent)
+            self._content.reset_size(reset_parent)
         super().reset_size(reset_parent)
 
     def layout(self):
-        x, y = GetRelativePoint(self, self.anchor, self.content, self.anchor, self.content_offset)
-        self.content.set_position(x, y)
+        x, y = GetRelativePoint(self, self.anchor, self._content, self.anchor, self.content_offset)
+        self._content.set_position(x, y)
 
     def set_content(self, content):
-        self.content.unload()
-        self.content = content
-        self.content.set_manager(self._manager)
-        self.content.parent = self
+        self._content.unload()
+        self._content = content
+        self._content.set_manager(self._manager)
+        self._content.parent = self
 
     def delete(self):
-        self.content.delete()
+        self._content.delete()
         Widget.delete(self)
 
 
@@ -510,9 +525,9 @@ class Frame(Wrapper):
         Wrapper.unload(self)
 
     def expand(self, width, height):
-        if self.content.is_expandable():
+        if self._content.is_expandable():
             content_width, content_height = self._frame.get_content_size(width, height)
-            self.content.expand(content_width, content_height)
+            self._content.expand(content_width, content_height)
         self.width, self.height = width, height
 
     def layout(self):
@@ -521,9 +536,9 @@ class Frame(Wrapper):
         # we create a rectangle with the interior for using in GetRelativePoint
         x, y, width, height = self._frame.get_content_region()
         interior = Rectangle(x, y, width, height)
-        x, y = GetRelativePoint(interior, self.anchor, self.content, self.anchor, self.content_offset)
-        self.content.set_position(x, y)
+        x, y = GetRelativePoint(interior, self.anchor, self._content, self.anchor, self.content_offset)
+        self._content.set_position(x, y)
 
     def compute_size(self):
-        self.content.compute_size()
-        return self._frame.get_needed_size(self.content.width, self.content.height)
+        self._content.compute_size()
+        return self._frame.get_needed_size(self._content.width, self._content.height)

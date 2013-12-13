@@ -90,6 +90,7 @@ class Dialog(Wrapper, Manager):
         self.anchor = anchor
         self.offset = offset
         self._theme = theme
+        self._manager = self
         self.is_movable = movable
         self.on_enter = on_enter
         self.on_escape = on_escape
