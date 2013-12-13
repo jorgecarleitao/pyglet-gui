@@ -16,7 +16,7 @@ class TestViewer(TestPygletGUI):
         self.widget = Widget(width=50, height=50)
         self.dialog = Dialog(self.widget, window=self.window, batch=self.batch, theme=self.theme)
 
-    def test_top_down(self):
+    def test_top_down_draw(self):
         """
         Tests that the dialog's size was set
         according to the child size.
@@ -29,18 +29,36 @@ class TestViewer(TestPygletGUI):
         self.assertEqual(self.widget.x, self.window.width/2 - self.widget.width/2)
         self.assertEqual(self.widget.y, self.window.height/2 - self.widget.height/2)
 
-    def test_bottom_up(self):
+    def test_bottom_up_draw(self):
         """
         Tests that the dialog's size is modified
         if we set a new size to the widget.
         """
         self.widget.width = 60
         self.widget.parent.reset_size()
+
+        # dialog size was reset
         self.assertEqual(self.dialog.width, self.widget.width)
 
-        # widget and dialog are re-centered in the window
+        # widget and dialog were re-centered in the window
         self.assertEqual(self.widget.x, self.window.width/2 - self.widget.width/2)
         self.assertEqual(self.dialog.x, self.window.width/2 - self.dialog.width/2)
+
+    def test_substitute_widget(self):
+        """
+        Tests substitution of dialog's content
+        by other widget.
+        """
+        self.new_widget = Widget(width=60, height=50)
+
+        self.dialog.content = self.new_widget
+
+        self.assertTrue(not self.widget.has_manager())
+        self.assertTrue(self.new_widget.has_manager())
+
+        # dialog size was reset, new widget position is correct
+        self.assertEqual(self.dialog.width, self.new_widget.width)
+        self.assertEqual(self.new_widget.x, self.window.width/2 - self.new_widget.width/2)
 
     def test_deletion(self):
         self.dialog.delete()
