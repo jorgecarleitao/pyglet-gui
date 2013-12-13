@@ -1,7 +1,7 @@
 import pyglet
 from pyglet import gl
 
-from pyglet_gui.core import Manager, Managed
+from pyglet_gui.core import Manager, Managed, Controller
 from pyglet_gui.widgets import Rectangle
 from pyglet_gui.constants import GetRelativePoint, ANCHOR_CENTER
 from pyglet_gui.containers import Wrapper
@@ -81,7 +81,7 @@ class DialogGroup(pyglet.graphics.OrderedGroup):
 class Dialog(Wrapper, Manager):
     def __init__(self, content=None, window=None, batch=None, group=None,
                  anchor=ANCHOR_CENTER, offset=(0, 0),
-                 theme=None, movable=True, on_enter=None, on_escape=None):
+                 theme=None, movable=True):
         assert isinstance(theme, dict)
         Wrapper.__init__(self, content=content)
         Manager.__init__(self)
@@ -92,8 +92,6 @@ class Dialog(Wrapper, Manager):
         self._theme = theme
         self._manager = self
         self.is_movable = movable
-        self.on_enter = on_enter
-        self.on_escape = on_escape
         if batch is None:
             self.batch = pyglet.graphics.Batch()
             self._has_own_batch = True
@@ -160,19 +158,6 @@ class Dialog(Wrapper, Manager):
 
     def hit_test(self, x, y):
         return self.is_inside(x, y)
-
-    def on_key_press(self, symbol, modifiers):
-        retval = Manager.on_key_press(self, symbol, modifiers)
-        if not retval:
-            if symbol == pyglet.window.key.ENTER:
-                if self.on_enter is not None:
-                    self.on_enter(self)
-                    return pyglet.event.EVENT_HANDLED
-            elif symbol == pyglet.window.key.ESCAPE:
-                if self.on_escape is not None:
-                    self.on_escape(self)
-                    return pyglet.event.EVENT_HANDLED
-        return retval
 
     def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
         if not Manager.on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
