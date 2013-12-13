@@ -60,6 +60,16 @@ class TestViewer(TestPygletGUI):
         self.assertEqual(self.dialog.width, self.new_widget.width)
         self.assertEqual(self.new_widget.x, self.window.width/2 - self.new_widget.width/2)
 
+    def test_window_resize(self):
+        self.window.width = 100
+        self.dialog.on_resize(self.window.width, self.window.height)
+
+        # dialog size didn't changed.
+        self.assertEqual(self.dialog.width, 50)
+
+        # dialog is still centered.
+        self.assertEqual(self.dialog.x, self.window.width/2 - self.dialog.width/2)
+
     def test_deletion(self):
         self.dialog.delete()
 

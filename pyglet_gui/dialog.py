@@ -223,7 +223,7 @@ class Dialog(Wrapper, Manager):
         """
         if self.screen.width != width or self.screen.height != height:
             self.screen.width, self.screen.height = width, height
-            self.needs_layout = True
+            self.set_position(*self.get_position())
 
     def pop_to_top(self):
         """
