@@ -146,9 +146,6 @@ class Dialog(Wrapper, Manager):
         super().reset_size(reset_parent=False)
         self.set_position(*self.get_position())
 
-    def layout(self):
-        super().layout()
-
     def draw(self):
         assert self._has_own_batch
         self.batch.draw()
