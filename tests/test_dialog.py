@@ -75,15 +75,14 @@ class TestDialog(TestPygletGUI):
     def test_change_offset(self):
         self.dialog.offset = (10, 0)
 
-        # dialog is still centered.
+        # dialog is centered with an offset.
         self.assertEqual(self.dialog.x - 10, self.window.width/2 - self.dialog.width/2)
 
     def test_change_anchor(self):
         self.dialog.anchor = pyglet_gui.constants.ANCHOR_TOP_LEFT
 
-        # dialog is still centered.
+        # dialog is in correct position.
         self.assertEqual(self.dialog.x, 0)
-
 
     def test_deletion(self):
         self.dialog.delete()
