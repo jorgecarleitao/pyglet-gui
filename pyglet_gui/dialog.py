@@ -83,11 +83,10 @@ class Dialog(Wrapper, Manager):
                  anchor=ANCHOR_CENTER, offset=(0, 0),
                  theme=None, movable=True):
         assert isinstance(theme, dict)
-        Wrapper.__init__(self, content=content)
+        Wrapper.__init__(self, anchor=anchor, content=content)
         Manager.__init__(self)
 
         self.window = window
-        self.anchor = anchor
         self._offset = offset
         self._theme = theme
         self._manager = self
@@ -132,6 +131,11 @@ class Dialog(Wrapper, Manager):
     @Managed.theme.getter
     def theme(self):
         return self._theme
+
+    @Wrapper.anchor.setter
+    def anchor(self, anchor):
+        self._anchor = anchor
+        self.set_position(*self.get_position())
 
     def get_position(self):
         # Calculate our position relative to our containing window,

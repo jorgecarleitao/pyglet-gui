@@ -431,8 +431,16 @@ class Wrapper(Widget):
 
         self.expandable = is_expandable
 
-        self.anchor = anchor
+        self._anchor = anchor
         self.content_offset = offset
+
+    @property
+    def anchor(self):
+        return self._anchor
+
+    @anchor.setter
+    def anchor(self, anchor):
+        self._anchor = anchor
 
     @property
     def content(self):
