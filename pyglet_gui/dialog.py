@@ -162,9 +162,6 @@ class Dialog(Wrapper, Manager):
         assert self._has_own_batch
         self.batch.draw()
 
-    def get_root(self):
-        return self
-
     def hit_test(self, x, y):
         return self.is_inside(x, y)
 
@@ -177,9 +174,6 @@ class Dialog(Wrapper, Manager):
                 return pyglet.event.EVENT_HANDLED
 
     def on_mouse_motion(self, x, y, dx, dy):
-        """
-        This puts the dialog always on top, both batch and event stack.
-        """
         Manager.on_mouse_motion(self, x, y, dx, dy)
         if self.hit_test(x, y):
             if not self.root_group.is_on_top():
@@ -219,9 +213,9 @@ class Dialog(Wrapper, Manager):
 
     def pop_to_top(self):
         """
-        Pop our dialog group to the top, and force our batch to re-sort
-        the groups. Also, puts our event handler on top of the window's
-        event handler stack.
+        Puts the dialog on top of the other dialogs on the same batch (and window).
+        - Pops the dialog group to the top
+        - Puts the event handler on top of the event handler's stack of the window.
         """
         self.root_group.pop_to_top()
         self.batch._draw_list_dirty = True  # forces resorting groups
