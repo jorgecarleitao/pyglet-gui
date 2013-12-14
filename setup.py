@@ -6,4 +6,5 @@ setup(name='pyglet-gui',
       author='Jorge C. Leitão',
       url='https://github.com/jorgecarleitao/pyglet-gui',
       packages=['pyglet_gui'],
-     )
+      requires=['pyglet (>=1.2)']
+)
