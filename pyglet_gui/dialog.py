@@ -86,7 +86,6 @@ class Dialog(Wrapper, Manager):
         Wrapper.__init__(self, anchor=anchor, content=content)
         Manager.__init__(self)
 
-        self.window = window
         self._offset = offset
         self._theme = theme
         self._manager = self
@@ -105,15 +104,32 @@ class Dialog(Wrapper, Manager):
 
         self._is_dragging = False
 
-        if window is None:
+        self.content.set_manager(self)
+
+        self.screen = Rectangle()
+        self.load()
+
+        self._window = None
+        self.window = window
+
+    @property
+    def window(self):
+        return self._window
+
+    @window.setter
+    def window(self, window):
+        if self.window is not None:
+            self.window.remove_handlers(self)
+        self._window = window
+
+        if self.window is None:
+            self.unload()
             self.screen = Rectangle()
         else:
             width, height = window.get_size()
             self.screen = Rectangle(width=width, height=height)
             window.push_handlers(self)
 
-        content.set_manager(self)
-        self.load()
         self.reset_size(reset_parent=False)
         self.set_position(*self.get_position())
 
@@ -219,15 +235,15 @@ class Dialog(Wrapper, Manager):
         """
         self.root_group.pop_to_top()
         self.batch._draw_list_dirty = True  # forces resorting groups
-        if self.window is not None:
-            self.window.remove_handlers(self)
-            self.window.push_handlers(self)
+        if self._window is not None:
+            self._window.remove_handlers(self)
+            self._window.push_handlers(self)
 
     def delete(self):
         Wrapper.delete(self)
-        if self.window is not None:
-            self.window.remove_handlers(self)
-            self.window = None
+        if self._window is not None:
+            self._window.remove_handlers(self)
+            self._window = None
         Manager.delete(self)
         self.batch._draw_list_dirty = True  # forces resorting groups
 

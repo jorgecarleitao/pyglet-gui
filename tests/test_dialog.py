@@ -84,6 +84,32 @@ class TestDialog(TestPygletGUI):
         # dialog is in correct position.
         self.assertEqual(self.dialog.x, 0)
 
+    def test_new_dialog_is_on_top(self):
+        other_dialog = Dialog(Widget(width=50, height=50), window=self.window,
+                              batch=self.batch,
+                              theme=self.theme)
+
+        # confirm that a new dialog starts always on top
+        self.assertTrue(other_dialog.root_group.is_on_top())
+
+    def test_new_dialog_without_window(self):
+        other_dialog = Dialog(Widget(width=50, height=50),
+                              batch=self.batch,
+                              theme=self.theme)
+
+        # confirm that a new dialog without window starts
+        # with no size
+        self.assertTrue(other_dialog.width, 0)
+
+        # change the dialog's window
+        other_dialog.window = self.window
+
+        # confirm it has a size.
+        self.assertEqual(self.dialog.width, 50)
+
+        # confirm it is in the correct position
+        self.assertEqual(self.dialog.x, self.window.width/2 - self.dialog.width/2)
+
     def test_deletion(self):
         self.dialog.delete()
 
