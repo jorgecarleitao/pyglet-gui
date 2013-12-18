@@ -12,6 +12,10 @@ class Container(Widget):
         super().__init__(width, height)
         self._content = [x or Spacer() for x in content]
 
+    @property
+    def content(self):
+        return self._content
+
     def set_manager(self, manager):
         Widget.set_manager(self, manager)
         for item in self._content:
@@ -212,6 +216,10 @@ class GridLayout(Widget):
         for row in self._matrix:
             width = max(width, len(row))
         self._max_widths = [self.padding] * width
+
+    @property
+    def content(self):
+        return self._matrix
 
     def set_manager(self, manager):
         Widget.set_manager(self, manager)
