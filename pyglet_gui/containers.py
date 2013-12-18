@@ -200,11 +200,9 @@ class GridLayout(Widget):
     that Widgets are centered within cells.
     """
 
-    def __init__(self, content=None, anchor=ANCHOR_TOP_LEFT, padding=5,
+    def __init__(self, content, anchor=ANCHOR_TOP_LEFT, padding=5,
                  offset=(0, 0)):
-        assert ((isinstance(content, list) or isinstance(content, tuple)) and
-                (len(content) == 0 or (isinstance(content[0], list) or
-                                       isinstance(content[0], tuple))))
+        assert isinstance(content, list) and len(content) != 0
         Widget.__init__(self)
         self._matrix = content  # a matrix-like list [[]]. Content can be None for cells without widgets.
         self.anchor = anchor
