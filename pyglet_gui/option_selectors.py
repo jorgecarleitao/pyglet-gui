@@ -123,8 +123,7 @@ class Dropdown(Selector, OneTimeButton):
                              height=self.max_height), path=['dropdown', 'pulldown']),
             window=self._manager.window, batch=self._manager.batch,
             group=self._manager.root_group.parent, theme=self._manager.theme,
-            movable=False, anchor=anchor, offset=(x, y),
-            on_escape=on_escape)
+            movable=False, anchor=anchor, offset=(x, y))
 
     def set_options(self, options, labels=None):
         on_select = self._on_select
