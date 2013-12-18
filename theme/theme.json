@@ -112,8 +112,8 @@
     "frame": {
         "image": {
             "source": "panel.png",
-            "frame": [16, 16, 16, 16],
-            "padding": [16, 16, 16, 16]
+            "frame": [8, 8, 16, 16],
+            "padding": [16, 16, 8, 8]
         }
     },
     "section": {
