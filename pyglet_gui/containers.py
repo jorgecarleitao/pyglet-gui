@@ -209,11 +209,9 @@ class GridLayout(Widget):
         self.padding = padding
         self.offset = offset
 
-        self._max_heights = [0] * len(self._matrix)
-        width = 0
-        for row in self._matrix:
-            width = max(width, len(row))
-        self._max_widths = [self.padding] * width
+        self._max_heights = []
+        self._max_widths = []
+        self._update_max_vectors()
 
     @property
     def content(self):
@@ -239,56 +237,79 @@ class GridLayout(Widget):
                 if item is not None:
                     item.unload()
 
+    def _update_max_vectors(self):
+        """
+        Updates the sizes of vectors _max_widths and _max_heights.
+
+        Must be called when _matrix changes number of elements.
+        """
+        # re-compute length of vector _max_widths
+        self._max_heights = [0] * len(self._matrix)
+        width = 0
+        for row in self._matrix:
+            width = max(width, len(row))
+        self._max_widths = [0] * width
+
     def add_row(self, row):
         """
-        Adds a new row to the layout
-
-        @param row An array of widgets, or None for cells without widgets
+        Adds a new row to the layout.
         """
-        assert isinstance(row, tuple) or isinstance(row, list)
+        assert isinstance(row, list)
         for item in row:
             if item is not None:
                 item.set_manager(self._manager)
                 item.parent = self
         self._matrix.append(row)
-        self._max_heights.append(0)
+
+        self._update_max_vectors()
+
         self.reset_size()
 
-    def unload_row(self, row):
+    def add_column(self, column):
         """
-        Unload a row from the layout
+        Adds a new column to the layout.
         """
-        # todo: unclear why there is a pop in this method. Is not consistent with other unloads.
-        if len(self._matrix) <= row:
-            return
-        row = self._matrix.pop(row)
-        for column in row:
-            if column is not None:
-                column.unload()
-        self.compute_size()
+        assert isinstance(column, list)
+
+        # assign items parents and managers
+        for item in column:
+            if item is not None:
+                item.set_manager(self._manager)
+                item.parent = self
+
+        # add items to the grid, extending the grid if needed.
+        for i in range(len(column)):
+            try:
+                self._matrix[i].append(column[i])
+            except IndexError:
+                self._matrix.append([]*len(column) + [column[i]])
+
+        self._update_max_vectors()
+
+        # update sizes
+        self.reset_size()
 
     def get(self, column, row):
-        if row >= len(self._matrix):
-            raise IndexError
-        row = self._matrix[row]
-        if column >= len(row):
-            raise IndexError
-        else:
-            return row[column]
+        """
+        Gets the content of a cell within the grid.
+        If invalid, it raises an IndexError.
+        """
+        return self._matrix[row][column]
 
     def set(self, column, row, item):
         """
-        Sets the content of a cell within the grid.
+        Set the content of a cell within the grid.
+        If invalid, it raises an IndexError.
+        If the existing item is not None, delete it.
         """
-        if len(self._matrix) <= row:
-            self._matrix = list(self._matrix) + [] * (row - len(self._matrix) + 1)
-        if len(self._matrix[row]) <= column:
-            self._matrix[row] = list(self._matrix[row]) + [None] * (column - len(self._matrix[row]) + 1)
         if self._matrix[row][column] is not None:
-            self._matrix[row][column].unload()
+            self._matrix[row][column].delete()
         self._matrix[row][column] = item
-        item.set_manager(self._manager)
-        self.compute_size()
+
+        if item is not None:
+            assert isinstance(item, Widget)
+            item.set_manager(self._manager)
+        self.reset_size()
 
     def layout(self):
         row_index = 0
@@ -318,7 +339,7 @@ class GridLayout(Widget):
         super().reset_size(reset_parent)
 
     def compute_size(self):
-        # Recalculates our size and the maximum widths and heights of
+        # calculates the size and the maximum widths and heights of
         # each row and column.
         row_index = 0
         for row in self._matrix:
