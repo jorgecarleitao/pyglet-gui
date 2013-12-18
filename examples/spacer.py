@@ -2,9 +2,8 @@ from setup import *
 
 from pyglet_gui.buttons import Button
 from pyglet_gui.dialog import Dialog
-from pyglet_gui.containers import GridLayout, HorizontalLayout, VerticalLayout
+from pyglet_gui.containers import HorizontalLayout, VerticalLayout
 from pyglet_gui.widgets import Spacer
-from pyglet_gui.constants import ANCHOR_CENTER
 from pyglet_gui.theme import Theme
 
 theme = Theme({"font": "Lucida Grande",
