@@ -253,7 +253,8 @@ class GridLayout(Widget):
                 item.set_manager(self._manager)
                 item.parent = self
         self._matrix.append(row)
-        self.compute_size()
+        self._max_heights.append(0)
+        self.reset_size()
 
     def unload_row(self, row):
         """
