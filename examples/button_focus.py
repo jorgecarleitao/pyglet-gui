@@ -1,9 +1,9 @@
-from pyglet_gui.gui import Label
 from setup import *
 
 from pyglet_gui.buttons import Button
 from pyglet_gui.mixins import FocusMixin
-from pyglet_gui.dialog import Dialog
+from pyglet_gui.gui import Label
+from pyglet_gui.manager import Manager
 from pyglet_gui.containers import VerticalContainer
 from pyglet_gui.theme import Theme
 
@@ -74,8 +74,8 @@ class FocusButton(Button, FocusMixin):
             self.change_state()
 
 
-# Set up a Dialog
-dialog = Dialog(VerticalContainer([Label("Try (SHIFT+)TAB and ENTER"),
+# Set up a Manager
+dialog = Manager(VerticalContainer([Label("Try (SHIFT+)TAB and ENTER"),
                                 FocusButton("Button 1"),
                                 FocusButton("Button 2"),
                                 FocusButton("Button 3")]),

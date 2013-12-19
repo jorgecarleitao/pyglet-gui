@@ -2,8 +2,8 @@ import pyglet
 
 from .setup import TestPygletGUI
 
+from pyglet_gui.manager import Manager
 from pyglet_gui.text_input import TextInput
-from pyglet_gui.dialog import Dialog
 
 
 class TestInput(TestPygletGUI):
@@ -11,7 +11,7 @@ class TestInput(TestPygletGUI):
     def setUp(self):
         TestPygletGUI.setUp(self)
         self.input = TextInput(text="test")
-        self.dialog = Dialog(self.input, window=self.window, batch=self.batch, theme=self.theme)
+        self.dialog = Manager(self.input, window=self.window, batch=self.batch, theme=self.theme)
 
     def test_focus(self):
         self.input.on_gain_focus()

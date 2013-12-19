@@ -1,7 +1,7 @@
+from pyglet_gui.manager import Manager
 from setup import *
 from pyglet_gui.buttons import Button
 
-from pyglet_gui.dialog import Dialog
 from pyglet_gui.scrollable import Scrollable
 from pyglet_gui.containers import VerticalContainer
 from pyglet_gui.theme import Theme
@@ -47,8 +47,8 @@ theme = Theme({"font": "Lucida Grande",
                }
               }, resources_path='../theme/')
 
-# Set up a Dialog
-dialog = Dialog(
+# Set up a Manager
+dialog = Manager(
     # an horizontal layout with two vertical layouts, each one with a slider.
     Scrollable(height=100, width=200, content=VerticalContainer(content=[Button(str(x)) for x in range(10)])),
     window=window,

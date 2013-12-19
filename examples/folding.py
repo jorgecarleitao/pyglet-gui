@@ -1,6 +1,6 @@
+from pyglet_gui.manager import Manager
 from setup import *
 
-from pyglet_gui.dialog import Dialog
 from pyglet_gui.containers import VerticalContainer
 from pyglet_gui.document import Document
 from pyglet_gui.constants import ANCHOR_CENTER, HALIGN_LEFT
@@ -71,7 +71,7 @@ content = Frame(
         height=400)
 )
 
-Dialog(
+Manager(
     content
     ,
     window=window, batch=batch, group=fg_group,

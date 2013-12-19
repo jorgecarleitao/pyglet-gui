@@ -1,8 +1,8 @@
+from pyglet_gui.manager import Manager
 from setup import *
 
 from pyglet_gui.buttons import Button
 from pyglet_gui.mixins import HighlightMixin
-from pyglet_gui.dialog import Dialog
 from pyglet_gui.theme import Theme
 
 theme = Theme({
@@ -67,8 +67,8 @@ class HighlightedButton(Button, HighlightMixin):
         Button.unload_graphics(self)
         HighlightMixin.unload_graphics(self)
 
-# Set up a Dialog
-dialog = Dialog(HighlightedButton("Button"),
+# Set up a Manager
+dialog = Manager(HighlightedButton("Button"),
                 window=window,
                 batch=batch,
                 theme=theme)

@@ -3,8 +3,8 @@ from pyglet_gui.constants import VALIGN_BOTTOM, HALIGN_LEFT, HALIGN_CENTER, ANCH
 from pyglet_gui.core import Rectangle, Viewer
 from pyglet_gui.controllers import Controller
 from pyglet_gui.containers import HorizontalContainer, VerticalContainer, Wrapper
-from pyglet_gui.dialog import Dialog
 from pyglet_gui.buttons import Button
+from pyglet_gui.manager import Manager
 
 
 class Graphic(Viewer):
@@ -244,7 +244,7 @@ class FoldingSection(VerticalContainer, Controller):
         VerticalContainer.delete(self)
 
 
-class PopupMessage(Dialog):
+class PopupMessage(Manager):
     """A simple fire-and-forget dialog."""
 
     def __init__(self, text="", window=None, batch=None, group=None,
@@ -254,14 +254,14 @@ class PopupMessage(Dialog):
                 on_escape(self)
             self.delete()
 
-        Dialog.__init__(self, content=Frame(VerticalContainer([Label(text),
+        Manager.__init__(self, content=Frame(VerticalContainer([Label(text),
                                                             Button("Ok", on_press=on_ok)])),
                         window=window, batch=batch, group=group,
                         theme=theme, movable=True,
                         on_enter=on_ok, on_escape=on_ok)
 
 
-class PopupConfirm(Dialog):
+class PopupConfirm(Manager):
     """An ok/cancel-style dialog.  Escape defaults to cancel."""
 
     def __init__(self, text="", ok="Ok", cancel="Cancel",
@@ -277,7 +277,7 @@ class PopupConfirm(Dialog):
                 on_cancel(self)
             self.delete()
 
-        Dialog.__init__(self, content=Frame(
+        Manager.__init__(self, content=Frame(
             VerticalContainer([
                 Label(text),
                 HorizontalContainer([

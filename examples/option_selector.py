@@ -1,6 +1,6 @@
+from pyglet_gui.manager import Manager
 from setup import *
 
-from pyglet_gui.dialog import Dialog
 from pyglet_gui.option_selectors import VerticalButtonSelector
 from pyglet_gui.theme import Theme
 
@@ -28,8 +28,8 @@ theme = Theme({"font": "Lucida Grande",
               }, resources_path='../theme/')
 
 
-# Set up a Dialog
-dialog = Dialog(VerticalButtonSelector(options=["Option %d" % x for x in range(1, 6)]),
+# Set up a Manager
+dialog = Manager(VerticalButtonSelector(options=["Option %d" % x for x in range(1, 6)]),
                 window=window,
                 batch=batch,
                 theme=theme)

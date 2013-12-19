@@ -1,6 +1,6 @@
+from pyglet_gui.manager import Manager
 from setup import *
 
-from pyglet_gui.dialog import Dialog
 from pyglet_gui.option_selectors import Dropdown
 from pyglet_gui.theme import Theme
 
@@ -59,8 +59,8 @@ theme = Theme({"font": "Lucida Grande",
                }
               }, resources_path='../theme')
 
-# Set up a Dialog
-dialog = Dialog(
+# Set up a Manager
+dialog = Manager(
     Dropdown(['Alpha', 'Beta', 'Gamma', 'Delta', 'Epsilon',
               'Zeta', 'Eta', 'Theta', 'Iota', 'Kappa',
               'Lambda', 'Mu', 'Nu', 'Xi', 'Omicron',

@@ -1,6 +1,6 @@
 from .setup import TestPygletGUI
 
-from pyglet_gui.dialog import Dialog
+from pyglet_gui.manager import Manager
 from pyglet_gui.buttons import Button
 
 
@@ -9,7 +9,7 @@ class TestButton(TestPygletGUI):
     def setUp(self):
         TestPygletGUI.setUp(self)
         self.button = Button(label="test")
-        self.dialog = Dialog(self.button, window=self.window, batch=self.batch, theme=self.theme)
+        self.dialog = Manager(self.button, window=self.window, batch=self.batch, theme=self.theme)
 
     def test_creation(self):
         self.assertNotEqual(self.button.width, 0)

@@ -1,7 +1,7 @@
 from .setup import TestPygletGUI
 
+from pyglet_gui.manager import Manager
 from pyglet_gui.core import Viewer
-from pyglet_gui.dialog import Dialog
 
 import pyglet_gui.constants
 
@@ -16,7 +16,7 @@ class TestDialog(TestPygletGUI):
         super().setUp()
 
         self.widget = Viewer(width=50, height=50)
-        self.dialog = Dialog(self.widget, window=self.window, batch=self.batch, theme=self.theme)
+        self.dialog = Manager(self.widget, window=self.window, batch=self.batch, theme=self.theme)
 
     def test_top_down_draw(self):
         """
@@ -88,7 +88,7 @@ class TestDialog(TestPygletGUI):
         self.assertEqual(self.dialog.x, 0)
 
     def test_new_dialog_is_on_top(self):
-        other_dialog = Dialog(Viewer(width=50, height=50), window=self.window,
+        other_dialog = Manager(Viewer(width=50, height=50), window=self.window,
                               batch=self.batch,
                               theme=self.theme)
 
@@ -96,7 +96,7 @@ class TestDialog(TestPygletGUI):
         self.assertTrue(other_dialog.root_group.is_on_top())
 
     def test_new_dialog_without_window(self):
-        other_dialog = Dialog(Viewer(width=50, height=50),
+        other_dialog = Manager(Viewer(width=50, height=50),
                               batch=self.batch,
                               theme=self.theme)
 

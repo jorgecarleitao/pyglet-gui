@@ -1,6 +1,6 @@
+from pyglet_gui.manager import Manager
 from setup import *
 
-from pyglet_gui.dialog import Dialog
 from pyglet_gui.containers import VerticalContainer
 from pyglet_gui.sliders import HorizontalSlider
 from pyglet_gui.theme import Theme
@@ -34,8 +34,8 @@ theme = Theme({"font": "Lucida Grande",
               }, resources_path='../theme/')
 
 
-# Set up a Dialog
-dialog = Dialog(
+# Set up a Manager
+dialog = Manager(
     VerticalContainer([HorizontalSlider(), HorizontalSlider(steps=10)]),
     window=window,
     batch=batch,

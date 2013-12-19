@@ -1,7 +1,7 @@
 from .setup import TestPygletGUI
 
 from pyglet_gui.core import Viewer
-from pyglet_gui.dialog import Dialog
+from pyglet_gui.manager import Manager
 from pyglet_gui.containers import VerticalContainer
 
 
@@ -17,7 +17,7 @@ class TestVerticalContainer(TestPygletGUI):
         self.container = VerticalContainer([Viewer(width=50, height=50),
                                          Viewer(width=50, height=50)])
 
-        self.dialog = Dialog(self.container, window=self.window, batch=self.batch, theme=self.theme)
+        self.dialog = Manager(self.container, window=self.window, batch=self.batch, theme=self.theme)
 
     def _test_content_position(self):
         """

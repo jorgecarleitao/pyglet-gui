@@ -1,6 +1,6 @@
+from pyglet_gui.manager import Manager
 from setup import *
 
-from pyglet_gui.dialog import Dialog
 from pyglet_gui.text_input import TextInput
 from pyglet_gui.theme import Theme
 
@@ -24,8 +24,8 @@ theme = Theme({"font": "Lucida Grande",
                }
               }, resources_path='../theme/')
 
-# Set up a Dialog
-dialog = Dialog(TextInput(text="Write on me"),
+# Set up a Manager
+dialog = Manager(TextInput(text="Write on me"),
                 window=window,
                 batch=batch,
                 theme=theme)

@@ -1,10 +1,10 @@
 import pyglet
 
 from pyglet_gui.controllers import Option, Selector
-from pyglet_gui.dialog import Dialog
 from pyglet_gui.gui import Frame
 from pyglet_gui.containers import VerticalContainer
 from pyglet_gui.constants import ANCHOR_TOP_LEFT, ANCHOR_BOTTOM_LEFT, HALIGN_CENTER, VALIGN_TOP
+from pyglet_gui.manager import Manager
 from pyglet_gui.scrollable import Scrollable
 from pyglet_gui.buttons import Button, OneTimeButton
 
@@ -118,7 +118,7 @@ class Dropdown(Selector, OneTimeButton):
             y = self.y + self.height + 1
 
         # we set the dialog
-        self._pulldown_menu = Dialog(
+        self._pulldown_menu = Manager(
             Frame(Scrollable(VerticalContainer(list(self._options.values())),
                              height=self.max_height), path=['dropdown', 'pulldown']),
             window=self._manager.window, batch=self._manager.batch,

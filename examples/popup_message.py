@@ -33,7 +33,7 @@ theme = Theme({"font": "Lucida Grande",
                }
               }, resources_path='../theme/')
 
-# Set up a Dialog
+# Set up a Manager
 dialog = PopupMessage(text="Test",
                       window=window,
                       batch=batch,

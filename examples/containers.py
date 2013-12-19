@@ -1,6 +1,6 @@
+from pyglet_gui.manager import Manager
 from setup import *
 
-from pyglet_gui.dialog import Dialog
 from pyglet_gui.buttons import Button
 from pyglet_gui.containers import VerticalContainer, HorizontalContainer, GridContainer
 from pyglet_gui.theme import Theme
@@ -37,6 +37,6 @@ grid = GridContainer([[Button("(1,1)"), Button("(1,2)")],
 
 vlay = VerticalContainer([hlay, grid])
 
-dialog = Dialog(vlay, window=window, batch=batch, theme=theme)
+dialog = Manager(vlay, window=window, batch=batch, theme=theme)
 
 pyglet.app.run()

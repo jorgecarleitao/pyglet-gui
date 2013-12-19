@@ -54,7 +54,7 @@ class Scrollable(Wrapper, Controller, ControllerManager):
         self._content_x = 0
         self._content_y = 0
 
-        # We emulate some aspects of Dialog here.
+        # We emulate some aspects of Manager here.
         self._theme = None
         self.batch = None
         self.root_group = None

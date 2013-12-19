@@ -5,28 +5,25 @@ from pyglet_gui.constants import ANCHOR_CENTER, GetRelativePoint
 from pyglet_gui.core import Rectangle
 from pyglet_gui.containers import Wrapper
 
-next_dialog_order_id = 0
 
-
-def GetNextDialogOrderId():
-    global next_dialog_order_id
-    next_dialog_order_id += 1
-    return next_dialog_order_id
-
-
-class DialogGroup(pyglet.graphics.OrderedGroup):
+class ManagerGroup(pyglet.graphics.OrderedGroup):
     """
-    Ensure that all Widgets within a Dialog can be drawn with
-    blending enabled, and that our Dialog will be drawn in a particular
-    order relative to other Dialogs.
+    Ensure that Viewers inside Manager can be drawn with
+    blending enabled, and that Managers are drawn in a particular
+    order.
     """
+    next_manager_order_id = 0
+
+    @classmethod
+    def get_next_order_id(cls):
+        cls.next_manager_order_id += 1
+        return cls.next_manager_order_id
+
     def __init__(self, parent=None):
         """
-        Creates a new DialogGroup.  By default we'll be on top.
-
-        @param parent Parent group
+        Creates a new ManagerGroup. By default it is on top.
         """
-        pyglet.graphics.OrderedGroup.__init__(self, GetNextDialogOrderId(), parent)
+        pyglet.graphics.OrderedGroup.__init__(self, self.get_next_order_id(), parent)
         self.own_order = self.order
 
     def __eq__(self, other):
@@ -34,13 +31,13 @@ class DialogGroup(pyglet.graphics.OrderedGroup):
         When compared with other DialogGroups, we'll return our real order
         compared against theirs; otherwise use the OrderedGroup comparison.
         """
-        if isinstance(other, DialogGroup):
+        if isinstance(other, ManagerGroup):
             return self.own_order == other.own_order
         else:
             return pyglet.graphics.OrderedGroup.__eq__(self, other)
 
     def __lt__(self, other):
-        if isinstance(other, DialogGroup):
+        if isinstance(other, ManagerGroup):
             return self.own_order < other.own_order
         else:
             return pyglet.graphics.OrderedGroup.__lt__(self, other)
@@ -52,14 +49,13 @@ class DialogGroup(pyglet.graphics.OrderedGroup):
         """
         Are we the top dialog group?
         """
-        global next_dialog_order_id
-        return self.own_order == next_dialog_order_id
+        return self.own_order == self.next_manager_order_id
 
     def pop_to_top(self):
         """
         Put us on top of other dialog groups.
         """
-        self.own_order = GetNextDialogOrderId()
+        self.own_order = self.get_next_order_id()
 
     def set_state(self):
         """
@@ -98,7 +94,7 @@ class ViewerManager(Wrapper):
             self.batch = batch
             self._has_own_batch = False
 
-        self.root_group = DialogGroup(parent=group)
+        self.root_group = ManagerGroup(parent=group)
         self.group = {'panel': pyglet.graphics.OrderedGroup(10, self.root_group),
                       'background': pyglet.graphics.OrderedGroup(20, self.root_group),
                       'foreground': pyglet.graphics.OrderedGroup(30, self.root_group),
@@ -174,7 +170,7 @@ class ViewerManager(Wrapper):
         return x, y
 
     def reset_size(self, reset_parent=True):
-        # Dialog never has parent and thus never reset_parent.
+        # Manager never has parent and thus never reset_parent.
         super().reset_size(reset_parent=False)
         self.set_position(*self.get_position())
 
@@ -332,3 +328,73 @@ class ControllerManager:
         self._hover = None
         self.wheel_hint = None
         self.wheel_target = None
+
+
+class Manager(ViewerManager, ControllerManager):
+    def __init__(self,
+                 content,
+                 theme,
+                 window=None,
+                 batch=None,
+                 group=None,
+                 is_movable=True,
+                 anchor=ANCHOR_CENTER,
+                 offset=(0, 0)):
+        ControllerManager.__init__(self)
+        ViewerManager.__init__(self, content, theme, window, batch, group, anchor, offset)
+
+        self.is_movable = is_movable
+        self._is_dragging = False
+
+    def hit_test(self, x, y):
+        return self.is_inside(x, y)
+
+    def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
+        if not ControllerManager.on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
+            if self.is_movable and self._is_dragging:
+                x, y = self._offset
+                self._offset = (int(x + dx), int(y + dy))
+                self.set_position(*self.get_position())
+                return True
+
+    def on_mouse_motion(self, x, y, dx, dy):
+        ControllerManager.on_mouse_motion(self, x, y, dx, dy)
+        if self.hit_test(x, y):
+            if not self.root_group.is_on_top():
+                self.pop_to_top()
+            return True
+
+    def on_mouse_press(self, x, y, button, modifiers):
+        """
+        If the focus is set, and the target lies within the focus, pass the
+        message down.  Otherwise, check if we need to assign a new focus.
+        If the mouse was pressed within our frame but no control was targeted,
+        we may be setting up to drag the Manager around.
+
+        @param x X coordinate of mouse
+        @param y Y coordinate of mouse
+        @param button Button pressed
+        @param modifiers Modifiers to apply to button
+        """
+        retval = ControllerManager.on_mouse_press(self, x, y, button, modifiers)
+        if self.hit_test(x, y):
+            if not retval:
+                self._is_dragging = True
+                retval = True
+        return retval
+
+    def on_mouse_release(self, x, y, button, modifiers):
+        self._is_dragging = False
+        return ControllerManager.on_mouse_release(self, x, y, button, modifiers)
+
+    def on_resize(self, width, height):
+        """
+        Update our knowledge of the window's width and height.
+        """
+        if self.screen.width != width or self.screen.height != height:
+            self.screen.width, self.screen.height = width, height
+            self.set_position(*self.get_position())
+
+    def delete(self):
+        ViewerManager.delete(self)
+        ControllerManager.delete(self)

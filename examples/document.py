@@ -1,7 +1,7 @@
+from pyglet_gui.manager import Manager
 from setup import *
 
 from pyglet_gui.document import Document
-from pyglet_gui.dialog import Dialog
 from pyglet_gui.theme import Theme
 
 theme = Theme({"font": "Lucida Grande",
@@ -37,8 +37,8 @@ You can also {font_name "Courier New"}change fonts{font_name Lucia Grande},
 {italic True}italicize your text{italic False} and use all features of Pyglet's document.
 ''')
 
-# Set up a Dialog
-dialog = Dialog(
+# Set up a Manager
+dialog = Manager(
     Document(document, width=300, height=50),
     window=window, batch=batch, group=fg_group,
     theme=theme)

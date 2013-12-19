@@ -1,7 +1,7 @@
+from pyglet_gui.manager import Manager
 from setup import *
 
 from pyglet_gui.buttons import Button
-from pyglet_gui.dialog import Dialog
 from pyglet_gui.containers import HorizontalContainer, VerticalContainer, Spacer
 from pyglet_gui.theme import Theme
 
@@ -43,7 +43,7 @@ theme = Theme({"font": "Lucida Grande",
 # First line has two big buttons
 # second line has three spacers, separated by two small buttons.
 # size of the three spacers is the same.
-dialog = Dialog(VerticalContainer([HorizontalContainer([Button(label="Big fat button"),
+dialog = Manager(VerticalContainer([HorizontalContainer([Button(label="Big fat button"),
                                                   Button(label="Big fat button")], padding=0),
 
                                 HorizontalContainer([Spacer(),

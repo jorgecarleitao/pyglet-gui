@@ -1,7 +1,7 @@
 from .setup import TestPygletGUI
 
 from pyglet_gui.core import Viewer
-from pyglet_gui.dialog import Dialog
+from pyglet_gui.manager import Manager
 from pyglet_gui.containers import Container
 
 
@@ -17,7 +17,7 @@ class TestContainer(TestPygletGUI):
         self.container = Container([Viewer(width=50, height=50),
                                     Viewer(width=50, height=50)])
 
-        self.dialog = Dialog(self.container, window=self.window, batch=self.batch, theme=self.theme)
+        self.dialog = Manager(self.container, window=self.window, batch=self.batch, theme=self.theme)
 
     def test_set_manager(self):
         """

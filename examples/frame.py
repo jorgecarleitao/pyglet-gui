@@ -1,6 +1,6 @@
+from pyglet_gui.manager import Manager
 from setup import *
 
-from pyglet_gui.dialog import Dialog
 from pyglet_gui.gui import Frame, Label
 from pyglet_gui.theme import Theme
 
@@ -17,7 +17,7 @@ theme = Theme({"font": "Lucida Grande",
                }
               }, resources_path='../theme/')
 
-dialog = Dialog(Frame(Label('An example of a white label with a red frame')),
+dialog = Manager(Frame(Label('An example of a white label with a red frame')),
                 window=window,
                 batch=batch,
                 theme=theme)

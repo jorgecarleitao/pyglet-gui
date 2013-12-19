@@ -1,7 +1,7 @@
 from .setup import TestPygletGUI
 
+from pyglet_gui.manager import Manager
 from pyglet_gui.sliders import HorizontalSlider
-from pyglet_gui.dialog import Dialog
 
 
 class TestSlider(TestPygletGUI):
@@ -9,7 +9,7 @@ class TestSlider(TestPygletGUI):
     def setUp(self):
         TestPygletGUI.setUp(self)
         self.slider = HorizontalSlider(min_value=0, max_value=10)
-        self.dialog = Dialog(self.slider, window=self.window, batch=self.batch, theme=self.theme)
+        self.dialog = Manager(self.slider, window=self.window, batch=self.batch, theme=self.theme)
 
     def test_set_value(self):
         self.slider.set_knob_pos(0.5)
