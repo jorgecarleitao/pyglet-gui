@@ -51,6 +51,10 @@ class TestGridContainer(TestPygletGUI):
         self.assertEqual(self.container.y, self.window.height / 2 - self.container.height / 2)
 
     def test_add_row(self):
+        """
+        Tests that if we add a row with 3 columns,
+        we have the correct sizes.
+        """
         self.container.add_row([Widget(width=50, height=50),
                                 Widget(width=50, height=50),
                                 Widget(width=50, height=50)])
@@ -59,6 +63,10 @@ class TestGridContainer(TestPygletGUI):
         self.assertEqual(self.container.height, 150 + 2 * self.container.padding)
 
     def test_add_column(self):
+        """
+        Tests that if we add a column with 3 rows,
+        we have the correct sizes.
+        """
         self.container.add_column([Widget(width=50, height=50),
                                    Widget(width=50, height=50),
                                    Widget(width=50, height=50)])

@@ -26,3 +26,7 @@ class TestButton(TestPygletGUI):
 
         self.assertEqual(self.button._button, None)
         self.assertEqual(self.button._label, None)
+
+if __name__ == "__main__":
+    import unittest
+    unittest.main()
