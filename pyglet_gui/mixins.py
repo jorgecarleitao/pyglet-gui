@@ -1,10 +1,10 @@
 from pyglet_gui.core import Controller
-from pyglet_gui.core import Widget
+from pyglet_gui.core import Viewer
 
 
-class HighlightMixin(Controller, Widget):
+class HighlightMixin(Controller, Viewer):
     def __init__(self):
-        Widget.__init__(self)
+        Viewer.__init__(self)
         Controller.__init__(self)
         self._highlight = None
         self._highlight_flag = False
@@ -40,10 +40,10 @@ class HighlightMixin(Controller, Widget):
         HighlightMixin.unload_graphics(self)
 
 
-class FocusMixin(Controller, Widget):
+class FocusMixin(Controller, Viewer):
     def __init__(self):
         Controller.__init__(self)
-        Widget.__init__(self)
+        Viewer.__init__(self)
         self._focus = None
         self._focus_flag = False
 

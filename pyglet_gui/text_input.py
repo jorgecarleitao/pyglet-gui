@@ -1,16 +1,16 @@
 import pyglet
 from pyglet_gui.mixins import FocusMixin
 from pyglet_gui.override import InputLabel
-from pyglet_gui.core import Widget
+from pyglet_gui.core import Viewer
 
 
-class TextInput(FocusMixin, Widget):
+class TextInput(FocusMixin, Viewer):
     # This class works in two states defined by is_focus():
     #   True: "writing"
     #   False: "label"
 
     def __init__(self, text="", length=20, max_length=None, padding=0, on_input=None):
-        Widget.__init__(self)
+        Viewer.__init__(self)
         FocusMixin.__init__(self)
 
         self._document = pyglet.text.document.UnformattedDocument(text)
@@ -95,7 +95,7 @@ class TextInput(FocusMixin, Widget):
         return self._document.text
 
     def layout(self):
-        Widget.layout(self)
+        Viewer.layout(self)
         self._field.update(self.x, self.y, self.width, self.height)
 
         x, y, width, height = self._field.get_content_region()
@@ -169,5 +169,5 @@ class TextInput(FocusMixin, Widget):
         return self._field.get_needed_size(needed_width, needed_height)
 
     def delete(self):
-        Widget.delete(self)
+        Viewer.delete(self)
         FocusMixin.delete(self)

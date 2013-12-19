@@ -1,17 +1,17 @@
 import pyglet
 
 from pyglet_gui.scrollbars import VScrollbar
-from pyglet_gui.core import Widget, Rectangle
+from pyglet_gui.core import Viewer, Rectangle
 from pyglet_gui.controllers import Controller
 
 
-class Document(Controller, Widget):
+class Document(Controller, Viewer):
     """
     Allows you to embed a document within the GUI, which includes a
     vertical scrollbar.
     """
     def __init__(self, document, width=0, height=0, is_fixed_size=False):
-        Widget.__init__(self, width, height)
+        Viewer.__init__(self, width, height)
         Controller.__init__(self)
 
         self.max_height = height
@@ -129,4 +129,4 @@ class Document(Controller, Widget):
 
     def delete(self):
         Controller.delete(self)
-        Widget.delete(self)
+        Viewer.delete(self)

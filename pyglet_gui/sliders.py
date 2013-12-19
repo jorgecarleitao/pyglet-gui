@@ -1,8 +1,8 @@
 from pyglet_gui.controllers import ContinuousStateController
-from pyglet_gui.core import Widget
+from pyglet_gui.core import Viewer
 
 
-class Slider(ContinuousStateController, Widget):
+class Slider(ContinuousStateController, Viewer):
     PATH = 'slider'
     IMAGE_BAR = 'bar'
     IMAGE_KNOB = 'knob'
@@ -13,7 +13,7 @@ class Slider(ContinuousStateController, Widget):
                                            min_value=min_value,
                                            max_value=max_value,
                                            on_set=on_set)
-        Widget.__init__(self, width, height)
+        Viewer.__init__(self, width, height)
 
         self._bar = None    # a bar where the knob slides.
         self._knob = None   # the knob that moves along the bar.
@@ -95,7 +95,7 @@ class Slider(ContinuousStateController, Widget):
 
     def delete(self):
         ContinuousStateController.delete(self)
-        Widget.delete(self)
+        Viewer.delete(self)
 
 
 class HorizontalSlider(Slider):

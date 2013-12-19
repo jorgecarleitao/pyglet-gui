@@ -1,6 +1,6 @@
 from .setup import TestPygletGUI
 
-from pyglet_gui.core import Widget
+from pyglet_gui.core import Viewer
 from pyglet_gui.dialog import Dialog
 from pyglet_gui.containers import GridLayout
 
@@ -14,8 +14,8 @@ class TestGridContainer(TestPygletGUI):
     def setUp(self):
         super().setUp()
 
-        self.container = GridLayout([[Widget(width=50, height=50), Widget(width=50, height=50)],
-                                     [Widget(width=50, height=50), Widget(width=50, height=50)]])
+        self.container = GridLayout([[Viewer(width=50, height=50), Viewer(width=50, height=50)],
+                                     [Viewer(width=50, height=50), Viewer(width=50, height=50)]])
 
         self.dialog = Dialog(self.container, window=self.window, batch=self.batch, theme=self.theme)
 
@@ -55,9 +55,9 @@ class TestGridContainer(TestPygletGUI):
         Tests that if we add a row with 3 columns,
         we have the correct sizes.
         """
-        self.container.add_row([Widget(width=50, height=50),
-                                Widget(width=50, height=50),
-                                Widget(width=50, height=50)])
+        self.container.add_row([Viewer(width=50, height=50),
+                                Viewer(width=50, height=50),
+                                Viewer(width=50, height=50)])
 
         self.assertEqual(self.container.width, 150 + 2 * self.container.padding)
         self.assertEqual(self.container.height, 150 + 2 * self.container.padding)
@@ -67,15 +67,15 @@ class TestGridContainer(TestPygletGUI):
         Tests that if we add a column with 3 rows,
         we have the correct sizes.
         """
-        self.container.add_column([Widget(width=50, height=50),
-                                   Widget(width=50, height=50),
-                                   Widget(width=50, height=50)])
+        self.container.add_column([Viewer(width=50, height=50),
+                                   Viewer(width=50, height=50),
+                                   Viewer(width=50, height=50)])
 
         self.assertEqual(self.container.width, 150 + 2 * self.container.padding)
         self.assertEqual(self.container.height, 150 + 2 * self.container.padding)
 
     def test_substitute_element(self):
-        self.container.set(1, 1, Widget(width=100, height=50))
+        self.container.set(1, 1, Viewer(width=100, height=50))
 
         self.assertEqual(self.container.width, 150 + self.container.padding)
         self.assertEqual(self.container.height, 100 + self.container.padding)

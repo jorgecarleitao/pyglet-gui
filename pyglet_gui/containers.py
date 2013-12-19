@@ -3,11 +3,11 @@ from functools import reduce
 from pyglet_gui.constants import HALIGN_CENTER, HALIGN_LEFT, HALIGN_RIGHT, \
     VALIGN_TOP, VALIGN_CENTER, ANCHOR_CENTER, GetRelativePoint
 
-from pyglet_gui.core import Widget, Rectangle
+from pyglet_gui.core import Viewer, Rectangle
 from pyglet_gui.widgets import Spacer
 
 
-class Container(Widget):
+class Container(Viewer):
     def __init__(self, content, width=0, height=0):
         assert isinstance(content, list)
         super().__init__(width, height)
@@ -18,7 +18,7 @@ class Container(Widget):
         return self._content
 
     def set_manager(self, manager):
-        Widget.set_manager(self, manager)
+        Viewer.set_manager(self, manager)
         for item in self._content:
             item.set_manager(self._manager)
             item.parent = self
@@ -41,7 +41,7 @@ class Container(Widget):
 
     def add(self, item, position=0):
         item = item or Spacer()
-        assert isinstance(item, Widget)
+        assert isinstance(item, Viewer)
 
         item.set_manager(self._manager)
         item.parent = self
@@ -52,7 +52,7 @@ class Container(Widget):
         self.reset_size()
 
     def remove(self, item):
-        assert isinstance(item, Widget)
+        assert isinstance(item, Viewer)
         item.unload()
         self._content.remove(item)
         self.reset_size()
@@ -61,7 +61,7 @@ class Container(Widget):
         for item in self._content:
             item.delete()
         self._content = []
-        Widget.delete(self)
+        Viewer.delete(self)
 
     def reset_size(self, reset_parent=True):
         if not reset_parent:
@@ -197,8 +197,8 @@ class HorizontalLayout(Container):
 class GridLayout(Container):
     """
     Arranges Widgets in a table.  Each cell's height and width are set to
-    the maximum width of any Widget in its column, or the maximum height of
-    any Widget in its row.
+    the maximum width of any Viewer in its column, or the maximum height of
+    any Viewer in its row.
     """
     def __init__(self, content, anchor=ANCHOR_CENTER, padding=5,
                  offset=(0, 0)):
@@ -292,7 +292,7 @@ class GridLayout(Container):
         substituting existing content.
         """
         item = item or Spacer()
-        assert isinstance(item, Widget)
+        assert isinstance(item, Viewer)
 
         self._content.remove(self._matrix[row][column])
         self._matrix[row][column].delete()
@@ -362,10 +362,10 @@ class GridLayout(Container):
 
 class Wrapper(Container):
     """
-    A Widget that wraps another widget.
+    A Viewer that wraps another widget.
     """
     def __init__(self, content, is_expandable=False, anchor=ANCHOR_CENTER, offset=(0, 0)):
-        assert isinstance(content, Widget)
+        assert isinstance(content, Viewer)
         Container.__init__(self, [content])
 
         self.expandable = is_expandable
@@ -386,7 +386,7 @@ class Wrapper(Container):
 
     @content.setter
     def content(self, content):
-        assert isinstance(content, Widget)
+        assert isinstance(content, Viewer)
         self.content.delete()
 
         self._content[0] = content
@@ -419,7 +419,7 @@ class Wrapper(Container):
 
 class Frame(Wrapper):
     """
-    A Widget that wraps another widget with a frame.
+    A Viewer that wraps another widget with a frame.
     """
     def __init__(self, content, path=None, image_name='image',
                  is_expandable=False, anchor=ANCHOR_CENTER):

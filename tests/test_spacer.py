@@ -1,7 +1,7 @@
 from .setup import TestPygletGUI
 
 from pyglet_gui.containers import HorizontalLayout, VerticalLayout
-from pyglet_gui.widgets import Spacer, Widget
+from pyglet_gui.widgets import Spacer, Viewer
 from pyglet_gui.dialog import Dialog
 
 
@@ -15,9 +15,9 @@ class TestSpacer(TestPygletGUI):
 
         self.widgets = []
         for i in range(2):
-            self.widgets.append(Widget(width=100, height=50))
+            self.widgets.append(Viewer(width=100, height=50))
         for i in range(2):
-            self.widgets.append(Widget(width=20, height=50))
+            self.widgets.append(Viewer(width=20, height=50))
 
         self.container = VerticalLayout([HorizontalLayout([self.widgets[0],
                                                            self.widgets[1]], padding=0),

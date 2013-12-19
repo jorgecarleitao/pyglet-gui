@@ -2,13 +2,13 @@ from pyglet_gui.override import Label
 from pyglet_gui.constants import HALIGN_LEFT, HALIGN_RIGHT
 
 from pyglet_gui.controllers import TwoStateController
-from pyglet_gui.core import Widget
+from pyglet_gui.core import Viewer
 
 
-class Button(TwoStateController, Widget):
+class Button(TwoStateController, Viewer):
     def __init__(self, label="", is_pressed=False, on_press=None):
         TwoStateController.__init__(self, is_pressed=is_pressed, on_press=on_press)
-        Widget.__init__(self)
+        Viewer.__init__(self)
 
         self.label = label
 
@@ -59,7 +59,7 @@ class Button(TwoStateController, Widget):
         return self._button.get_needed_size(self._label.content_width, height)
 
     def layout(self):
-        Widget.layout(self)
+        Viewer.layout(self)
         # lays out graphics
         self._button.update(self.x, self.y, self.width, self.height)
 
@@ -73,7 +73,7 @@ class Button(TwoStateController, Widget):
 
     def delete(self):
         TwoStateController.delete(self)
-        Widget.delete(self)
+        Viewer.delete(self)
 
 
 class OneTimeButton(Button):
@@ -119,7 +119,7 @@ class Checkbox(Button):
         return path
 
     def layout(self):
-        Widget.layout(self)
+        Viewer.layout(self)
         if self.align == HALIGN_RIGHT:  # label goes on right
             self._button.update(self.x,
                                 self.y + self.height/2 - self._button.height/2,

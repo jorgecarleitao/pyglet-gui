@@ -54,7 +54,7 @@ class Rectangle():
         return self.x <= x < self.x + self.width and self.y <= y < self.y + self.height
 
 
-class Widget(Rectangle, Managed):
+class Viewer(Rectangle, Managed):
     def __init__(self, width=0, height=0):
         super().__init__()
         self._parent = None

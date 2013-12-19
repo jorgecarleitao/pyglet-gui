@@ -1,10 +1,10 @@
-from pyglet_gui.core import Widget
+from pyglet_gui.core import Viewer
 import pyglet.text
 
 
-class Spacer(Widget):
+class Spacer(Viewer):
     def __init__(self, min_width=0, min_height=0):
-        Widget.__init__(self)
+        Viewer.__init__(self)
         self._min_width, self._min_height = min_width, min_height
 
     def expand(self, width, height):
@@ -17,9 +17,9 @@ class Spacer(Widget):
         return self._min_width, self._min_height
 
 
-class Graphic(Widget):
+class Graphic(Viewer):
     def __init__(self, path, is_expandable=False):
-        Widget.__init__(self)
+        Viewer.__init__(self)
         self._path = path
         self._expandable = is_expandable
         self._graphic = None
@@ -54,10 +54,10 @@ class Graphic(Widget):
         return self._min_width, self._min_height
 
 
-class Label(Widget):
+class Label(Viewer):
     def __init__(self, text="", bold=False, italic=False,
                  font_name=None, font_size=None, color=None, path=None):
-        Widget.__init__(self)
+        Viewer.__init__(self)
         self.text = text
         self.bold = bold
         self.italic = italic
