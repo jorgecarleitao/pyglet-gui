@@ -6,7 +6,7 @@ from pyglet_gui.core import Rectangle
 from pyglet_gui.containers import Wrapper
 
 
-class ManagerGroup(pyglet.graphics.OrderedGroup):
+class ViewerManagerGroup(pyglet.graphics.OrderedGroup):
     """
     Ensure that Viewers inside Manager can be drawn with
     blending enabled, and that Managers are drawn in a particular
@@ -21,7 +21,7 @@ class ManagerGroup(pyglet.graphics.OrderedGroup):
 
     def __init__(self, parent=None):
         """
-        Creates a new ManagerGroup. By default it is on top.
+        Creates a new ViewerManagerGroup. By default it is on top.
         """
         pyglet.graphics.OrderedGroup.__init__(self, self.get_next_order_id(), parent)
         self.own_order = self.order
@@ -31,13 +31,13 @@ class ManagerGroup(pyglet.graphics.OrderedGroup):
         When compared with other DialogGroups, we'll return our real order
         compared against theirs; otherwise use the OrderedGroup comparison.
         """
-        if isinstance(other, ManagerGroup):
+        if isinstance(other, ViewerManagerGroup):
             return self.own_order == other.own_order
         else:
             return pyglet.graphics.OrderedGroup.__eq__(self, other)
 
     def __lt__(self, other):
-        if isinstance(other, ManagerGroup):
+        if isinstance(other, ViewerManagerGroup):
             return self.own_order < other.own_order
         else:
             return pyglet.graphics.OrderedGroup.__lt__(self, other)
@@ -88,13 +88,13 @@ class ViewerManager(Wrapper):
         self._offset = offset
 
         if batch is None:
-            self.batch = pyglet.graphics.Batch()
+            self._batch = pyglet.graphics.Batch()
             self._has_own_batch = True
         else:
-            self.batch = batch
+            self._batch = batch
             self._has_own_batch = False
 
-        self.root_group = ManagerGroup(parent=group)
+        self.root_group = ViewerManagerGroup(parent=group)
         self.group = {'panel': pyglet.graphics.OrderedGroup(10, self.root_group),
                       'background': pyglet.graphics.OrderedGroup(20, self.root_group),
                       'foreground': pyglet.graphics.OrderedGroup(30, self.root_group),
@@ -108,6 +108,10 @@ class ViewerManager(Wrapper):
 
         self._window = None
         self.window = window
+
+    @property
+    def batch(self):
+        return self._batch
 
     @property
     def window(self):
@@ -176,7 +180,7 @@ class ViewerManager(Wrapper):
 
     def draw(self):
         assert self._has_own_batch
-        self.batch.draw()
+        self._batch.draw()
 
     def pop_to_top(self):
         """
@@ -185,7 +189,7 @@ class ViewerManager(Wrapper):
         - Puts the event handler on top of the event handler's stack of the window.
         """
         self.root_group.pop_to_top()
-        self.batch._draw_list_dirty = True  # forces resorting groups
+        self._batch._draw_list_dirty = True  # forces resorting groups
         if self._window is not None:
             self._window.remove_handlers(self)
             self._window.push_handlers(self)
@@ -195,7 +199,7 @@ class ViewerManager(Wrapper):
         if self._window is not None:
             self._window.remove_handlers(self)
             self._window = None
-        self.batch._draw_list_dirty = True  # forces resorting groups
+        self._batch._draw_list_dirty = True  # forces resorting groups
 
 
 class ControllerManager:
