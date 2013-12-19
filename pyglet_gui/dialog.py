@@ -247,21 +247,3 @@ class Dialog(Wrapper, Manager):
             self._window = None
         Manager.delete(self)
         self.batch._draw_list_dirty = True  # forces resorting groups
-
-events = ['on_key_press',
-          'on_key_release',
-
-          'on_text',
-          'on_text_motion',
-          'on_text_motion_select',
-
-          'on_mouse_motion',
-          'on_mouse_drag',
-          'on_mouse_press',
-          'on_mouse_release',
-          'on_mouse_scroll',
-
-          'on_resize']
-
-for event_type in events:
-    Dialog.register_event_type(event_type)

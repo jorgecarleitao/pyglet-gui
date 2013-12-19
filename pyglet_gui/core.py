@@ -144,9 +144,8 @@ class Controller(Managed):
         super().delete()
 
 
-class Manager(pyglet.event.EventDispatcher):
+class Manager:
     def __init__(self):
-        pyglet.event.EventDispatcher.__init__(self)
         self.controllers = []  # list of controllers.
 
         self._hover = None  # the control that is being hovered
