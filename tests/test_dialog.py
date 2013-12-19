@@ -1,6 +1,6 @@
 from .setup import TestPygletGUI
 
-from pyglet_gui.widgets import Widget
+from pyglet_gui.core import Widget
 from pyglet_gui.dialog import Dialog
 
 import pyglet_gui.constants
@@ -9,7 +9,7 @@ import pyglet_gui.constants
 class TestDialog(TestPygletGUI):
     """
     This test case tests basic functionality of
-    viewer+dialog. We use an empty widget for this.
+    widget+dialog. We use an empty widget for this.
     """
 
     def setUp(self):

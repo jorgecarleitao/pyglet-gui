@@ -1,8 +1,7 @@
-from abc import ABCMeta, abstractmethod
 import pyglet
 
 
-class Managed(metaclass=ABCMeta):
+class Managed():
     def __init__(self):
         self._manager = None
 
@@ -24,13 +23,44 @@ class Managed(metaclass=ABCMeta):
         self._manager = None
 
 
-class Viewer(Managed, metaclass=ABCMeta):
+class Rectangle():
+    def __init__(self, x=0, y=0, width=0, height=0):
+        self._x = x
+        self._y = y
+        self.width = width
+        self.height = height
 
-    def __init__(self):
+    @property
+    def x(self):
+        return self._x
+
+    @property
+    def y(self):
+        return self._y
+
+    @x.setter
+    def x(self, value):
+        self._x = value
+
+    @y.setter
+    def y(self, value):
+        self._y = value
+
+    def set_position(self, x, y):
+        self._x = x
+        self._y = y
+
+    def is_inside(self, x, y):
+        return self.x <= x < self.x + self.width and self.y <= y < self.y + self.height
+
+
+class Widget(Rectangle, Managed):
+    def __init__(self, width=0, height=0):
         super().__init__()
         self._parent = None
-
         self._is_loaded = False
+
+        Rectangle.__init__(self, 0, 0, width, height)
 
     @property
     def parent(self):
@@ -44,43 +74,55 @@ class Viewer(Managed, metaclass=ABCMeta):
     def is_loaded(self):
         return self._is_loaded
 
-    @abstractmethod
+    def is_expandable(self):
+        return False
+
+    def set_position(self, x, y):
+        super().set_position(x, y)
+        self.layout()
+
+    def get_path(self):
+        raise NotImplementedError
+
     def load(self):
         assert not self._is_loaded
         self._is_loaded = True
+        self.load_graphics()
 
-    @abstractmethod
     def unload(self):
         assert self._is_loaded
         self._is_loaded = False
+        self.unload_graphics()
 
     def reload(self):
         self.unload()
         self.load()
 
-    @abstractmethod
-    def compute_size(self):
+    def load_graphics(self):
         pass
 
-    @abstractmethod
-    def set_position(self, x, y):
-        # put this element in a new position
+    def unload_graphics(self):
         pass
 
-    def is_expandable(self):
-        return False
-
-    def expand(self, width, height):
-        pass
-
-    @abstractmethod
-    def get_path(self):
-        pass
-
-    @abstractmethod
     def layout(self):
-        # used to layout graphics of the viewer
         pass
+
+    def compute_size(self):
+        return self.width, self.height
+
+    def reset_size(self, reset_parent=True):
+        width, height = self.compute_size()
+
+        # we only reset the parent if we change size
+        changed = False
+        if self.width != width or self.height != height:
+            self.width, self.height = width, height
+            changed = True
+        self.layout()
+        # we only reset parent if the parent exists and
+        # the flag to reset it is set.
+        if changed and reset_parent:
+            self.parent.reset_size(reset_parent)
 
     def delete(self):
         if self.is_loaded:
@@ -89,7 +131,7 @@ class Viewer(Managed, metaclass=ABCMeta):
         Managed.delete(self)
 
 
-class Controller(Managed, metaclass=ABCMeta):
+class Controller(Managed):
     def __init__(self):
         Managed.__init__(self)
 

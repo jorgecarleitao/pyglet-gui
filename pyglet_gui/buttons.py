@@ -2,7 +2,7 @@ from pyglet_gui.override import Label
 from pyglet_gui.constants import HALIGN_LEFT, HALIGN_RIGHT
 
 from pyglet_gui.controllers import TwoStateController
-from pyglet_gui.widgets import Widget
+from pyglet_gui.core import Widget
 
 
 class Button(TwoStateController, Widget):

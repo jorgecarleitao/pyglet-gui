@@ -1,6 +1,6 @@
 from .setup import TestPygletGUI
 
-from pyglet_gui.widgets import Widget
+from pyglet_gui.core import Widget
 from pyglet_gui.dialog import Dialog
 from pyglet_gui.containers import Container
 

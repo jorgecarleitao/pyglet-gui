@@ -1,5 +1,5 @@
 from pyglet_gui.core import Controller
-from pyglet_gui.widgets import Widget
+from pyglet_gui.core import Widget
 
 
 class HighlightMixin(Controller, Widget):

@@ -1,7 +1,7 @@
 import pyglet
 from pyglet_gui.mixins import FocusMixin
 from pyglet_gui.override import InputLabel
-from pyglet_gui.widgets import Widget
+from pyglet_gui.core import Widget
 
 
 class TextInput(FocusMixin, Widget):

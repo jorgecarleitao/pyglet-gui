@@ -3,7 +3,8 @@ from functools import reduce
 from pyglet_gui.constants import HALIGN_CENTER, HALIGN_LEFT, HALIGN_RIGHT, \
     VALIGN_TOP, VALIGN_CENTER, ANCHOR_CENTER, GetRelativePoint
 
-from pyglet_gui.widgets import Widget, Spacer, Rectangle
+from pyglet_gui.core import Widget, Rectangle
+from pyglet_gui.widgets import Spacer
 
 
 class Container(Widget):

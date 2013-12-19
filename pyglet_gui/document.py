@@ -1,7 +1,7 @@
 import pyglet
 
 from pyglet_gui.scrollbars import VScrollbar
-from pyglet_gui.widgets import Widget, Rectangle
+from pyglet_gui.core import Widget, Rectangle
 from pyglet_gui.controllers import Controller
 
 
