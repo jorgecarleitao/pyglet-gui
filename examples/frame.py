@@ -2,7 +2,7 @@ from setup import *
 
 from pyglet_gui.dialog import Dialog
 from pyglet_gui.widgets import Label
-from pyglet_gui.containers import Frame
+from pyglet_gui.gui import Frame
 from pyglet_gui.theme import Theme
 
 theme = Theme({"font": "Lucida Grande",

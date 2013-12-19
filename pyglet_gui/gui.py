@@ -1,9 +1,62 @@
+from pyglet_gui.constants import VALIGN_BOTTOM, HALIGN_LEFT, HALIGN_CENTER, ANCHOR_CENTER, GetRelativePoint
+from pyglet_gui.core import Rectangle
 from pyglet_gui.widgets import Graphic, Label
 from pyglet_gui.controllers import Controller
-from pyglet_gui.containers import HorizontalContainer, VerticalContainer, Frame
-from pyglet_gui.constants import VALIGN_BOTTOM, HALIGN_LEFT, HALIGN_CENTER
+from pyglet_gui.containers import HorizontalContainer, VerticalContainer, Wrapper
 from pyglet_gui.dialog import Dialog
 from pyglet_gui.buttons import Button
+
+
+class Frame(Wrapper):
+    """
+    A Viewer that wraps another widget with a frame.
+    """
+    def __init__(self, content, path=None, image_name='image',
+                 is_expandable=False, anchor=ANCHOR_CENTER):
+        Wrapper.__init__(self, content, is_expandable=is_expandable, anchor=anchor)
+
+        # private
+        self._frame = None
+        if path is None:
+            self._path = ['frame']
+        else:
+            self._path = path
+        self._image_name = image_name
+
+    def get_path(self):
+        return self._path
+
+    def load_graphics(self):
+        Wrapper.load_graphics(self)
+        theme = self.theme[self.get_path()]
+        if self._frame is None:
+            template = theme[self._image_name]
+            self._frame = template.generate(theme['gui_color'], **self.get_batch('panel'))
+
+    def unload_graphics(self):
+        if self._frame is not None:
+            self._frame.unload()
+            self._frame = None
+        Wrapper.unload_graphics(self)
+
+    def expand(self, width, height):
+        if self.content.is_expandable():
+            content_width, content_height = self._frame.get_content_size(width, height)
+            self.content.expand(content_width, content_height)
+        self.width, self.height = width, height
+
+    def layout(self):
+        self._frame.update(self.x, self.y, self.width, self.height)
+
+        # we create a rectangle with the interior for using in GetRelativePoint
+        x, y, width, height = self._frame.get_content_region()
+        interior = Rectangle(x, y, width, height)
+        x, y = GetRelativePoint(interior, self.anchor, self.content, self.anchor, self.content_offset)
+        self.content.set_position(x, y)
+
+    def compute_size(self):
+        self.content.compute_size()
+        return self._frame.get_needed_size(self.content.width, self.content.height)
 
 
 class TitleFrame(VerticalContainer):

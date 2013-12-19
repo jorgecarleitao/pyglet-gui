@@ -1,10 +1,10 @@
 from setup import *
 
 from pyglet_gui.dialog import Dialog
-from pyglet_gui.containers import Frame, VerticalContainer
+from pyglet_gui.containers import VerticalContainer
 from pyglet_gui.document import Document
 from pyglet_gui.constants import ANCHOR_CENTER, HALIGN_LEFT
-from pyglet_gui.gui import SectionHeader, FoldingSection
+from pyglet_gui.gui import SectionHeader, FoldingSection, Frame
 from pyglet_gui.scrollable import Scrollable
 from pyglet_gui.theme import Theme
 
