@@ -33,7 +33,7 @@ class Container(Widget):
     def add(self, item):
         item = item or Spacer()
         assert isinstance(item, Widget)
-        item.reload()
+        item.load()
         item.reset_size()
         self._content.append(item)
         self.reset_size()
@@ -421,7 +421,7 @@ class Wrapper(Widget):
         self._content.parent = self
 
     def load(self):
-        self._content.load()
+        self._content._load()
 
     def unload(self):
         self._content.unload()
