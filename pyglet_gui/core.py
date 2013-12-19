@@ -45,14 +45,24 @@ class Viewer(Managed, metaclass=ABCMeta):
         return self._is_loaded
 
     @abstractmethod
-    def load(self):
+    def load_graphics(self):
         # used to load graphics.
         pass
 
     @abstractmethod
-    def unload(self):
+    def unload_graphics(self):
         # used to unload graphics.
         pass
+
+    @abstractmethod
+    def load(self):
+        assert not self._is_loaded
+        self._is_loaded = True
+
+    @abstractmethod
+    def unload(self):
+        assert self._is_loaded
+        self._is_loaded = False
 
     def reload(self):
         self.unload()
@@ -83,7 +93,8 @@ class Viewer(Managed, metaclass=ABCMeta):
         pass
 
     def delete(self):
-        self.unload()
+        if self.is_loaded:
+            self.unload()
         self.parent = None
         Managed.delete(self)
 

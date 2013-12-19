@@ -76,8 +76,8 @@ class HScrollbar(ScrollBar):
     def get_knob_pos(self):
         return int((self._knob_pos() - self._knob_size/2) * self.width)
 
-    def load(self):
-        super().load()
+    def load_graphics(self):
+        super().load_graphics()
         self.height = self._bar.height
 
     def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
@@ -123,8 +123,8 @@ class VScrollbar(ScrollBar):
         # height/_knob_size = max_height by "set_knob_size()".
         return int((self._knob_pos() - self._knob_size/2) * self.height/self._knob_size)
 
-    def load(self):
-        super().load()
+    def load_graphics(self):
+        super().load_graphics()
         self.width = self._bar.width
 
     def on_mouse_drag(self, x, y, dx, dy, button, modifiers):

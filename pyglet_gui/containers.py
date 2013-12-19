@@ -22,13 +22,21 @@ class Container(Widget):
             item.set_manager(self._manager)
             item.parent = self
 
-    def load(self):
+    def load_children(self):
         for item in self._content:
             item.load()
 
-    def unload(self):
+    def load(self):
+        super().load()
+        self.load_children()
+
+    def unload_children(self):
         for item in self._content:
             item.unload()
+
+    def unload(self):
+        super().unload()
+        self.unload_children()
 
     def add(self, item):
         item = item or Spacer()
@@ -40,7 +48,6 @@ class Container(Widget):
 
     def remove(self, item):
         assert isinstance(item, Widget)
-
         item.unload()
         self._content.remove(item)
         self.reset_size()
@@ -225,17 +232,25 @@ class GridLayout(Widget):
                     item.set_manager(self._manager)
                     item.parent = self
 
-    def load(self):
+    def load_children(self):
         for row in self._matrix:
             for item in row:
                 if item is not None:
                     item.load()
 
-    def unload(self):
+    def load(self):
+        super().load()
+        self.load_children()
+
+    def unload_children(self):
         for row in self._matrix:
             for item in row:
                 if item is not None:
                     item.unload()
+
+    def unload(self):
+        super().unload()
+        self.unload_children()
 
     def _update_max_vectors(self):
         """
@@ -259,6 +274,7 @@ class GridLayout(Widget):
             if item is not None:
                 item.set_manager(self._manager)
                 item.parent = self
+                item.load()
         self._matrix.append(row)
 
         self._update_max_vectors()
@@ -276,6 +292,7 @@ class GridLayout(Widget):
             if item is not None:
                 item.set_manager(self._manager)
                 item.parent = self
+                item.load()
 
         # add items to the grid, extending the grid if needed.
         for i in range(len(column)):
@@ -309,6 +326,8 @@ class GridLayout(Widget):
         if item is not None:
             assert isinstance(item, Widget)
             item.set_manager(self._manager)
+            item.parent = self
+            item.load()
         self.reset_size()
 
     def layout(self):
@@ -371,11 +390,11 @@ class GridLayout(Widget):
         return width, height
 
     def delete(self):
+        super().delete()
         for row in self._matrix:
             for item in row:
                 item.delete()
         self._matrix = []
-        Widget.delete(self)
 
 
 class Wrapper(Widget):
@@ -413,6 +432,7 @@ class Wrapper(Widget):
         self._content = content
         self._content.set_manager(self._manager)
         self._content.parent = self
+        self._content.load()
         self.reset_size()
 
     def set_manager(self, manager):
@@ -421,10 +441,18 @@ class Wrapper(Widget):
         self._content.parent = self
 
     def load(self):
-        self._content._load()
+        super().load()
+        self.load_content()
 
     def unload(self):
-        self._content.unload()
+        super().unload()
+        self.unload_content()
+
+    def load_content(self):
+        self.content.load()
+
+    def unload_content(self):
+        self.content.unload()
 
     def expand(self, width, height):
         if self._content.is_expandable():
@@ -454,8 +482,8 @@ class Wrapper(Widget):
         self._content.parent = self
 
     def delete(self):
-        self._content.delete()
-        Widget.delete(self)
+        super().delete()
+        self.content.delete()
 
 
 class Frame(Wrapper):
@@ -477,18 +505,18 @@ class Frame(Wrapper):
     def get_path(self):
         return self._path
 
-    def load(self):
-        Wrapper.load(self)
+    def load_graphics(self):
+        Wrapper.load_graphics(self)
         theme = self.theme[self.get_path()]
         if self._frame is None:
             template = theme[self._image_name]
             self._frame = template.generate(theme['gui_color'], **self.get_batch('panel'))
 
-    def unload(self):
+    def unload_graphics(self):
         if self._frame is not None:
             self._frame.unload()
             self._frame = None
-        Wrapper.unload(self)
+        Wrapper.unload_graphics(self)
 
     def expand(self, width, height):
         if self._content.is_expandable():

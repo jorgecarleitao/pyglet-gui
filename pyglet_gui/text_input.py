@@ -57,8 +57,8 @@ class TextInput(FocusMixin, Widget):
             self._caret.mark = 0
             self._caret.position = len(self._document.text)
 
-    def load(self):
-        FocusMixin.load(self)
+    def load_graphics(self):
+        FocusMixin.load_graphics(self)
         theme = self.theme[self.get_path()]
 
         # We set the style once. We shouldn't have to do so again because
@@ -79,7 +79,7 @@ class TextInput(FocusMixin, Widget):
             color = theme['gui_color']
             self._field = theme['image'].generate(color=color, **self.get_batch('background'))
 
-    def unload(self):
+    def unload_graphics(self):
         if self._caret is not None:
             self._caret.delete()
             self._caret = None

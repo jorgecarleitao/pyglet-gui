@@ -76,12 +76,12 @@ class Dropdown(Selector, OneTimeButton):
     def get_path(self):
         return 'dropdown'
 
-    def load(self):
+    def load_graphics(self):
         self.label = self._options[self._selected].label
-        OneTimeButton.load(self)
+        OneTimeButton.load_graphics(self)
 
-    def unload(self):
-        OneTimeButton.unload(self)
+    def unload_graphics(self):
+        OneTimeButton.unload_graphics(self)
         self._delete_pulldown_menu()
 
     def select(self, option_name):

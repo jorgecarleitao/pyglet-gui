@@ -46,9 +46,17 @@ class Widget(Rectangle, Viewer):
         raise NotImplementedError
 
     def load(self):
-        pass
+        super(Widget, self).load()
+        self.load_graphics()
 
     def unload(self):
+        super(Widget, self).unload()
+        self.unload_graphics()
+
+    def load_graphics(self):
+        pass
+
+    def unload_graphics(self):
         pass
 
     def layout(self):
@@ -98,7 +106,7 @@ class Graphic(Widget):
     def get_path(self):
         return self._path
 
-    def load(self):
+    def load_graphics(self):
         theme = self.theme[self.get_path()]
         if self._graphic is None:
             template = theme['image']
@@ -106,7 +114,7 @@ class Graphic(Widget):
             self._min_width = self._graphic.width
             self._min_height = self._graphic.height
 
-    def unload(self):
+    def unload_graphics(self):
         if self._graphic is not None:
             self._graphic.unload()
             self._graphic = None
@@ -142,7 +150,7 @@ class Label(Widget):
     def get_path(self):
         return self.path
 
-    def load(self):
+    def load_graphics(self):
         theme = self.theme[self.get_path()]
         if self.label is None:
             self.label = pyglet.text.Label(self.text,
@@ -153,7 +161,7 @@ class Label(Widget):
                                            font_size=self.font_size or theme['font_size'],
                                            **self.get_batch('background'))
 
-    def unload(self):
+    def unload_graphics(self):
         if self.label is not None:
             self.label.delete()
             self.label = None

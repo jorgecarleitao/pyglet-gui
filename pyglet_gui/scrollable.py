@@ -74,8 +74,8 @@ class Scrollable(Wrapper, Controller, Manager):
         self.group['highlight'] = pyglet.graphics.OrderedGroup(30, self.root_group)
         self.content.set_manager(self)
 
-    def unload(self):
-        Wrapper.unload(self)
+    def unload_graphics(self):
+        Wrapper.unload_graphics(self)
         if self._hscrollbar is not None:
             self._hscrollbar.unload()
             self._hscrollbar = None

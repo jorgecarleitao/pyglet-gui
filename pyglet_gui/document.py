@@ -47,7 +47,7 @@ class Document(Controller, Widget):
             self._scrollbar.unload()
             self._scrollbar = None
 
-    def load(self):
+    def load_graphics(self):
         if not self.set_document_style:
             self.do_set_document_style(self._manager)
 
@@ -56,7 +56,7 @@ class Document(Controller, Widget):
                                                                      self.content_width, self.max_height,
                                                                      multiline=True, **self.get_batch('background'))
 
-    def unload(self):
+    def unload_graphics(self):
         if self._content is not None:
             self._content.delete()
             self._content = None

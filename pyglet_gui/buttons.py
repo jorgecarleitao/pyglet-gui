@@ -36,7 +36,7 @@ class Button(TwoStateController, Widget):
             path.append('up')
         return path
 
-    def load(self):
+    def load_graphics(self):
         theme = self.theme[self.get_path()]
 
         if self._button is None:
@@ -49,7 +49,7 @@ class Button(TwoStateController, Widget):
                                 color=theme['text_color'],
                                 **self.get_batch('foreground'))
 
-    def unload(self):
+    def unload_graphics(self):
         if self._button is not None:
             self._button.unload()
             self._button = None

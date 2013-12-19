@@ -27,7 +27,7 @@ class Slider(ContinuousStateController, Widget):
     def get_path(self):
         return self.PATH
 
-    def load(self):
+    def load_graphics(self):
         theme = self.theme[self.get_path()]
         color = theme['gui_color']
 
@@ -43,7 +43,7 @@ class Slider(ContinuousStateController, Widget):
                 self._markers.append(theme[image_path]['image'].generate(color, **self.get_batch('foreground')))
             self._step_offset = theme[image_path]['offset']
 
-    def unload(self):
+    def unload_graphics(self):
         if self._bar is not None:
             self._bar.unload()
             self._bar = None
