@@ -2,7 +2,7 @@ from setup import *
 
 from pyglet_gui.buttons import Button, OneTimeButton, Checkbox
 from pyglet_gui.dialog import Dialog
-from pyglet_gui.containers import VerticalLayout
+from pyglet_gui.containers import VerticalContainer
 from pyglet_gui.theme import Theme
 
 theme = Theme({"font": "Lucida Grande",
@@ -41,7 +41,7 @@ theme = Theme({"font": "Lucida Grande",
               }, resources_path='../theme/')
 
 # Set up a Dialog
-dialog = Dialog(VerticalLayout([Button(label="Persistent button"),
+dialog = Dialog(VerticalContainer([Button(label="Persistent button"),
                                 OneTimeButton(label="One time button"),
                                 Checkbox(label="Checkbox")]),
                 window=window,

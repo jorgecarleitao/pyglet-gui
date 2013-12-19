@@ -2,7 +2,7 @@ from .setup import TestPygletGUI
 
 from pyglet_gui.core import Viewer
 from pyglet_gui.dialog import Dialog
-from pyglet_gui.containers import HorizontalLayout
+from pyglet_gui.containers import HorizontalContainer
 
 
 class TestHorizontalContainer(TestPygletGUI):
@@ -14,7 +14,7 @@ class TestHorizontalContainer(TestPygletGUI):
     def setUp(self):
         super().setUp()
 
-        self.container = HorizontalLayout([Viewer(width=50, height=50),
+        self.container = HorizontalContainer([Viewer(width=50, height=50),
                                            Viewer(width=50, height=50)])
 
         self.dialog = Dialog(self.container, window=self.window, batch=self.batch, theme=self.theme)

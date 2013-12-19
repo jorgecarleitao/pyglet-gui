@@ -1,15 +1,15 @@
 from pyglet_gui.widgets import Graphic, Label
 from pyglet_gui.controllers import Controller
-from pyglet_gui.containers import HorizontalLayout, VerticalLayout, Frame
+from pyglet_gui.containers import HorizontalContainer, VerticalContainer, Frame
 from pyglet_gui.constants import VALIGN_BOTTOM, HALIGN_LEFT, HALIGN_CENTER
 from pyglet_gui.dialog import Dialog
 from pyglet_gui.buttons import Button
 
 
-class TitleFrame(VerticalLayout):
+class TitleFrame(VerticalContainer):
     def __init__(self, title, content):
-        VerticalLayout.__init__(self, content=[
-            HorizontalLayout([Graphic(path=["titlebar", "left"], is_expandable=True),
+        VerticalContainer.__init__(self, content=[
+            HorizontalContainer([Graphic(path=["titlebar", "left"], is_expandable=True),
                               Frame(Label(title, path=["titlebar"]),
                                     path=["titlebar", "center"]),
                               Graphic(path=["titlebar", "right"], is_expandable=True),
@@ -18,7 +18,7 @@ class TitleFrame(VerticalLayout):
             ], padding=0)
 
 
-class SectionHeader(HorizontalLayout):
+class SectionHeader(HorizontalContainer):
     def __init__(self, title, align=HALIGN_CENTER):
         if align == HALIGN_LEFT:
             left_expand = False
@@ -30,14 +30,14 @@ class SectionHeader(HorizontalLayout):
             left_expand = True
             right_expand = False
 
-        HorizontalLayout.__init__(self, content=[
+        HorizontalContainer.__init__(self, content=[
             Graphic(path=["section", "left"], is_expandable=left_expand),
             Frame(Label(title, path=["section"]), path=['section', 'center']),
             Graphic(path=["section", "right"], is_expandable=right_expand),
             ], align=VALIGN_BOTTOM, padding=0)
 
 
-class FoldingSection(VerticalLayout, Controller):
+class FoldingSection(VerticalContainer, Controller):
     def __init__(self, title, content=None, is_open=True, align=HALIGN_CENTER):
         Controller.__init__(self)
         if align == HALIGN_LEFT:
@@ -54,8 +54,8 @@ class FoldingSection(VerticalLayout, Controller):
         self.folding_content = content
         self.book = Graphic(self._get_image_path())
 
-        self.header = HorizontalLayout([Graphic(path=["section", "left"], is_expandable=left_expand),
-                                        Frame(HorizontalLayout([
+        self.header = HorizontalContainer([Graphic(path=["section", "left"], is_expandable=left_expand),
+                                        Frame(HorizontalContainer([
                                             self.book,
                                             Label(title, path=["section"]),
                                             ]), path=["section", "center"]),
@@ -65,7 +65,7 @@ class FoldingSection(VerticalLayout, Controller):
         if self.is_open:
             layout.append(self.folding_content)
 
-        VerticalLayout.__init__(self, content=layout, align=align)
+        VerticalContainer.__init__(self, content=layout, align=align)
 
     def set_manager(self, manager):
         Controller.set_manager(self, manager)
@@ -106,7 +106,7 @@ class FoldingSection(VerticalLayout, Controller):
         if not self.is_open:
             self.folding_content.delete()
         self.folding_content = None
-        VerticalLayout.delete(self)
+        VerticalContainer.delete(self)
 
 
 class PopupMessage(Dialog):
@@ -119,7 +119,7 @@ class PopupMessage(Dialog):
                 on_escape(self)
             self.delete()
 
-        Dialog.__init__(self, content=Frame(VerticalLayout([Label(text),
+        Dialog.__init__(self, content=Frame(VerticalContainer([Label(text),
                                                             Button("Ok", on_press=on_ok)])),
                         window=window, batch=batch, group=group,
                         theme=theme, movable=True,
@@ -143,9 +143,9 @@ class PopupConfirm(Dialog):
             self.delete()
 
         Dialog.__init__(self, content=Frame(
-            VerticalLayout([
+            VerticalContainer([
                 Label(text),
-                HorizontalLayout([
+                HorizontalContainer([
                     Button(ok, on_press=on_ok_click),
                     None,
                     Button(cancel, on_press=on_cancel_click)]),

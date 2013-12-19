@@ -70,7 +70,7 @@ class Container(Viewer):
         super().reset_size(reset_parent)
 
 
-class VerticalLayout(Container):
+class VerticalContainer(Container):
     def __init__(self, content, align=HALIGN_CENTER, padding=5):
         assert align in (HALIGN_CENTER, HALIGN_LEFT, HALIGN_RIGHT)
         super().__init__(content)
@@ -132,7 +132,7 @@ class VerticalLayout(Container):
         return width, height
 
 
-class HorizontalLayout(Container):
+class HorizontalContainer(Container):
     def __init__(self, content, align=VALIGN_CENTER, padding=5):
         assert align in (HALIGN_CENTER, HALIGN_LEFT, HALIGN_RIGHT)
         super().__init__(content)
@@ -194,7 +194,7 @@ class HorizontalLayout(Container):
         return width, height
 
 
-class GridLayout(Container):
+class GridContainer(Container):
     """
     Arranges Widgets in a table.  Each cell's height and width are set to
     the maximum width of any Viewer in its column, or the maximum height of

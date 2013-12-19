@@ -1,7 +1,7 @@
 from setup import *
 
 from pyglet_gui.dialog import Dialog
-from pyglet_gui.containers import Frame, VerticalLayout
+from pyglet_gui.containers import Frame, VerticalContainer
 from pyglet_gui.document import Document
 from pyglet_gui.constants import ANCHOR_CENTER, HALIGN_LEFT
 from pyglet_gui.gui import SectionHeader, FoldingSection
@@ -60,7 +60,7 @@ theme = Theme({"font": "Lucida Grande",
 
 content = Frame(
     Scrollable(
-        VerticalLayout([SectionHeader("Folding"),
+        VerticalContainer([SectionHeader("Folding"),
                         Document("Click on the section headers below to open them.", width=300),
                         FoldingSection("Folding 1", Document("This is the first folding.", width=300)),
                         FoldingSection("Folding 2", Document("This is the second folding.", width=300),

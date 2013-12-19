@@ -2,7 +2,7 @@ from setup import *
 
 from pyglet_gui.dialog import Dialog
 from pyglet_gui.buttons import Button
-from pyglet_gui.containers import VerticalLayout, HorizontalLayout, GridLayout
+from pyglet_gui.containers import VerticalContainer, HorizontalContainer, GridContainer
 from pyglet_gui.theme import Theme
 
 theme = Theme({"font": "Lucida Grande",
@@ -29,13 +29,13 @@ theme = Theme({"font": "Lucida Grande",
               }, resources_path='../theme/')
 
 
-hlay = HorizontalLayout(content=[VerticalLayout(content=[Button("(1,1)"), Button("(1,2)")]),
-                                 VerticalLayout(content=[Button("(2,1)"), Button("(2,2)")])])
+hlay = HorizontalContainer(content=[VerticalContainer(content=[Button("(1,1)"), Button("(1,2)")]),
+                                 VerticalContainer(content=[Button("(2,1)"), Button("(2,2)")])])
 
-grid = GridLayout([[Button("(1,1)"), Button("(1,2)")],
+grid = GridContainer([[Button("(1,1)"), Button("(1,2)")],
                    [Button("(2,1)"), Button("(2,2)")]])
 
-vlay = VerticalLayout([hlay, grid])
+vlay = VerticalContainer([hlay, grid])
 
 dialog = Dialog(vlay, window=window, batch=batch, theme=theme)
 

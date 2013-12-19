@@ -1,7 +1,7 @@
 from setup import *
 
 from pyglet_gui.dialog import Dialog
-from pyglet_gui.containers import VerticalLayout
+from pyglet_gui.containers import VerticalContainer
 from pyglet_gui.sliders import HorizontalSlider
 from pyglet_gui.theme import Theme
 
@@ -36,7 +36,7 @@ theme = Theme({"font": "Lucida Grande",
 
 # Set up a Dialog
 dialog = Dialog(
-    VerticalLayout([HorizontalSlider(), HorizontalSlider(steps=10)]),
+    VerticalContainer([HorizontalSlider(), HorizontalSlider(steps=10)]),
     window=window,
     batch=batch,
     theme=theme)

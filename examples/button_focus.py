@@ -3,7 +3,7 @@ from setup import *
 from pyglet_gui.buttons import Button
 from pyglet_gui.mixins import FocusMixin
 from pyglet_gui.dialog import Dialog
-from pyglet_gui.containers import VerticalLayout
+from pyglet_gui.containers import VerticalContainer
 from pyglet_gui.widgets import Label
 from pyglet_gui.theme import Theme
 
@@ -75,7 +75,7 @@ class FocusButton(Button, FocusMixin):
 
 
 # Set up a Dialog
-dialog = Dialog(VerticalLayout([Label("Try (SHIFT+)TAB and ENTER"),
+dialog = Dialog(VerticalContainer([Label("Try (SHIFT+)TAB and ENTER"),
                                 FocusButton("Button 1"),
                                 FocusButton("Button 2"),
                                 FocusButton("Button 3")]),
