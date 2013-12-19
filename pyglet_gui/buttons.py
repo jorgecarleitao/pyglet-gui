@@ -77,9 +77,6 @@ class Button(TwoStateController, Viewer):
 
 
 class OneTimeButton(Button):
-    """
-    A button that change back to its original state when the mouse is released.
-    """
     def __init__(self, label="", on_release=None):
         Button.__init__(self, label=label)
 
@@ -97,9 +94,6 @@ class OneTimeButton(Button):
 
 
 class Checkbox(Button):
-    """
-    A button drawn as a checkbox icon with the label on the side.
-    """
     def __init__(self, label="", is_pressed=False, on_press=None, align=HALIGN_RIGHT, padding=4):
 
         assert align in [HALIGN_LEFT, HALIGN_RIGHT]
