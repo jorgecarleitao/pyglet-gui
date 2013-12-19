@@ -56,17 +56,17 @@ class FocusButton(Button, FocusMixin):
         Button.__init__(self, text, is_pressed, on_press)
         FocusMixin.__init__(self)
 
-    def load(self):
-        super().load()
-        FocusMixin.load(self)
+    def load_graphics(self):
+        super().load_graphics()
+        FocusMixin.load_graphics(self)
 
     def layout(self):
         super().layout()
         FocusMixin.layout(self)
 
-    def unload(self):
-        super().unload()
-        FocusMixin.unload(self)
+    def unload_graphics(self):
+        super().unload_graphics()
+        FocusMixin.unload_graphics(self)
 
     def on_key_press(self, symbol, modifiers):
         # button also changes state on ENTER.

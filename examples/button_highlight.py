@@ -55,17 +55,17 @@ class HighlightedButton(Button, HighlightMixin):
         Button.__init__(self, text, is_pressed, on_press)
         HighlightMixin.__init__(self)
 
-    def load(self):
-        super().load()
-        HighlightMixin.load(self)
+    def load_graphics(self):
+        super().load_graphics()
+        HighlightMixin.load_graphics(self)
 
     def layout(self):
         super().layout()
         HighlightMixin.layout(self)
 
-    def unload(self):
-        Button.unload(self)
-        HighlightMixin.unload(self)
+    def unload_graphics(self):
+        Button.unload_graphics(self)
+        HighlightMixin.unload_graphics(self)
 
 # Set up a Dialog
 dialog = Dialog(HighlightedButton("Button"),
