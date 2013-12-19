@@ -1,7 +1,8 @@
 import pyglet
 from pyglet import gl
 
-from pyglet_gui.core import Manager, Managed
+from pyglet_gui.core import Managed
+from pyglet_gui.manager import ControllerManager
 
 from pyglet_gui.controllers import Controller
 from pyglet_gui.containers import Wrapper
@@ -36,12 +37,12 @@ class ScrollableGroup(pyglet.graphics.Group):
         gl.glPopAttrib()
 
 
-class Scrollable(Wrapper, Controller, Manager):
+class Scrollable(Wrapper, Controller, ControllerManager):
     def __init__(self, content=None, width=None, height=None, is_fixed_size=False):
         if is_fixed_size:
             assert width is not None and height is not None
         Wrapper.__init__(self, content)
-        Manager.__init__(self)
+        ControllerManager.__init__(self)
         self.max_width = width
         self.max_height = height
         self.is_fixed_size = is_fixed_size
@@ -199,4 +200,4 @@ class Scrollable(Wrapper, Controller, Manager):
 
     def delete(self):
         Wrapper.delete(self)
-        Manager.delete(self)
+        ControllerManager.delete(self)
