@@ -105,6 +105,7 @@ class Dialog(Wrapper, Manager):
         self._is_dragging = False
 
         self.content.set_manager(self)
+        self.content.parent = self
 
         self.screen = Rectangle()
         self.load()

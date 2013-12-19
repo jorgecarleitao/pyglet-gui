@@ -45,16 +45,6 @@ class Viewer(Managed, metaclass=ABCMeta):
         return self._is_loaded
 
     @abstractmethod
-    def load_graphics(self):
-        # used to load graphics.
-        pass
-
-    @abstractmethod
-    def unload_graphics(self):
-        # used to unload graphics.
-        pass
-
-    @abstractmethod
     def load(self):
         assert not self._is_loaded
         self._is_loaded = True

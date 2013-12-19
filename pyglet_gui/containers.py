@@ -1,7 +1,7 @@
 from functools import reduce
 
 from pyglet_gui.constants import HALIGN_CENTER, HALIGN_LEFT, HALIGN_RIGHT, \
-    VALIGN_TOP, VALIGN_CENTER, ANCHOR_CENTER, ANCHOR_TOP_LEFT, GetRelativePoint
+    VALIGN_TOP, VALIGN_CENTER, ANCHOR_CENTER, GetRelativePoint
 
 from pyglet_gui.widgets import Widget, Spacer, Rectangle
 
@@ -22,28 +22,32 @@ class Container(Widget):
             item.set_manager(self._manager)
             item.parent = self
 
-    def load_children(self):
+    def load_content(self):
         for item in self._content:
             item.load()
 
     def load(self):
         super().load()
-        self.load_children()
+        self.load_content()
 
-    def unload_children(self):
+    def unload_content(self):
         for item in self._content:
             item.unload()
 
     def unload(self):
         super().unload()
-        self.unload_children()
+        self.unload_content()
 
-    def add(self, item):
+    def add(self, item, position=0):
         item = item or Spacer()
         assert isinstance(item, Widget)
+
+        item.set_manager(self._manager)
+        item.parent = self
+
         item.load()
         item.reset_size()
-        self._content.append(item)
+        self._content.insert(position, item)
         self.reset_size()
 
     def remove(self, item):
@@ -58,13 +62,6 @@ class Container(Widget):
         self._content = []
         Widget.delete(self)
 
-    def set(self, content):
-        self.unload()
-        self._content = [x or Spacer() for x in content]
-        for item in self._content:
-            item.set_manager(self._manager)
-        self.reset_size()
-
     def reset_size(self, reset_parent=True):
         if not reset_parent:
             for item in self._content:
@@ -73,7 +70,7 @@ class Container(Widget):
 
 
 class VerticalLayout(Container):
-    def __init__(self, content=None, align=HALIGN_CENTER, padding=5):
+    def __init__(self, content, align=HALIGN_CENTER, padding=5):
         assert align in (HALIGN_CENTER, HALIGN_LEFT, HALIGN_RIGHT)
         super().__init__(content)
         self.align = align
@@ -97,7 +94,7 @@ class VerticalLayout(Container):
         self.width = width
 
     def is_expandable(self):
-        # True if we contain expandable content.
+        # True if we contain an expandable content.
         return len(self._expandable) > 0
 
     def layout(self):
@@ -135,7 +132,7 @@ class VerticalLayout(Container):
 
 
 class HorizontalLayout(Container):
-    def __init__(self, content=None, align=VALIGN_CENTER, padding=5):
+    def __init__(self, content, align=VALIGN_CENTER, padding=5):
         assert align in (HALIGN_CENTER, HALIGN_LEFT, HALIGN_RIGHT)
         super().__init__(content)
         self.align = align
@@ -196,22 +193,22 @@ class HorizontalLayout(Container):
         return width, height
 
 
-class GridLayout(Widget):
+class GridLayout(Container):
     """
     Arranges Widgets in a table.  Each cell's height and width are set to
     the maximum width of any Widget in its column, or the maximum height of
     any Widget in its row.
-
-    Widgets are by default aligned to the top left corner of their cells.
-    Another anchor point may be specified, i.e. ANCHOR_CENTER will ensure
-    that Widgets are centered within cells.
     """
-
-    def __init__(self, content, anchor=ANCHOR_TOP_LEFT, padding=5,
+    def __init__(self, content, anchor=ANCHOR_CENTER, padding=5,
                  offset=(0, 0)):
         assert isinstance(content, list) and len(content) != 0
-        Widget.__init__(self)
-        self._matrix = content  # a matrix-like list [[]]. Content can be None for cells without widgets.
+        # todo: transform all "None" in "Spacers".
+
+        # we set _content to be a flatten list of content.
+        Container.__init__(self, [item for sub_list in content for item in sub_list])
+
+        # and we set _matrix to be the matrix-like list [[]].
+        self._matrix = content
         self.anchor = anchor
         self.padding = padding
         self.offset = offset
@@ -223,34 +220,6 @@ class GridLayout(Widget):
     @property
     def content(self):
         return self._matrix
-
-    def set_manager(self, manager):
-        Widget.set_manager(self, manager)
-        for row in self._matrix:
-            for item in row:
-                if item is not None:
-                    item.set_manager(self._manager)
-                    item.parent = self
-
-    def load_children(self):
-        for row in self._matrix:
-            for item in row:
-                if item is not None:
-                    item.load()
-
-    def load(self):
-        super().load()
-        self.load_children()
-
-    def unload_children(self):
-        for row in self._matrix:
-            for item in row:
-                if item is not None:
-                    item.unload()
-
-    def unload(self):
-        super().unload()
-        self.unload_children()
 
     def _update_max_vectors(self):
         """
@@ -271,10 +240,11 @@ class GridLayout(Widget):
         """
         assert isinstance(row, list)
         for item in row:
-            if item is not None:
-                item.set_manager(self._manager)
-                item.parent = self
-                item.load()
+            item = item or Spacer()
+            item.set_manager(self._manager)
+            item.parent = self
+            item.load()
+            self._content.append(item)
         self._matrix.append(row)
 
         self._update_max_vectors()
@@ -290,11 +260,13 @@ class GridLayout(Widget):
         # assign items parents and managers
         for item in column:
             if item is not None:
+                item = item or Spacer()
                 item.set_manager(self._manager)
                 item.parent = self
                 item.load()
+                self._content.append(item)
 
-        # add items to the grid, extending the grid if needed.
+        # add items to the matrix, extending the grid if needed.
         for i in range(len(column)):
             try:
                 self._matrix[i].append(column[i])
@@ -315,19 +287,20 @@ class GridLayout(Widget):
 
     def set(self, column, row, item):
         """
-        Set the content of a cell within the grid.
-        If invalid, it raises an IndexError.
-        If the existing item is not None, delete it.
+        Set the content of a cell within the grid,
+        substituting existing content.
         """
-        if self._matrix[row][column] is not None:
-            self._matrix[row][column].delete()
-        self._matrix[row][column] = item
+        item = item or Spacer()
+        assert isinstance(item, Widget)
 
-        if item is not None:
-            assert isinstance(item, Widget)
-            item.set_manager(self._manager)
-            item.parent = self
-            item.load()
+        self._content.remove(self._matrix[row][column])
+        self._matrix[row][column].delete()
+        self._matrix[row][column] = item
+        self._content.append(item)
+
+        item.set_manager(self._manager)
+        item.parent = self
+        item.load()
         self.reset_size()
 
     def layout(self):
@@ -348,14 +321,6 @@ class GridLayout(Widget):
                 placement.x += placement.width
                 col_index += 1
             row_index += 1
-
-    def reset_size(self, reset_parent=True):
-        if not reset_parent:
-            for row in self._matrix:
-                for item in row:
-                    if item is not None:
-                        item.reset_size(reset_parent=False)
-        super().reset_size(reset_parent)
 
     def compute_size(self):
         # calculates the size and the maximum widths and heights of
@@ -391,23 +356,18 @@ class GridLayout(Widget):
 
     def delete(self):
         super().delete()
-        for row in self._matrix:
-            for item in row:
-                item.delete()
-        self._matrix = []
+        self._matrix = [[]]
 
 
-class Wrapper(Widget):
+class Wrapper(Container):
     """
     A Widget that wraps another widget.
     """
     def __init__(self, content, is_expandable=False, anchor=ANCHOR_CENTER, offset=(0, 0)):
-        Widget.__init__(self)
-        self._content = content
-        self._content.parent = self
+        assert isinstance(content, Widget)
+        Container.__init__(self, [content])
 
         self.expandable = is_expandable
-
         self._anchor = anchor
         self.content_offset = offset
 
@@ -421,42 +381,22 @@ class Wrapper(Widget):
 
     @property
     def content(self):
-        return self._content
+        return self._content[0]
 
     @content.setter
     def content(self, content):
         assert isinstance(content, Widget)
-        if self._content is not None:
-            self._content.delete()
+        self.content.delete()
 
-        self._content = content
-        self._content.set_manager(self._manager)
-        self._content.parent = self
-        self._content.load()
+        self._content[0] = content
+        self.content.set_manager(self._manager)
+        self.content.parent = self
+        self.content.load()
         self.reset_size()
 
-    def set_manager(self, manager):
-        Widget.set_manager(self, manager)
-        self._content.set_manager(manager)
-        self._content.parent = self
-
-    def load(self):
-        super().load()
-        self.load_content()
-
-    def unload(self):
-        super().unload()
-        self.unload_content()
-
-    def load_content(self):
-        self.content.load()
-
-    def unload_content(self):
-        self.content.unload()
-
     def expand(self, width, height):
-        if self._content.is_expandable():
-            self._content.expand(width, height)
+        if self.content.is_expandable():
+            self.content.expand(width, height)
         self.width = width
         self.height = height
 
@@ -464,33 +404,23 @@ class Wrapper(Widget):
         return self.expandable
 
     def compute_size(self):
-        return self._content.width, self._content.height
+        return self.content.width, self.content.height
 
     def reset_size(self, reset_parent=True):
         if not reset_parent:
-            self._content.reset_size(reset_parent)
+            self.content.reset_size(reset_parent)
         super().reset_size(reset_parent)
 
     def layout(self):
-        x, y = GetRelativePoint(self, self.anchor, self._content, self.anchor, self.content_offset)
-        self._content.set_position(x, y)
-
-    def set_content(self, content):
-        self._content.unload()
-        self._content = content
-        self._content.set_manager(self._manager)
-        self._content.parent = self
-
-    def delete(self):
-        super().delete()
-        self.content.delete()
+        x, y = GetRelativePoint(self, self.anchor, self.content, self.anchor, self.content_offset)
+        self.content.set_position(x, y)
 
 
 class Frame(Wrapper):
     """
     A Widget that wraps another widget with a frame.
     """
-    def __init__(self, content=None, path=None, image_name='image',
+    def __init__(self, content, path=None, image_name='image',
                  is_expandable=False, anchor=ANCHOR_CENTER):
         Wrapper.__init__(self, content, is_expandable=is_expandable, anchor=anchor)
 
@@ -519,9 +449,9 @@ class Frame(Wrapper):
         Wrapper.unload_graphics(self)
 
     def expand(self, width, height):
-        if self._content.is_expandable():
+        if self.content.is_expandable():
             content_width, content_height = self._frame.get_content_size(width, height)
-            self._content.expand(content_width, content_height)
+            self.content.expand(content_width, content_height)
         self.width, self.height = width, height
 
     def layout(self):
@@ -530,9 +460,9 @@ class Frame(Wrapper):
         # we create a rectangle with the interior for using in GetRelativePoint
         x, y, width, height = self._frame.get_content_region()
         interior = Rectangle(x, y, width, height)
-        x, y = GetRelativePoint(interior, self.anchor, self._content, self.anchor, self.content_offset)
-        self._content.set_position(x, y)
+        x, y = GetRelativePoint(interior, self.anchor, self.content, self.anchor, self.content_offset)
+        self.content.set_position(x, y)
 
     def compute_size(self):
-        self._content.compute_size()
-        return self._frame.get_needed_size(self._content.width, self._content.height)
+        self.content.compute_size()
+        return self._frame.get_needed_size(self.content.width, self.content.height)
