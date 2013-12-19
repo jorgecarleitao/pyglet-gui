@@ -47,13 +47,13 @@ class ManagerGroup(pyglet.graphics.OrderedGroup):
 
     def is_on_top(self):
         """
-        Are we the top dialog group?
+        Are we the top manager group?
         """
         return self.own_order == self.next_manager_order_id
 
     def pop_to_top(self):
         """
-        Put us on top of other dialog groups.
+        Put us on top of other manager groups.
         """
         self.own_order = self.get_next_order_id()
 
@@ -180,8 +180,8 @@ class ViewerManager(Wrapper):
 
     def pop_to_top(self):
         """
-        Puts the dialog on top of the other dialogs on the same batch (and window).
-        - Pops the dialog group to the top
+        Puts the manager on top of the other dialogs on the same batch (and window).
+        - Pops the manager group to the top
         - Puts the event handler on top of the event handler's stack of the window.
         """
         self.root_group.pop_to_top()
@@ -245,7 +245,7 @@ class ControllerManager:
                 direction = 1
 
             self.set_next_focus(direction)
-            return True  # we only change focus on the dialog we are in.
+            return True  # we only change focus on the manager we are in.
 
         if self._focus is not None and hasattr(self._focus, 'on_key_press'):
             return self._focus.on_key_press(symbol, modifiers)

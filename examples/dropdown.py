@@ -60,14 +60,13 @@ theme = Theme({"font": "Lucida Grande",
               }, resources_path='../theme')
 
 # Set up a Manager
-dialog = Manager(
-    Dropdown(['Alpha', 'Beta', 'Gamma', 'Delta', 'Epsilon',
-              'Zeta', 'Eta', 'Theta', 'Iota', 'Kappa',
-              'Lambda', 'Mu', 'Nu', 'Xi', 'Omicron',
-              'Pi', 'Rho', 'Sigma', 'Tau', 'Upsilon',
-              'Phi', 'Chi', 'Psi', 'Omega']),
-    window=window,
-    batch=batch,
-    theme=theme)
+Manager(Dropdown(['Alpha', 'Beta', 'Gamma', 'Delta', 'Epsilon',
+                  'Zeta', 'Eta', 'Theta', 'Iota', 'Kappa',
+                  'Lambda', 'Mu', 'Nu', 'Xi', 'Omicron',
+                  'Pi', 'Rho', 'Sigma', 'Tau', 'Upsilon',
+                  'Phi', 'Chi', 'Psi', 'Omega']),
+        window=window,
+        batch=batch,
+        theme=theme)
 
 pyglet.app.run()

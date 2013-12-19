@@ -11,7 +11,7 @@ class TestInput(TestPygletGUI):
     def setUp(self):
         TestPygletGUI.setUp(self)
         self.input = TextInput(text="test")
-        self.dialog = Manager(self.input, window=self.window, batch=self.batch, theme=self.theme)
+        self.manager = Manager(self.input, window=self.window, batch=self.batch, theme=self.theme)
 
     def test_focus(self):
         self.input.on_gain_focus()

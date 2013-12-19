@@ -28,7 +28,7 @@ class TestSpacer(TestPygletGUI):
                                                            self.widgets[3],
                                                            Spacer()], padding=0)], padding=0)
 
-        self.dialog = Manager(self.container, window=self.window, batch=self.batch, theme=self.theme)
+        self.manager = Manager(self.container, window=self.window, batch=self.batch, theme=self.theme)
 
     def test_initial(self):
         self.assertEqual(self.container.width, 200)
@@ -44,7 +44,7 @@ class TestSpacer(TestPygletGUI):
         self.assertEqual(self.widgets[3].x, self.widgets[2].x + self.widgets[2].width + spacer_size)
 
     def tearDown(self):
-        self.dialog.delete()
+        self.manager.delete()
         super().tearDown()
 
 if __name__ == "__main__":

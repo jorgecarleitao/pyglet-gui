@@ -48,7 +48,7 @@ theme = Theme({"font": "Lucida Grande",
               }, resources_path='../theme/')
 
 # Set up a Manager
-dialog = Manager(
+Manager(
     # an horizontal layout with two vertical layouts, each one with a slider.
     Scrollable(height=100, width=200, content=VerticalContainer(content=[Button(str(x)) for x in range(10)])),
     window=window,

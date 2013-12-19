@@ -17,7 +17,7 @@ class TestHorizontalContainer(TestPygletGUI):
         self.container = HorizontalContainer([Viewer(width=50, height=50),
                                            Viewer(width=50, height=50)])
 
-        self.dialog = Manager(self.container, window=self.window, batch=self.batch, theme=self.theme)
+        self.manager = Manager(self.container, window=self.window, batch=self.batch, theme=self.theme)
 
     def _test_content_position(self):
         """
@@ -35,11 +35,11 @@ class TestHorizontalContainer(TestPygletGUI):
 
     def test_top_down_draw(self):
         """
-        Tests that the dialog's size was set according to the child size.
+        Tests that the manager's size was set according to the child size.
         """
-        # dialog size is correct
-        self.assertEqual(self.dialog.width, 100 + self.container.padding)
-        self.assertEqual(self.dialog.height, 50)
+        # manager size is correct
+        self.assertEqual(self.manager.width, 100 + self.container.padding)
+        self.assertEqual(self.manager.height, 50)
 
         # widget is centered in the window
         self.assertEqual(self.container.x, self.window.width/2 - self.container.width/2)
@@ -49,40 +49,40 @@ class TestHorizontalContainer(TestPygletGUI):
 
     def test_bottom_up_draw(self):
         """
-        Tests that the dialog's size is modified
+        Tests that the manager's size is modified
         if we set a new size to the widget.
         """
         self.container.content[0].width = 60
         self.container.content[0].height = 60
         self.container.content[0].parent.reset_size()
 
-        # dialog width was set
-        self.assertEqual(self.dialog.width, 110 + self.container.padding)
+        # manager width was set
+        self.assertEqual(self.manager.width, 110 + self.container.padding)
         # container height was set
         self.assertEqual(self.container.height, 60)
 
-        # container and dialog were re-centered in the window
+        # container and manager were re-centered in the window
         self.assertEqual(self.container.x, self.window.width/2 - self.container.width/2)
-        self.assertEqual(self.dialog.y, self.window.height/2 - self.dialog.height/2)
+        self.assertEqual(self.manager.y, self.window.height/2 - self.manager.height/2)
 
         self._test_content_position()
 
     def test_add_widget(self):
         self.container.add(Viewer(width=50, height=50))
 
-        self.assertEqual(self.dialog.width, 150 + 2*self.container.padding)
-        self.assertEqual(self.dialog.height, 50)
+        self.assertEqual(self.manager.width, 150 + 2*self.container.padding)
+        self.assertEqual(self.manager.height, 50)
 
         self._test_content_position()
 
     def test_remove_widget(self):
         self.container.remove(self.container.content[0])
 
-        self.assertEqual(self.dialog.width, 50 + self.container.padding)
-        self.assertEqual(self.dialog.height, 50)
+        self.assertEqual(self.manager.width, 50 + self.container.padding)
+        self.assertEqual(self.manager.height, 50)
 
     def tearDown(self):
-        self.dialog.delete()
+        self.manager.delete()
         super().tearDown()
 
 if __name__ == "__main__":

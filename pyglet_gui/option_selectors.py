@@ -93,18 +93,18 @@ class Dropdown(Selector, OneTimeButton):
 
     def on_mouse_press(self, x, y, button, modifiers):
         """
-        A mouse press is going to create a dialog with the options.
+        A mouse press is going to create a manager with the options.
         """
         # if it's already opened, we just close it.
         if self._pulldown_menu is not None:
             self._delete_pulldown_menu()
             return
 
-        # the function we pass to the dialog.
+        # the function we pass to the manager.
         def on_escape(_):
             self._delete_pulldown_menu()
 
-        # Compute the anchor point and location for the dialog
+        # Compute the anchor point and location for the manager
         width, height = self._manager.window.get_size()
         if self.align == VALIGN_TOP:
             # Dropdown is at the top, pulldown appears below it
@@ -117,13 +117,13 @@ class Dropdown(Selector, OneTimeButton):
             x = self.x
             y = self.y + self.height + 1
 
-        # we set the dialog
+        # we set the manager
         self._pulldown_menu = Manager(
             Frame(Scrollable(VerticalContainer(list(self._options.values())),
                              height=self.max_height), path=['dropdown', 'pulldown']),
             window=self._manager.window, batch=self._manager.batch,
             group=self._manager.root_group.parent, theme=self._manager.theme,
-            movable=False, anchor=anchor, offset=(x, y))
+            is_movable=False, anchor=anchor, offset=(x, y))
 
     def set_options(self, options, labels=None):
         on_select = self._on_select

@@ -34,9 +34,9 @@ theme = Theme({"font": "Lucida Grande",
               }, resources_path='../theme/')
 
 # Set up a Manager
-dialog = PopupMessage(text="Test",
-                      window=window,
-                      batch=batch,
-                      theme=theme)
+PopupMessage(text="Test",
+             window=window,
+             batch=batch,
+             theme=theme)
 
 pyglet.app.run()

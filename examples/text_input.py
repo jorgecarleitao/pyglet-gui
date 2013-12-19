@@ -25,9 +25,9 @@ theme = Theme({"font": "Lucida Grande",
               }, resources_path='../theme/')
 
 # Set up a Manager
-dialog = Manager(TextInput(text="Write on me"),
-                window=window,
-                batch=batch,
-                theme=theme)
+Manager(TextInput(text="Write on me"),
+        window=window,
+        batch=batch,
+        theme=theme)
 
 pyglet.app.run()

@@ -17,14 +17,14 @@ class TestGridContainer(TestPygletGUI):
         self.container = GridContainer([[Viewer(width=50, height=50), Viewer(width=50, height=50)],
                                      [Viewer(width=50, height=50), Viewer(width=50, height=50)]])
 
-        self.dialog = Manager(self.container, window=self.window, batch=self.batch, theme=self.theme)
+        self.manager = Manager(self.container, window=self.window, batch=self.batch, theme=self.theme)
 
     def test_top_down_draw(self):
         """
         Tests that the container's size was set correctly
         and the positions of its content is correct.
         """
-        # dialog size is correct
+        # manager size is correct
         self.assertEqual(self.container.width, 100 + self.container.padding)
         self.assertEqual(self.container.height, 100 + self.container.padding)
 
@@ -34,7 +34,7 @@ class TestGridContainer(TestPygletGUI):
 
     def test_bottom_up_draw(self):
         """
-        Tests that the dialog's size is modified
+        Tests that the manager's size is modified
         if we set a new size to the widget.
         """
         self.container.content[0][0].width = 60
@@ -81,7 +81,7 @@ class TestGridContainer(TestPygletGUI):
         self.assertEqual(self.container.height, 100 + self.container.padding)
 
     def tearDown(self):
-        self.dialog.delete()
+        self.manager.delete()
         super().tearDown()
 
 

@@ -37,6 +37,6 @@ grid = GridContainer([[Button("(1,1)"), Button("(1,2)")],
 
 vlay = VerticalContainer([hlay, grid])
 
-dialog = Manager(vlay, window=window, batch=batch, theme=theme)
+Manager(vlay, window=window, batch=batch, theme=theme)
 
 pyglet.app.run()

@@ -17,9 +17,9 @@ theme = Theme({"font": "Lucida Grande",
                }
               }, resources_path='../theme/')
 
-dialog = Manager(Frame(Label('An example of a white label with a red frame')),
-                window=window,
-                batch=batch,
-                theme=theme)
+Manager(Frame(Label('An example of a white label with a red frame')),
+        window=window,
+        batch=batch,
+        theme=theme)
 
 pyglet.app.run()

@@ -9,7 +9,7 @@ class TestButton(TestPygletGUI):
     def setUp(self):
         TestPygletGUI.setUp(self)
         self.button = Button(label="test")
-        self.dialog = Manager(self.button, window=self.window, batch=self.batch, theme=self.theme)
+        self.manager = Manager(self.button, window=self.window, batch=self.batch, theme=self.theme)
 
     def test_creation(self):
         self.assertNotEqual(self.button.width, 0)
@@ -21,7 +21,7 @@ class TestButton(TestPygletGUI):
         self.assertEqual(self.button.is_pressed(), True)
 
     def test_delete(self):
-        self.dialog.delete()
+        self.manager.delete()
 
         self.assertEqual(self.button.is_loaded, False)
 

@@ -145,10 +145,10 @@ class TitleFrame(VerticalContainer):
     def __init__(self, title, content):
         VerticalContainer.__init__(self, content=[
             HorizontalContainer([Graphic(path=["titlebar", "left"], is_expandable=True),
-                              Frame(Label(title, path=["titlebar"]),
-                                    path=["titlebar", "center"]),
-                              Graphic(path=["titlebar", "right"], is_expandable=True),
-                              ], align=VALIGN_BOTTOM, padding=0),
+                                 Frame(Label(title, path=["titlebar"]),
+                                       path=["titlebar", "center"]),
+                                 Graphic(path=["titlebar", "right"], is_expandable=True),
+                                 ], align=VALIGN_BOTTOM, padding=0),
             Frame(content, path=["titlebar", "frame"], is_expandable=True),
             ], padding=0)
 
@@ -190,12 +190,12 @@ class FoldingSection(VerticalContainer, Controller):
         self.book = Graphic(self._get_image_path())
 
         self.header = HorizontalContainer([Graphic(path=["section", "left"], is_expandable=left_expand),
-                                        Frame(HorizontalContainer([
-                                            self.book,
-                                            Label(title, path=["section"]),
-                                            ]), path=["section", "center"]),
-                                        Graphic(path=["section", "right"], is_expandable=right_expand),
-                                        ], align=VALIGN_BOTTOM, padding=0)
+                                           Frame(HorizontalContainer([
+                                               self.book,
+                                               Label(title, path=["section"]),
+                                               ]), path=["section", "center"]),
+                                           Graphic(path=["section", "right"], is_expandable=right_expand),
+                                           ], align=VALIGN_BOTTOM, padding=0)
         layout = [self.header]
         if self.is_open:
             layout.append(self.folding_content)
@@ -245,20 +245,19 @@ class FoldingSection(VerticalContainer, Controller):
 
 
 class PopupMessage(Manager):
-    """A simple fire-and-forget dialog."""
+    """A simple fire-and-forget manager."""
 
     def __init__(self, text="", window=None, batch=None, group=None,
                  theme=None, on_escape=None):
-        def on_ok(dialog=None):
+        def on_ok(_):
             if on_escape is not None:
                 on_escape(self)
             self.delete()
 
         Manager.__init__(self, content=Frame(VerticalContainer([Label(text),
-                                                            Button("Ok", on_press=on_ok)])),
-                        window=window, batch=batch, group=group,
-                        theme=theme, movable=True,
-                        on_enter=on_ok, on_escape=on_ok)
+                                                                Button("Ok", on_press=on_ok)])),
+                         window=window, batch=batch, group=group,
+                         theme=theme, is_movable=True)
 
 
 class PopupConfirm(Manager):
@@ -267,12 +266,12 @@ class PopupConfirm(Manager):
     def __init__(self, text="", ok="Ok", cancel="Cancel",
                  window=None, batch=None, group=None, theme=None,
                  on_ok=None, on_cancel=None):
-        def on_ok_click(dialog=None):
+        def on_ok_click(_):
             if on_ok is not None:
                 on_ok(self)
             self.delete()
 
-        def on_cancel_click(dialog=None):
+        def on_cancel_click(_):
             if on_cancel is not None:
                 on_cancel(self)
             self.delete()
@@ -280,11 +279,8 @@ class PopupConfirm(Manager):
         Manager.__init__(self, content=Frame(
             VerticalContainer([
                 Label(text),
-                HorizontalContainer([
-                    Button(ok, on_press=on_ok_click),
-                    None,
-                    Button(cancel, on_press=on_cancel_click)]),
-                ])),
-                        window=window, batch=batch, group=group,
-                        theme=theme, movable=True,
-                        on_escape=on_cancel_click)
+                HorizontalContainer([Button(ok, on_press=on_ok_click),
+                                     None,
+                                     Button(cancel, on_press=on_cancel_click)]
+                )])
+        ), window=window, batch=batch, group=group, theme=theme, is_movable=True)

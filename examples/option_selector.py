@@ -29,9 +29,9 @@ theme = Theme({"font": "Lucida Grande",
 
 
 # Set up a Manager
-dialog = Manager(VerticalButtonSelector(options=["Option %d" % x for x in range(1, 6)]),
-                window=window,
-                batch=batch,
-                theme=theme)
+Manager(VerticalButtonSelector(options=["Option %d" % x for x in range(1, 6)]),
+        window=window,
+        batch=batch,
+        theme=theme)
 
 pyglet.app.run()

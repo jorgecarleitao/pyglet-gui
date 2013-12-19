@@ -6,44 +6,44 @@ from pyglet_gui.mixins import HighlightMixin
 from pyglet_gui.theme import Theme
 
 theme = Theme({
-    "font": "Lucida Grande",
-    "font_size": 12,
-    "font_size_small": 10,
-    "gui_color": [255, 255, 255, 255],
-    "disabled_color": [160, 160, 160, 255],
-    "text_color": [255, 255, 255, 255],
-    "highlight_color": [255, 255, 255, 64],
-    "button": {
-        "down": {
-            "highlight": {
-                "image": {
-                    "source": "button-highlight.png",
-                    "frame": [8, 6, 2, 2],
-                    "padding": [18, 18, 8, 6]
-                }
-            },
-            "image": {
-                "source": "button-down.png",
-                "frame": [8, 6, 2, 2],
-                "padding": [18, 18, 8, 6]
-            },
-            "text_color": [0, 0, 0, 255]
-        },
-        "up": {
-            "highlight": {
-                "image": {
-                    "source": "button-highlight.png",
-                    "frame": [8, 6, 2, 2],
-                    "padding": [18, 18, 8, 6]
-                }
-            },
-            "image": {
-                "source": "button.png",
-                "frame": [6, 5, 6, 3],
-                "padding": [18, 18, 8, 6]
-            }
-        }
-    }}, resources_path='../theme/')
+                  "font": "Lucida Grande",
+                  "font_size": 12,
+                  "font_size_small": 10,
+                  "gui_color": [255, 255, 255, 255],
+                  "disabled_color": [160, 160, 160, 255],
+                  "text_color": [255, 255, 255, 255],
+                  "highlight_color": [255, 255, 255, 64],
+                  "button": {
+                      "down": {
+                          "highlight": {
+                              "image": {
+                                  "source": "button-highlight.png",
+                                  "frame": [8, 6, 2, 2],
+                                  "padding": [18, 18, 8, 6]
+                              }
+                          },
+                          "image": {
+                              "source": "button-down.png",
+                              "frame": [8, 6, 2, 2],
+                              "padding": [18, 18, 8, 6]
+                          },
+                          "text_color": [0, 0, 0, 255]
+                      },
+                      "up": {
+                          "highlight": {
+                              "image": {
+                                  "source": "button-highlight.png",
+                                  "frame": [8, 6, 2, 2],
+                                  "padding": [18, 18, 8, 6]
+                              }
+                          },
+                          "image": {
+                              "source": "button.png",
+                              "frame": [6, 5, 6, 3],
+                              "padding": [18, 18, 8, 6]
+                          }
+                      }
+                  }}, resources_path='../theme/')
 
 
 class HighlightedButton(Button, HighlightMixin):
@@ -68,9 +68,9 @@ class HighlightedButton(Button, HighlightMixin):
         HighlightMixin.unload_graphics(self)
 
 # Set up a Manager
-dialog = Manager(HighlightedButton("Button"),
-                window=window,
-                batch=batch,
-                theme=theme)
+Manager(HighlightedButton("Button"),
+        window=window,
+        batch=batch,
+        theme=theme)
 
 pyglet.app.run()

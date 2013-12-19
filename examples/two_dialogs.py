@@ -27,19 +27,19 @@ theme = Theme({"font": "Lucida Grande",
                        }
                    }
                }
-               }, resources_path='../theme/')
+              }, resources_path='../theme/')
 
 
 # Set up a Manager
-dialog1 = Manager(Label("Drag me"), window=window,
-                 batch=batch,
-                 group=fg_group,
-                 theme=theme)
+Manager(Label("Drag me"), window=window,
+        batch=batch,
+        group=fg_group,
+        theme=theme)
 
-dialog2 = Manager(Button("Drag me"), window=window,
-                 batch=batch,
-                 group=fg_group,
-                 anchor=ANCHOR_TOP_LEFT,
-                 theme=theme)
+Manager(Button("Drag me"), window=window,
+        batch=batch,
+        group=fg_group,
+        anchor=ANCHOR_TOP_LEFT,
+        theme=theme)
 
 pyglet.app.run()

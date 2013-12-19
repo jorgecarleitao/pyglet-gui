@@ -35,7 +35,7 @@ theme = Theme({"font": "Lucida Grande",
 
 
 # Set up a Manager
-dialog = Manager(
+Manager(
     VerticalContainer([HorizontalSlider(), HorizontalSlider(steps=10)]),
     window=window,
     batch=batch,

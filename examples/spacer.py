@@ -43,17 +43,17 @@ theme = Theme({"font": "Lucida Grande",
 # First line has two big buttons
 # second line has three spacers, separated by two small buttons.
 # size of the three spacers is the same.
-dialog = Manager(VerticalContainer([HorizontalContainer([Button(label="Big fat button"),
-                                                  Button(label="Big fat button")], padding=0),
+Manager(VerticalContainer([HorizontalContainer([Button(label="Big fat button"),
+                                                Button(label="Big fat button")], padding=0),
 
-                                HorizontalContainer([Spacer(),
-                                                  Button(label="Small"),
-                                                  Spacer(),
-                                                  Button(label="Small"),
-                                                  Spacer()], padding=0)],
-                               padding=0),
-                window=window,
-                batch=batch,
-                theme=theme)
+                           HorizontalContainer([Spacer(),
+                                                Button(label="Small"),
+                                                Spacer(),
+                                                Button(label="Small"),
+                                                Spacer()], padding=0)],
+                          padding=0),
+        window=window,
+        batch=batch,
+        theme=theme)
 
 pyglet.app.run()

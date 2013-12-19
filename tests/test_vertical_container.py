@@ -17,7 +17,7 @@ class TestVerticalContainer(TestPygletGUI):
         self.container = VerticalContainer([Viewer(width=50, height=50),
                                          Viewer(width=50, height=50)])
 
-        self.dialog = Manager(self.container, window=self.window, batch=self.batch, theme=self.theme)
+        self.manager = Manager(self.container, window=self.window, batch=self.batch, theme=self.theme)
 
     def _test_content_position(self):
         """
@@ -39,7 +39,7 @@ class TestVerticalContainer(TestPygletGUI):
         Tests that the container's size was set correctly
         and the positions of its content is correct.
         """
-        # dialog size is correct
+        # manager size is correct
         self.assertEqual(self.container.width, 50)
         self.assertEqual(self.container.height, 100 + self.container.padding)
 
@@ -51,7 +51,7 @@ class TestVerticalContainer(TestPygletGUI):
 
     def test_bottom_up_draw(self):
         """
-        Tests that the dialog's size is modified
+        Tests that the manager's size is modified
         if we set a new size to the widget.
         """
         self.container.content[0].width = 60
@@ -72,19 +72,19 @@ class TestVerticalContainer(TestPygletGUI):
     def test_add_widget(self):
         self.container.add(Viewer(width=50, height=50))
 
-        self.assertEqual(self.dialog.width, 50)
-        self.assertEqual(self.dialog.height, 150 + 2 * self.container.padding)
+        self.assertEqual(self.manager.width, 50)
+        self.assertEqual(self.manager.height, 150 + 2 * self.container.padding)
 
         self._test_content_position()
 
     def test_remove_widget(self):
         self.container.remove(self.container.content[0])
 
-        self.assertEqual(self.dialog.width, 50)
-        self.assertEqual(self.dialog.height, 50 + self.container.padding)
+        self.assertEqual(self.manager.width, 50)
+        self.assertEqual(self.manager.height, 50 + self.container.padding)
 
     def tearDown(self):
-        self.dialog.delete()
+        self.manager.delete()
         super().tearDown()
 
 

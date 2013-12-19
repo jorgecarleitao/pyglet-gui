@@ -9,7 +9,7 @@ class TestSlider(TestPygletGUI):
     def setUp(self):
         TestPygletGUI.setUp(self)
         self.slider = HorizontalSlider(min_value=0, max_value=10)
-        self.dialog = Manager(self.slider, window=self.window, batch=self.batch, theme=self.theme)
+        self.manager = Manager(self.slider, window=self.window, batch=self.batch, theme=self.theme)
 
     def test_set_value(self):
         self.slider.set_knob_pos(0.5)
@@ -26,5 +26,5 @@ class TestSlider(TestPygletGUI):
         self.assertEqual(self.slider.get_value(), 10)
 
     def tearDown(self):
-        self.dialog.delete()
+        self.manager.delete()
         super().tearDown()

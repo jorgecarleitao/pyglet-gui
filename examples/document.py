@@ -38,9 +38,8 @@ You can also {font_name "Courier New"}change fonts{font_name Lucia Grande},
 ''')
 
 # Set up a Manager
-dialog = Manager(
-    Document(document, width=300, height=50),
-    window=window, batch=batch, group=fg_group,
-    theme=theme)
+Manager(Document(document, width=300, height=50),
+        window=window, batch=batch, group=fg_group,
+        theme=theme)
 
 pyglet.app.run()

@@ -41,11 +41,11 @@ theme = Theme({"font": "Lucida Grande",
               }, resources_path='../theme/')
 
 # Set up a Manager
-dialog = Manager(VerticalContainer([Button(label="Persistent button"),
-                                OneTimeButton(label="One time button"),
-                                Checkbox(label="Checkbox")]),
-                window=window,
-                batch=batch,
-                theme=theme)
+Manager(VerticalContainer([Button(label="Persistent button"),
+                           OneTimeButton(label="One time button"),
+                           Checkbox(label="Checkbox")]),
+        window=window,
+        batch=batch,
+        theme=theme)
 
 pyglet.app.run()
