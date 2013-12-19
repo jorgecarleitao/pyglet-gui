@@ -31,25 +31,22 @@ class Slider(ContinuousStateController, Widget):
         theme = self.theme[self.get_path()]
         color = theme['gui_color']
 
-        if self._bar is None:
-            self._bar = theme[self.IMAGE_BAR]['image'].generate(color, **self.get_batch('foreground'))
-            self._padding = theme[self.IMAGE_BAR]['padding']
-        if self._knob is None:
-            self._knob = theme[self.IMAGE_KNOB]['image'].generate(color, **self.get_batch('foreground'))
-            self._offset = theme[self.IMAGE_KNOB]['offset']
-        if not self._markers and self.steps is not None:
+        self._bar = theme[self.IMAGE_BAR]['image'].generate(color, **self.get_batch('foreground'))
+        self._padding = theme[self.IMAGE_BAR]['padding']
+
+        self._knob = theme[self.IMAGE_KNOB]['image'].generate(color, **self.get_batch('foreground'))
+        self._offset = theme[self.IMAGE_KNOB]['offset']
+
+        if self.steps is not None:
             image_path = self.IMAGE_STEP
             for n in range(0, self.steps + 1):
                 self._markers.append(theme[image_path]['image'].generate(color, **self.get_batch('foreground')))
             self._step_offset = theme[image_path]['offset']
 
     def unload_graphics(self):
-        if self._bar is not None:
-            self._bar.unload()
-            self._bar = None
-        if self._knob is not None:
-            self._knob.unload()
-            self._knob = None
+        self._knob.unload()
+        self._bar.unload()
+
         for marker in self._markers:
             marker.unload()
         self._markers = []

@@ -14,8 +14,7 @@ class TestButton(TestPygletGUI):
     def test_creation(self):
         self.assertNotEqual(self.button.width, 0)
         self.assertNotEqual(self.button.height, 0)
-        self.assertNotEqual(self.button._label, None)
-        self.assertNotEqual(self.button._button, None)
+        self.assertEqual(self.button.is_loaded, True)
 
     def test_press(self):
         self.button.on_mouse_press(0, 0, None, None)
@@ -24,8 +23,7 @@ class TestButton(TestPygletGUI):
     def test_delete(self):
         self.dialog.delete()
 
-        self.assertEqual(self.button._button, None)
-        self.assertEqual(self.button._label, None)
+        self.assertEqual(self.button.is_loaded, False)
 
 if __name__ == "__main__":
     import unittest

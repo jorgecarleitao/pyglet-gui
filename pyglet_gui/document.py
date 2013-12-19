@@ -51,15 +51,12 @@ class Document(Controller, Widget):
         if not self.set_document_style:
             self.do_set_document_style(self._manager)
 
-        if self._content is None:
-            self._content = pyglet.text.layout.IncrementalTextLayout(self._document,
-                                                                     self.content_width, self.max_height,
-                                                                     multiline=True, **self.get_batch('background'))
+        self._content = pyglet.text.layout.IncrementalTextLayout(self._document,
+                                                                 self.content_width, self.max_height,
+                                                                 multiline=True, **self.get_batch('background'))
 
     def unload_graphics(self):
-        if self._content is not None:
-            self._content.delete()
-            self._content = None
+        self._content.delete()
         if self._scrollbar is not None:
             self._scrollbar.unload()
             self._scrollbar = None

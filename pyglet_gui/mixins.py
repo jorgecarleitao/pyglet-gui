@@ -49,14 +49,13 @@ class FocusMixin(Controller, Widget):
 
     def on_gain_focus(self):
         self._focus_flag = True
-        FocusMixin.unload_graphics(self)
         FocusMixin.load_graphics(self)
         FocusMixin.layout(self)
         return True
 
     def on_lose_focus(self):
         self._focus_flag = False
-        FocusMixin.load_graphics(self)
+        FocusMixin.unload_graphics(self)
         return True
 
     def is_focus(self):
@@ -64,13 +63,11 @@ class FocusMixin(Controller, Widget):
 
     def load_graphics(self):
         theme = self.theme[self.get_path()]
-        if self._focus is None and self._focus_flag:
-            self._focus = theme['focus']['image'].generate(theme['focus_color'], **self.get_batch('highlight'))
+
+        self._focus = theme['focus']['image'].generate(theme['focus_color'], **self.get_batch('highlight'))
 
     def unload_graphics(self):
-        if self._focus is not None:
-            self._focus.unload()
-            self._focus = None
+        self._focus.unload()
 
     def layout(self):
         if self._focus is not None:

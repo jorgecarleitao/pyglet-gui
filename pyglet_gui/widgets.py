@@ -108,16 +108,14 @@ class Graphic(Widget):
 
     def load_graphics(self):
         theme = self.theme[self.get_path()]
-        if self._graphic is None:
-            template = theme['image']
-            self._graphic = template.generate(theme[self._path]['gui_color'], **self.get_batch('background'))
-            self._min_width = self._graphic.width
-            self._min_height = self._graphic.height
+
+        self._graphic = theme['image'].generate(theme[self._path]['gui_color'], **self.get_batch('background'))
+
+        self._min_width = self._graphic.width
+        self._min_height = self._graphic.height
 
     def unload_graphics(self):
-        if self._graphic is not None:
-            self._graphic.unload()
-            self._graphic = None
+        self._graphic.unload()
 
     def expand(self, width, height):
         assert self._expandable
@@ -152,19 +150,17 @@ class Label(Widget):
 
     def load_graphics(self):
         theme = self.theme[self.get_path()]
-        if self.label is None:
-            self.label = pyglet.text.Label(self.text,
-                                           bold=self.bold,
-                                           italic=self.italic,
-                                           color=self.color or theme['text_color'],
-                                           font_name=self.font_name or theme['font'],
-                                           font_size=self.font_size or theme['font_size'],
-                                           **self.get_batch('background'))
+
+        self.label = pyglet.text.Label(self.text,
+                                       bold=self.bold,
+                                       italic=self.italic,
+                                       color=self.color or theme['text_color'],
+                                       font_name=self.font_name or theme['font'],
+                                       font_size=self.font_size or theme['font_size'],
+                                       **self.get_batch('background'))
 
     def unload_graphics(self):
-        if self.label is not None:
-            self.label.delete()
-            self.label = None
+        self.label.delete()
 
     def layout(self):
         font = self.label.document.get_font()

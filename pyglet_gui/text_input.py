@@ -36,29 +36,24 @@ class TextInput(FocusMixin, Widget):
         return 'input'
 
     def _load_label(self, theme):
-        assert self._text_layout is None and self._caret is None
-        if self._label is None:
-            self._label = InputLabel(self._document.text,
-                                     multiline=False,
-                                     width=self.width-self._padding*2,
-                                     color=theme['text_color'], **self.get_batch('foreground'))
+        self._label = InputLabel(self._document.text,
+                                 multiline=False,
+                                 width=self.width-self._padding*2,
+                                 color=theme['text_color'], **self.get_batch('foreground'))
 
     def _load_writing(self, theme):
-        assert self._label is None
         needed_width, needed_height = self._compute_needed_size()
-        if self._text_layout is None:
-            self._text_layout = pyglet.text.layout.IncrementalTextLayout(
-                self._document, needed_width, needed_height,
-                multiline=False, **self.get_batch('foreground'))
-            assert self._caret is None
-        if self._caret is None:
-            self._caret = pyglet.text.caret.Caret(self._text_layout, color=theme['gui_color'][0:3])
-            self._caret.visible = True
-            self._caret.mark = 0
-            self._caret.position = len(self._document.text)
+
+        self._text_layout = pyglet.text.layout.IncrementalTextLayout(
+            self._document, needed_width, needed_height,
+            multiline=False, **self.get_batch('foreground'))
+
+        self._caret = pyglet.text.caret.Caret(self._text_layout, color=theme['gui_color'][0:3])
+        self._caret.visible = True
+        self._caret.mark = 0
+        self._caret.position = len(self._document.text)
 
     def load_graphics(self):
-        FocusMixin.load_graphics(self)
         theme = self.theme[self.get_path()]
 
         # We set the style once. We shouldn't have to do so again because
@@ -70,29 +65,21 @@ class TextInput(FocusMixin, Widget):
                                           font_size=theme['font_size']))
             self._document_style_set = True
 
+        self._field = theme['image'].generate(color=theme['gui_color'], **self.get_batch('background'))
         if self.is_focus():
             self._load_writing(theme)
         else:
             self._load_label(theme)
 
-        if self._field is None:
-            color = theme['gui_color']
-            self._field = theme['image'].generate(color=color, **self.get_batch('background'))
-
     def unload_graphics(self):
-        if self._caret is not None:
+        if not self.is_focus():
             self._caret.delete()
-            self._caret = None
-        if self._text_layout is not None:
             self._document.remove_handlers(self._text_layout)
             self._text_layout.delete()
-            self._text_layout = None
-        if self._label is not None:
+        else:
             self._label.delete()
-            self._label = None
-        if self._field is not None:
-            self._field.unload()
-            self._field = None
+
+        self._field.unload()
 
     def _compute_needed_size(self):
         # Calculate the needed size based on the font size

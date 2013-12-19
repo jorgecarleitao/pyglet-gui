@@ -39,23 +39,17 @@ class Button(TwoStateController, Widget):
     def load_graphics(self):
         theme = self.theme[self.get_path()]
 
-        if self._button is None:
-            self._button = theme['image'].generate(theme['gui_color'], **self.get_batch('background'))
+        self._button = theme['image'].generate(theme['gui_color'], **self.get_batch('background'))
 
-        if self._label is None:
-            self._label = Label(self.label,
-                                font_name=theme['font'],
-                                font_size=theme['font_size'],
-                                color=theme['text_color'],
-                                **self.get_batch('foreground'))
+        self._label = Label(self.label,
+                            font_name=theme['font'],
+                            font_size=theme['font_size'],
+                            color=theme['text_color'],
+                            **self.get_batch('foreground'))
 
     def unload_graphics(self):
-        if self._button is not None:
-            self._button.unload()
-            self._button = None
-        if self._label is not None:
-            self._label.unload()
-            self._label = None
+        self._button.unload()
+        self._label.unload()
 
     def compute_size(self):
         # Treat the height of the label as ascent + descent

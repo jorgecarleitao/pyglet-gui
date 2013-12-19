@@ -56,7 +56,10 @@ class TestDialog(TestPygletGUI):
         self.dialog.content = self.new_widget
 
         self.assertTrue(not self.widget.has_manager())
+        self.assertFalse(self.widget.is_loaded)
+
         self.assertTrue(self.new_widget.has_manager())
+        self.assertTrue(self.new_widget.is_loaded)
 
         # dialog size was reset, new widget position is correct
         self.assertEqual(self.dialog.width, self.new_widget.width)
