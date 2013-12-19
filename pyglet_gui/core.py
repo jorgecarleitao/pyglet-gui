@@ -30,6 +30,8 @@ class Viewer(Managed, metaclass=ABCMeta):
         super().__init__()
         self._parent = None
 
+        self._is_loaded = False
+
     @property
     def parent(self):
         return self._parent
@@ -37,6 +39,10 @@ class Viewer(Managed, metaclass=ABCMeta):
     @parent.setter
     def parent(self, widget):
         self._parent = widget
+
+    @property
+    def is_loaded(self):
+        return self._is_loaded
 
     @abstractmethod
     def load(self):
