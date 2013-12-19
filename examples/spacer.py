@@ -2,8 +2,7 @@ from setup import *
 
 from pyglet_gui.buttons import Button
 from pyglet_gui.dialog import Dialog
-from pyglet_gui.containers import HorizontalContainer, VerticalContainer
-from pyglet_gui.widgets import Spacer
+from pyglet_gui.containers import HorizontalContainer, VerticalContainer, Spacer
 from pyglet_gui.theme import Theme
 
 theme = Theme({"font": "Lucida Grande",

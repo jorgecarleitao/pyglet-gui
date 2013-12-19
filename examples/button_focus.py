@@ -1,10 +1,10 @@
+from pyglet_gui.gui import Label
 from setup import *
 
 from pyglet_gui.buttons import Button
 from pyglet_gui.mixins import FocusMixin
 from pyglet_gui.dialog import Dialog
 from pyglet_gui.containers import VerticalContainer
-from pyglet_gui.widgets import Label
 from pyglet_gui.theme import Theme
 
 theme = Theme({

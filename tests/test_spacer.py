@@ -1,7 +1,7 @@
 from .setup import TestPygletGUI
 
-from pyglet_gui.containers import HorizontalContainer, VerticalContainer
-from pyglet_gui.widgets import Spacer, Viewer
+from pyglet_gui.containers import HorizontalContainer, VerticalContainer, Spacer
+from pyglet_gui.core import Viewer
 from pyglet_gui.dialog import Dialog
 
 

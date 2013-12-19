@@ -4,7 +4,21 @@ from pyglet_gui.constants import HALIGN_CENTER, HALIGN_LEFT, HALIGN_RIGHT, \
     VALIGN_TOP, VALIGN_CENTER, ANCHOR_CENTER, GetRelativePoint
 
 from pyglet_gui.core import Viewer, Rectangle
-from pyglet_gui.widgets import Spacer
+
+
+class Spacer(Viewer):
+    def __init__(self, min_width=0, min_height=0):
+        Viewer.__init__(self)
+        self._min_width, self._min_height = min_width, min_height
+
+    def expand(self, width, height):
+        self.width, self.height = width, height
+
+    def is_expandable(self):
+        return True
+
+    def compute_size(self):
+        return self._min_width, self._min_height
 
 
 class Container(Viewer):
