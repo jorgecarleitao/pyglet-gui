@@ -94,7 +94,7 @@ class ViewerManager(Wrapper):
             self._batch = batch
             self._has_own_batch = False
 
-        self.root_group = ViewerManagerGroup(parent=group)
+        self._root_group = ViewerManagerGroup(parent=group)
         self.group = {'panel': pyglet.graphics.OrderedGroup(10, self.root_group),
                       'background': pyglet.graphics.OrderedGroup(20, self.root_group),
                       'foreground': pyglet.graphics.OrderedGroup(30, self.root_group),
@@ -108,6 +108,10 @@ class ViewerManager(Wrapper):
 
         self._window = None
         self.window = window
+
+    @property
+    def root_group(self):
+        return self._root_group
 
     @property
     def batch(self):
@@ -188,7 +192,7 @@ class ViewerManager(Wrapper):
         - Pops the manager group to the top
         - Puts the event handler on top of the event handler's stack of the window.
         """
-        self.root_group.pop_to_top()
+        self._root_group.pop_to_top()
         self._batch._draw_list_dirty = True  # forces resorting groups
         if self._window is not None:
             self._window.remove_handlers(self)
@@ -364,7 +368,7 @@ class Manager(ViewerManager, ControllerManager):
     def on_mouse_motion(self, x, y, dx, dy):
         ControllerManager.on_mouse_motion(self, x, y, dx, dy)
         if self.hit_test(x, y):
-            if not self.root_group.is_on_top():
+            if not self._root_group.is_on_top():
                 self.pop_to_top()
             return True
 
