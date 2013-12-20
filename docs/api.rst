@@ -7,6 +7,9 @@ Pyglet-gui uses :class:`Viewers <pyglet_gui.core.Viewer>` for static appearance
 and :class:`Controllers <pyglet_gui.core.Controller>` for dynamic events.
 For instance, a button is a mixing of a Viewer (for draw) with a Controller (for user actions).
 
+.. image:: management.png
+    :scale: 100%
+
 Viewers and drawing
 ^^^^^^^^^^^^^^^^^^^^^
 
@@ -117,7 +120,7 @@ To extend a :class:`~pyglet_gui.core.Viewer` (or a subclass of), you should worr
 
 To extend a :class:`~pyglet_gui.containers.Container` (or a subclass of), you should worry about
 
-1. :meth:`~pyglet_gui.core.Viewer.load_content`, :meth:`~pyglet_gui.core.Viewer.unload_content`
+1. :meth:`~pyglet_gui.containers.Container.load_content`, :meth:`~pyglet_gui.containers.Container.unload_content`
 
     Used to load and unload children Viewers on the container.
 
@@ -125,7 +128,7 @@ To extend a :class:`~pyglet_gui.core.Controller` (or a subclass of), you should 
 
 1. on_* (e.g. on_press(...))
 
-    They are used to be called from the Manager, e.g. when it handles an event in the window.
+    They are used to be called from the :class:`~pyglet_gui.manager.Manager`, e.g. when it handles an event in the window.
 
 
 Existing user interfaces
@@ -138,8 +141,8 @@ Viewers:
     * Document: a viewer that holds Pyglet documents (optionally with a scrollbar).
 
 Controllers:
-    * TwoStateController: a controller with two states.
-    * ContinuousStateController: a controller with a float value state.
+    * :class:`~pyglet_gui.controllers.TwoStateController`: a controller with two states.
+    * :class:`~pyglet_gui.controllers.ContinuousStateController`: a controller with a float value state.
 
 Containers:
     * Vertical: widgets inside are arranged vertically.
