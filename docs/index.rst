@@ -8,6 +8,7 @@ Contents:
 
    api
    viewer
+   container
    controller
    manager
    button
