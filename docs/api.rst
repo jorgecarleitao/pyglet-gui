@@ -5,15 +5,18 @@ This document gives a conceptual overview of how Pyglet-gui works.
 
 Pyglet-gui uses :class:`Viewers <pyglet_gui.core.Viewer>` for static appearance
 and :class:`Controllers <pyglet_gui.core.Controller>` for dynamic events.
-For instance, a button is a mixing of a Viewer with a Controller.
+For instance, a button is a mixing of a Viewer (for draw) with a Controller (for user actions).
 
 Viewers and drawing
----------------------
+^^^^^^^^^^^^^^^^^^^^^
 
 In Pyglet-gui, the viewers are organized in a tree: every viewer has a
 parent :class:`~pyglet_gui.containers.Container` (a subclass of Viewer with children).
 The root of the tree is a :class:`~pyglet_gui.manager.Manager`, a special
 container without parent that defines a GUI within a pyglet window.
+
+.. image:: tree.png
+    :scale: 50%
 
 This structure is essentially used to draw elements. Pyglet-gui provides two orthogonal ways
 to draw, the top-down and bottom-up:
@@ -21,69 +24,75 @@ to draw, the top-down and bottom-up:
 Top-down is a recursion in the tree used when a container wants
 to draw itself (e.g. in the initialization of the :class:`~pyglet_gui.manager.Manager`).
 
-The container :meth:`loads <pyglet_gui.core.Container.load>` the children,
+The container :meth:`loads <pyglet_gui.containers.Container.load>` the children,
 which is propagated to other container's children.
-After loading, it computes its size by computing the size
-of each child (:meth:`~pyglet_gui.core.Viewer.compute_size`).
-Finally, it sets its position (:meth:`~pyglet_gui.core.Viewer.set_position`) and sets the positions the
-children.
+After loading, it computes its size by
+:meth:`computing the size <pyglet_gui.core.Viewer.compute_size>` of each child.
+Finally, it sets its position and :meth:`sets the positions <pyglet_gui.core.Viewer.set_position>` the children.
 
 The bottom-up is a recursion in the tree used when a single Viewer wants to be re-drawn, e.g.
 when a mouse press causes a change on the viewer's appearance.
 
 First, it :meth:`~pyglet_gui.core.Viewer.reload` the
 graphics with the new appearance;
-second, it re-computes its size (:meth:`~pyglet_gui.core.Viewer.reset_size`) to update it with the new appearance.
-If its size changed, it reloads the parent container. This can be propagated up in the tree.
+second, it re-computes its size (:meth:`~pyglet_gui.core.Viewer.reset_size`) to update its size.
+If its size changed during this update, it :meth:`~pyglet_gui.core.Viewer.reset_size` the parent container.
+This is propagated up in the tree until it reaches the Manager, or until an update doesn't change the container's size.
 
-This means that when a viewer changes its appearance, the manager is
-only re-laid out if the particular change caused a modification on the size of the full GUI.
+This means that when a viewer changes its appearance, most of the times the manager is
+not re-laid out because the change didn't changed the GUI's size.
 
-Controllers
--------------
-
-The other special feature of the :class:`~pyglet_gui.manager.Manager` is that it handles all pyglet events.
-While viewers are organized in a tree, the controllers are organized in a simple list:
-each controller registers itself in the manager and the manager has access to all of them.
-
-The manager is fully responsible for the user behaviour in the GUI it represents:
-it assigns which controllers receive mouse hovering, keyboard strokes, etc.
-
-Pyglet-gui does not use pyglet's event API. The :class:`~pyglet_gui.manager.Manager`
-is a pure python class that attaches itself to the (pyglet) window as a event handler.
 
 Graphical elements
 -------------------
 
-Each viewer can have graphical elements (e.g. textures, text).
+A viewer can have different graphical elements (e.g. textures, text).
 Pyglet-gui has a :doc:`graphics API <theme_api>` for handling those and
 abstracts the idea of images and textures: it uses a high-level interface
-on which you build a :class:`pyglet_gui.theme.Theme` (a JSON file with paths to files and colors)
-and widgets can select the part they need from the theme using :meth:`~pyglet_gui.core.Viewer.get_path`.
+on which you build a :class:`pyglet_gui.theme.Theme` loaded from a JSON file or dictionary with file paths and
+other data, and viewers select the part they need from the theme using :meth:`~pyglet_gui.core.Viewer.get_path`.
 
-Conceptually, Pyglet-gui theme API follows a factory pattern: it has a "template" that is instantiated
-when the theme is loaded from a JSON file, and each template has a method to generate the actual graphics
-by assigning vertices to the drawing batch.
+Conceptually, Pyglet-gui theme API follows the factory pattern: the :class:`pyglet_gui.theme.Theme` is a collection
+of class factories instantiated when the theme is loaded,
+and each template has a method to generate the actual vertex list and textures to load in the drawing batch.
+
 Graphics generation is called in :meth:`pyglet_gui.core.Viewer.load_graphics`, which is called in
 :meth:`~pyglet_gui.core.Viewer.load`.
 
+Controllers
+^^^^^^^^^^^^^^
+
+The other special feature of the :class:`~pyglet_gui.manager.Manager` is that it handles Pyglet events in the window
+and calls the :class:`Controllers <pyglet_gui.core.Controller>` methods.
+However, while viewers are organized in a tree, the controllers are organized in a simple list:
+each controller registers itself in the manager and the manager has access to all of them.
+
+.. image:: controllers.png
+    :scale: 50%
+
+The user behaviour in the GUI is handled by the manager,
+that attaches itself to the Pyglet window as an event handler. Pyglet-gui does not use the Pyglet event API.
+
 Examples
-----------
+^^^^^^^^^^^^
 
-In the source code you can find concrete examples of how all this works in pratice: all Pyglet-gui
-user interfaces are subclasses of :class:`~pyglet_gui.core.Controller`, :class:`~pyglet_gui.core.Viewer`, or
-are a mixin of both.
-
-The idea is to implement custom :meth:`~pyglet_gui.core.Viewer.get_path`, :meth:`~pyglet_gui.core.Viewer.load_graphics`,
-:meth:`~pyglet_gui.core.Viewer.unload_graphics`, :meth:`~pyglet_gui.core.Viewer.layout`
-and :meth:`~pyglet_gui.core.Viewer.compute_size` to obtain different appearance and functionality.
-
-In the directory "examples" you can find examples of how to instantiate GUIs and how to extend the existing
+In the directory "examples" you can find simple examples of how to instantiate GUIs and how to extend the existing
 elements.
 
+In the source code you can find more examples: all Pyglet-gui
+user interfaces are subclasses of :class:`~pyglet_gui.core.Controller`, :class:`~pyglet_gui.core.Viewer`, or
+are a mixin of both that implement the custom methods
+
+* :meth:`~pyglet_gui.core.Viewer.get_path`
+* :meth:`~pyglet_gui.core.Viewer.load_graphics`
+* :meth:`~pyglet_gui.core.Viewer.unload_graphics`
+* :meth:`~pyglet_gui.core.Viewer.layout`
+* :meth:`~pyglet_gui.core.Viewer.compute_size`
+
+to obtain different appearance and functionality.
 
 Extending functionality
------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 Pyglet-gui already has some end-user interfaces such as sliders and buttons, but they were designed to be extendable
 to your needs:
@@ -120,7 +129,7 @@ To extend a :class:`~pyglet_gui.core.Controller` (or a subclass of), you should 
 
 
 Existing user interfaces
------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 Viewers:
     * Graphics: a viewer with a graphic element from the theme.
