@@ -9,4 +9,5 @@ Contents:
    api
    viewer
    controller
+   manager
    button
