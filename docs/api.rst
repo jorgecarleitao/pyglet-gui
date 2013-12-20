@@ -10,12 +10,15 @@ For instance, a button is a mixing of a Viewer (for draw) with a Controller (for
 .. image:: management.png
     :scale: 100%
 
+:class:`~pyglet_gui.manager.Manager` constitutes a GUI in a Pyglet-gui,
+managing :class:`Controllers <pyglet_gui.core.Controller>` and :class:`Viewers <pyglet_gui.core.Viewer>`.
+
 Viewers and drawing
 ^^^^^^^^^^^^^^^^^^^^^
 
 In Pyglet-gui, the viewers are organized in a tree: every viewer has a
 parent :class:`~pyglet_gui.containers.Container` (a subclass of Viewer with children).
-The root of the tree is a :class:`~pyglet_gui.manager.Manager`, a special
+The root of the tree is a :class:`~pyglet_gui.manager.ViewerManager`, a special
 container without parent that defines a GUI within a pyglet window.
 
 .. image:: tree.png
@@ -27,10 +30,10 @@ to draw, the top-down and bottom-up:
 Top-down is a recursion in the tree used when a container wants
 to draw itself (e.g. in the initialization of the :class:`~pyglet_gui.manager.Manager`).
 
-The container :meth:`loads <pyglet_gui.containers.Container.load>` the children,
-which is propagated to other container's children.
+The container :meth:`loads <pyglet_gui.containers.Container.load_content>` the children,
+which is propagated to other children containers.
 After loading, it computes its size by
-:meth:`computing the size <pyglet_gui.core.Viewer.compute_size>` of each child.
+:meth:`computing the size <pyglet_gui.core.Viewer.compute_size>` of each children.
 Finally, it sets its position and :meth:`sets the positions <pyglet_gui.core.Viewer.set_position>` the children.
 
 The bottom-up is a recursion in the tree used when a single Viewer wants to be re-drawn, e.g.
