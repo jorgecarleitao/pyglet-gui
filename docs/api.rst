@@ -19,7 +19,7 @@ Viewers and drawing
 In Pyglet-gui, the viewers are organized in a tree: every viewer has a
 parent :class:`~pyglet_gui.containers.Container` (a subclass of Viewer with children).
 The root of the tree is a :class:`~pyglet_gui.manager.ViewerManager`, a special
-container without parent that defines a GUI within a pyglet window.
+container without parent.
 
 .. image:: tree.png
     :scale: 100%
@@ -34,19 +34,19 @@ The container :meth:`loads <pyglet_gui.containers.Container.load_content>` the c
 which is propagated to other children containers.
 After loading, it computes its size by
 :meth:`computing the size <pyglet_gui.core.Viewer.compute_size>` of each children.
-Finally, it sets its position and :meth:`sets the positions <pyglet_gui.core.Viewer.set_position>` the children.
+Finally, it :meth:`<pyglet_gui.core.Viewer.set_position>` of the children.
 
 The bottom-up is a recursion in the tree used when a single Viewer wants to be re-drawn, e.g.
-when a mouse press causes a change on the viewer's appearance.
+when a mouse press changes the viewer's appearance.
 
 First, it :meth:`~pyglet_gui.core.Viewer.reload` the
 graphics with the new appearance;
-second, it re-computes its size (:meth:`~pyglet_gui.core.Viewer.reset_size`) to update its size.
-If its size changed during this update, it :meth:`~pyglet_gui.core.Viewer.reset_size` the parent container.
+second, it re-computes a new size (:meth:`~pyglet_gui.core.Viewer.reset_size`) and updates its size.
+If its size changed, it :meth:`~pyglet_gui.core.Viewer.reset_size` the parent container.
 This is propagated up in the tree until it reaches the Manager, or until an update doesn't change the container's size.
 
-This means that when a viewer changes its appearance, most of the times the manager is
-not re-laid out because the change didn't changed the GUI's size.
+This means that when a viewer changes its appearance (e.g. by a Controller's fault), most of the times
+the manager is not touched because it didn't changed the GUI's size.
 
 
 Graphical elements
@@ -55,12 +55,12 @@ Graphical elements
 A viewer can have different graphical elements (e.g. textures, text).
 Pyglet-gui has a :doc:`graphics API <theme_api>` for handling those and
 abstracts the idea of images and textures: it uses a high-level interface
-on which you build a :class:`pyglet_gui.theme.Theme` loaded from a JSON file or dictionary with file paths and
+on which you define a :class:`pyglet_gui.theme.Theme` in a JSON file or nested dictionary with file paths and
 other data, and viewers select the part they need from the theme using :meth:`~pyglet_gui.core.Viewer.get_path`.
 
 Conceptually, Pyglet-gui theme API follows the factory pattern: the :class:`pyglet_gui.theme.Theme` is a collection
-of class factories instantiated when the theme is loaded,
-and each template has a method to generate the actual vertex list and textures to load in the drawing batch.
+of class factories instantiated when the theme is loaded
+and each template has a method to generate the actual vertex list and textures to load them in the batch.
 
 Graphics generation is called in :meth:`pyglet_gui.core.Viewer.load_graphics`, which is called in
 :meth:`~pyglet_gui.core.Viewer.load`.
@@ -68,24 +68,22 @@ Graphics generation is called in :meth:`pyglet_gui.core.Viewer.load_graphics`, w
 Controllers
 ^^^^^^^^^^^^^^
 
-The other special feature of the :class:`~pyglet_gui.manager.Manager` is that it handles Pyglet events in the window
-and calls the :class:`Controllers <pyglet_gui.core.Controller>` methods.
-However, while viewers are organized in a tree, the controllers are organized in a simple list:
-each controller registers itself in the manager and the manager has access to all of them.
+The :class:`~pyglet_gui.manager.Manager` is responsible for handling all events in the GUI
+and calling the respective :class:`Controllers <pyglet_gui.core.Controller>` handlers.
 
 .. image:: controllers.png
     :scale: 100%
 
-The user behaviour in the GUI is handled by the manager,
-that attaches itself to the Pyglet window as an event handler. Pyglet-gui does not use the Pyglet event API.
+While viewers are organized in a tree, the controllers are organized in a simple list:
+each controller registers itself in the manager and the manager has access to all of them.
 
 Examples
 ^^^^^^^^^^^^
 
-In the directory "examples" you can find simple examples of how to instantiate GUIs and how to extend the existing
+In the directory "examples" you can find examples of how to instantiate GUIs and how to extend the existing
 elements.
 
-In the source code you can find more examples: all Pyglet-gui
+In the source code you can find more examples since all Pyglet-gui
 user interfaces are subclasses of :class:`~pyglet_gui.core.Controller`, :class:`~pyglet_gui.core.Viewer`, or
 are a mixin of both that implement the custom methods
 
@@ -94,14 +92,15 @@ are a mixin of both that implement the custom methods
 * :meth:`~pyglet_gui.core.Viewer.unload_graphics`
 * :meth:`~pyglet_gui.core.Viewer.layout`
 * :meth:`~pyglet_gui.core.Viewer.compute_size`
+* `on_*`
 
 to obtain different appearance and functionality.
 
 Extending functionality
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-Pyglet-gui already has some end-user interfaces such as sliders and buttons, but they were designed to be extendable
-to your needs:
+Pyglet-gui already has some end-user interfaces such as sliders and buttons, but they were mainly designed
+to be extendable to the developer's needs.
 
 To extend a :class:`~pyglet_gui.core.Viewer` (or a subclass of), you should worry about
 
@@ -125,7 +124,7 @@ To extend a :class:`~pyglet_gui.containers.Container` (or a subclass of), you sh
 
 1. :meth:`~pyglet_gui.containers.Container.load_content`, :meth:`~pyglet_gui.containers.Container.unload_content`
 
-    Used to load and unload children Viewers on the container.
+    Used to load and unload children Viewers inside the container.
 
 To extend a :class:`~pyglet_gui.core.Controller` (or a subclass of), you should worry about
 
@@ -155,7 +154,7 @@ Containers:
     * Scrollable: a wrapper with scrollable content.
 
 End-user controllers:
-    * Button: a On/Off button with a label and graphics placed on top off each other.
+    * :class:`~pyglet_gui.buttons.Button`: a On/Off button with a label and graphics placed on top off each other.
     * Checkbox: a Button where the label is placed next to the graphics (and graphics is a checkbox like button).
     * OneTimeButton: a Button which turns off when is released.
     * Slider: a ContinuousStateController with continuous or discrete states and 3 graphic elements: a bar, a knob and markers.
