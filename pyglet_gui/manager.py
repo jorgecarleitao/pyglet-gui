@@ -377,17 +377,6 @@ class Manager(ViewerManager, ControllerManager):
             return True
 
     def on_mouse_press(self, x, y, button, modifiers):
-        """
-        If the focus is set, and the target lies within the focus, pass the
-        message down.  Otherwise, check if we need to assign a new focus.
-        If the mouse was pressed within our frame but no control was targeted,
-        we may be setting up to drag the Manager around.
-
-        @param x X coordinate of mouse
-        @param y Y coordinate of mouse
-        @param button Button pressed
-        @param modifiers Modifiers to apply to button
-        """
         retval = ControllerManager.on_mouse_press(self, x, y, button, modifiers)
         if self.hit_test(x, y):
             if not retval:
