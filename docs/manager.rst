@@ -3,10 +3,10 @@ Manager
 
 .. currentmodule:: pyglet_gui.manager
 
-In Pyglet-gui, each independent GUI is a :class:`pyglet_gui.manager.Manager`,
-a subclass of both :class:`pyglet_gui.manager.ViewerManager` and :class:`pyglet_gui.manager.ControllerManager`.
+In Pyglet-gui, each independent GUI is a :class:`~pyglet_gui.manager.Manager`,
+a subclass of both :class:`~pyglet_gui.manager.ViewerManager` and :class:`~pyglet_gui.manager.ControllerManager`.
 
-This section provides the relevant references for understanding how :class:`pyglet_gui.manager.Manager` works
+This section provides the relevant references for understanding how :class:`~pyglet_gui.manager.Manager` works
 and how you can use it.
 
 This section is most complex of this documentation because it glues all different APIs together.
