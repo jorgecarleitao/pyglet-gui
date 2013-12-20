@@ -11,15 +11,15 @@ Viewers and drawing
 ---------------------
 
 In Pyglet-gui, the viewers are organized in a tree: every viewer has a
-parent :class:`~pyglet_gui.core.Container` (a subclass of Viewer with children).
-The root of the tree is a :class:`~pyglet_gui.dialog.Dialog`, a special
+parent :class:`~pyglet_gui.containers.Container` (a subclass of Viewer with children).
+The root of the tree is a :class:`~pyglet_gui.manager.Manager`, a special
 container without parent that defines a GUI within a pyglet window.
 
 This structure is essentially used to draw elements. Pyglet-gui provides two orthogonal ways
 to draw, the top-down and bottom-up:
 
 Top-down is a recursion in the tree used when a container wants
-to draw itself (e.g. in the initialization of the :class:`~pyglet_gui.dialog.Dialog`).
+to draw itself (e.g. in the initialization of the :class:`~pyglet_gui.manager.Manager`).
 
 The container :meth:`loads <pyglet_gui.core.Container.load>` the children,
 which is propagated to other container's children.
@@ -35,32 +35,33 @@ First, it :meth:`~pyglet_gui.core.Viewer.reload` the
 graphics with the new appearance;
 second, it re-computes its size (:meth:`~pyglet_gui.core.Viewer.reset_size`) to update it with the new appearance.
 If its size changed, it reloads the parent container. This can be propagated up in the tree.
-This means that when a viewer changes its appearance, the dialog is
+
+This means that when a viewer changes its appearance, the manager is
 only re-laid out if the particular change caused a modification on the size of the full GUI.
 
 Controllers
 -------------
 
-The other special feature of the :class:`~pyglet_gui.dialog.Dialog` is that it handles all pyglet events.
-While widgets are organized in a tree, the controllers are organized in a simple list:
-each controller registers itself in the dialog and the dialog has access to all of them.
+The other special feature of the :class:`~pyglet_gui.manager.Manager` is that it handles all pyglet events.
+While viewers are organized in a tree, the controllers are organized in a simple list:
+each controller registers itself in the manager and the manager has access to all of them.
 
-The dialog is fully responsible for the user behaviour in the GUI it represents:
+The manager is fully responsible for the user behaviour in the GUI it represents:
 it assigns which controllers receive mouse hovering, keyboard strokes, etc.
 
-Pyglet-gui does not use pyglet's events API. The :class:`~pyglet_gui.dialog.Dialog`
+Pyglet-gui does not use pyglet's event API. The :class:`~pyglet_gui.manager.Manager`
 is a pure python class that attaches itself to the (pyglet) window as a event handler.
 
 Graphical elements
 -------------------
 
-Each widget can have graphical elements (e.g. textures, text).
+Each viewer can have graphical elements (e.g. textures, text).
 Pyglet-gui has a :doc:`graphics API <theme_api>` for handling those and
 abstracts the idea of images and textures: it uses a high-level interface
 on which you build a :class:`pyglet_gui.theme.Theme` (a JSON file with paths to files and colors)
 and widgets can select the part they need from the theme using :meth:`~pyglet_gui.core.Viewer.get_path`.
 
-Conceptually, Pyglet-gui theme API follows a factory pattern: it has a class "template" that is instantiated
+Conceptually, Pyglet-gui theme API follows a factory pattern: it has a "template" that is instantiated
 when the theme is loaded from a JSON file, and each template has a method to generate the actual graphics
 by assigning vertices to the drawing batch.
 Graphics generation is called in :meth:`pyglet_gui.core.Viewer.load_graphics`, which is called in
@@ -70,7 +71,7 @@ Examples
 ----------
 
 In the source code you can find concrete examples of how all this works in pratice: all Pyglet-gui
-user interfaces are subcasses of :class:`~pyglet_gui.core.Controller`, :class:`~pyglet_gui.core.Viewer`, or
+user interfaces are subclasses of :class:`~pyglet_gui.core.Controller`, :class:`~pyglet_gui.core.Viewer`, or
 are a mixin of both.
 
 The idea is to implement custom :meth:`~pyglet_gui.core.Viewer.get_path`, :meth:`~pyglet_gui.core.Viewer.load_graphics`,
@@ -105,25 +106,27 @@ To extend a :class:`~pyglet_gui.core.Viewer` (or a subclass of), you should worr
 
     Used to compute the size of the Viewer when all graphics are already loaded.
 
-To extend a :class:`~pyglet_gui.core.Container` (or a subclass of), you should worry about
+To extend a :class:`~pyglet_gui.containers.Container` (or a subclass of), you should worry about
 
 1. :meth:`~pyglet_gui.core.Viewer.load_content`, :meth:`~pyglet_gui.core.Viewer.unload_content`
 
-    Used to load and unload children Viewers of the container.
+    Used to load and unload children Viewers on the container.
 
 To extend a :class:`~pyglet_gui.core.Controller` (or a subclass of), you should worry about
 
 1. on_* (e.g. on_press(...))
 
-    They are used to be called from the Dialog, e.g. when it handles an event in the window.
+    They are used to be called from the Manager, e.g. when it handles an event in the window.
 
 
 Existing user interfaces
 -----------------------
 
 Viewers:
-    * Graphics: a widget with a graphic element from the theme.
-    * Spacer: an empty widget for filling space in containers
+    * Graphics: a viewer with a graphic element from the theme.
+    * Spacer: an empty viewer for filling space in containers.
+    * Label: a viewer that holds text.
+    * Document: a viewer that holds Pyglet documents (optionally with a scrollbar).
 
 Controllers:
     * TwoStateController: a controller with two states.
@@ -133,12 +136,10 @@ Containers:
     * Vertical: widgets inside are arranged vertically.
     * Horizontal: widgets inside are arranged horizontally.
     * Grid: widgets inside are arranged in a grid (you provide a matrix of them).
-    * Frame: a wrapper that adds a graphical frame around a widget.
-    * Document: a widget that holds pyglet documents (with scrollbar).
+    * Frame: a wrapper that adds a graphical frame around a viewer.
     * Scrollable: a wrapper with scrollable content.
 
 End-user controllers:
-    * Label: a widget that holds text.
     * Button: a On/Off button with a label and graphics placed on top off each other.
     * Checkbox: a Button where the label is placed next to the graphics (and graphics is a checkbox like button).
     * OneTimeButton: a Button which turns off when is released.
