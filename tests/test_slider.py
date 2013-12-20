@@ -13,17 +13,17 @@ class TestSlider(TestPygletGUI):
 
     def test_set_value(self):
         self.slider.set_knob_pos(0.5)
-        self.assertEqual(self.slider.get_value(), 5)
+        self.assertEqual(self.slider.value, 5)
 
     def test_mouse_slide(self):
 
         # push the slider to the minimum
         self.slider.on_mouse_press(0, 0, None, None)
-        self.assertEqual(self.slider.get_value(), 0)
+        self.assertEqual(self.slider.value, 0)
 
         # push the slider to the maximum
         self.slider.on_mouse_press(10000, 0, None, None)
-        self.assertEqual(self.slider.get_value(), 10)
+        self.assertEqual(self.slider.value, 10)
 
     def tearDown(self):
         self.manager.delete()

@@ -40,7 +40,8 @@ class ContinuousStateController(Controller):
         self._value = value
         self._on_set(value)
 
-    def get_value(self):
+    @property
+    def value(self):
         return self._value
 
 
