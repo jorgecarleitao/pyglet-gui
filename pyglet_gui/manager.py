@@ -12,23 +12,23 @@ class ViewerManagerGroup(pyglet.graphics.OrderedGroup):
     blending enabled, and that Managers are drawn in a particular
     order.
     """
-    next_manager_order_id = 0
+    _top_manager_order = 0
 
     @classmethod
-    def get_next_order_id(cls):
-        cls.next_manager_order_id += 1
-        return cls.next_manager_order_id
+    def _get_next_top_order(cls):
+        cls._top_manager_order += 1
+        return cls._top_manager_order
 
     def __init__(self, parent=None):
         """
         Creates a new ViewerManagerGroup. By default it is on top.
         """
-        pyglet.graphics.OrderedGroup.__init__(self, self.get_next_order_id(), parent)
+        pyglet.graphics.OrderedGroup.__init__(self, self._get_next_top_order(), parent)
         self.own_order = self.order
 
     def __eq__(self, other):
         """
-        When compared with other DialogGroups, we'll return our real order
+        When compared with other ViewerManagerGroups, we'll return the own_order
         compared against theirs; otherwise use the OrderedGroup comparison.
         """
         if isinstance(other, ViewerManagerGroup):
@@ -49,13 +49,13 @@ class ViewerManagerGroup(pyglet.graphics.OrderedGroup):
         """
         Are we the top manager group?
         """
-        return self.own_order == self.next_manager_order_id
+        return self.own_order == self._top_manager_order
 
     def pop_to_top(self):
         """
         Put us on top of other manager groups.
         """
-        self.own_order = self.get_next_order_id()
+        self.own_order = self._get_next_top_order()
 
     def set_state(self):
         """
