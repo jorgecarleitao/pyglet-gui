@@ -208,7 +208,7 @@ class ViewerManager(Wrapper):
 
 class ControllerManager:
     def __init__(self):
-        self.controllers = []  # list of controllers.
+        self._controllers = []  # list of controllers.
 
         self._hover = None  # the control that is being hovered (mouse inside)
         self._focus = None  # the control that has the focus (accepts key strokes)
@@ -216,13 +216,17 @@ class ControllerManager:
         self.wheel_target = None  # the primary control to receive wheel events.
         self.wheel_hint = None    # the secondary control to receive wheel events.
 
+    @property
+    def controllers(self):
+        return self._controllers
+
     def add_controller(self, controller):
-        assert controller not in self.controllers
-        self.controllers.append(controller)
+        assert controller not in self._controllers
+        self._controllers.append(controller)
 
     def remove_controller(self, controller):
-        assert controller in self.controllers
-        self.controllers.remove(controller)
+        assert controller in self._controllers
+        self._controllers.remove(controller)
         if self._hover == controller:
             self.set_hover(None)
         if self._focus == controller:
@@ -232,7 +236,7 @@ class ControllerManager:
         assert direction in [-1, 1]
 
         # all the focusable controllers
-        focusable = [x for x in self.controllers if hasattr(x, 'on_gain_focus')]
+        focusable = [x for x in self._controllers if hasattr(x, 'on_gain_focus')]
         if not focusable:
             return
 
@@ -268,7 +272,7 @@ class ControllerManager:
 
     def on_mouse_motion(self, x, y, dx, dy):
         new_hover = None
-        for control in self.controllers:
+        for control in self._controllers:
             if control.hit_test(x, y):
                 new_hover = control
                 break
@@ -287,9 +291,9 @@ class ControllerManager:
             return self._focus.on_mouse_release(x, y, button, modifiers)
 
     def on_mouse_scroll(self, x, y, scroll_x, scroll_y):
-        if self.wheel_target in self.controllers:
+        if self.wheel_target in self._controllers:
             return self.wheel_target.on_mouse_scroll(x, y, scroll_x, scroll_y)
-        elif self.wheel_hint in self.controllers:
+        elif self.wheel_hint in self._controllers:
             return self.wheel_hint.on_mouse_scroll(x, y, scroll_x, scroll_y)
         else:
             return True
@@ -331,7 +335,7 @@ class ControllerManager:
         self.wheel_target = control
 
     def delete(self):
-        self.controllers = []
+        self._controllers = []
         self._focus = None
         self._hover = None
         self.wheel_hint = None
