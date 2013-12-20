@@ -16,7 +16,7 @@ The root of the tree is a :class:`~pyglet_gui.manager.Manager`, a special
 container without parent that defines a GUI within a pyglet window.
 
 .. image:: tree.png
-    :scale: 50%
+    :scale: 100%
 
 This structure is essentially used to draw elements. Pyglet-gui provides two orthogonal ways
 to draw, the top-down and bottom-up:
@@ -68,7 +68,7 @@ However, while viewers are organized in a tree, the controllers are organized in
 each controller registers itself in the manager and the manager has access to all of them.
 
 .. image:: controllers.png
-    :scale: 50%
+    :scale: 100%
 
 The user behaviour in the GUI is handled by the manager,
 that attaches itself to the Pyglet window as an event handler. Pyglet-gui does not use the Pyglet event API.
