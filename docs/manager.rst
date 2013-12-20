@@ -12,9 +12,11 @@ and how you can use it.
 This section is most complex of this documentation because it glues all different APIs together.
 The references of the classes are themselves divided in APIs, so it is easier for you to understand them.
 
+Viewer Manager
+^^^^^^^^^^^^^^^^^^
 
 ViewerManagerGroup
-^^^^^^^^^^^^^^^^^^
+-------------------
 
 Because each manager is independent of each other, it makes sense to draw them in different vertex groups
 to know which one is drawn on top. :class:`ViewerManagerGroup` is used for that:
@@ -45,9 +47,8 @@ to know which one is drawn on top. :class:`ViewerManagerGroup` is used for that:
 
         Returns true if the particular instance is on top amongst all instances of ViewerManagerGroup.
 
-
 ViewerManager
----------------
+-------------------
 
 .. class:: ViewerManager
 
@@ -124,8 +125,8 @@ ViewerManager
 
         Used with :meth:`pyglet_gui.core.Viewer.set_position` to set the position of this manager in the window.
 
-ControllerManager
-------------------
+Controller Manager
+^^^^^^^^^^^^^^^^^^
 
 .. class::ControllerManager
 
