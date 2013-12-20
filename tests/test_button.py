@@ -18,7 +18,7 @@ class TestButton(TestPygletGUI):
 
     def test_press(self):
         self.button.on_mouse_press(0, 0, None, None)
-        self.assertEqual(self.button.is_pressed(), True)
+        self.assertEqual(self.button.is_pressed, True)
 
     def test_delete(self):
         self.manager.delete()

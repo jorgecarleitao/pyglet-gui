@@ -30,7 +30,7 @@ class Button(TwoStateController, Viewer):
 
     def get_path(self):
         path = ['button']
-        if self._is_pressed:
+        if self.is_pressed:
             path.append('down')
         else:
             path.append('up')
@@ -85,7 +85,7 @@ class OneTimeButton(Button):
             self.on_release = on_release
 
     def on_mouse_release(self, x, y, button, modifiers):
-        if self._is_pressed:
+        if self.is_pressed:
             self.change_state()
 
             # If mouse is still hovering us, signal on_release
@@ -106,7 +106,7 @@ class Checkbox(Button):
 
     def get_path(self):
         path = ['checkbox']
-        if self._is_pressed:
+        if self.is_pressed:
             path.append('checked')
         else:
             path.append('unchecked')
