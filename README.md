@@ -9,27 +9,40 @@ This project is in pre-alpha.
 Main features
 --------------
 
-* Implements the controller-viewer pattern.
+* Implements a controller-viewer pattern.
 
-    Pyglet-gui uses the concept of "Controllers" to handle events and "Widgets" to draw.
+    Pyglet-gui uses the concept of "controllers" to handle window events and "viewers" to draw.
 
-    It provides both low-level interfaces, such as two-state controllers,
-    and end-user interfaces, such as buttons,
-    which can be further extended.
+    We provide both low-level interfaces such as two-state controllers,
+    and end-user interfaces such as buttons, both of which designed to be extended
+    to the user's need.
+
+    For example, a Button is a subclass of a two-state controller and a viewer.
 
 * Use of Mixins
 
     Pyglet-gui uses mixins for extending functionality of viewers and controllers.
-    This minimizes repetition and increases code reusability.
+    This increases code reusability and modularity.
+
+    For example, you add mouse hovering behaviour to a button by mixin a Button with a HoveringMixin.
 
 * Implements an abstraction for graphical appearance
 
     Pyglet-gui uses the concept of "theme", on which each (static) resource is defined in a JSON file.
-    This file is loaded into a "theme" that is used by widgets to load resources.
+    This file is loaded into a list of factories, a Theme, and viewers can load specific resources
+    by choosing the factory they want by a path.
 
-    This decouples the laying out of elements from its graphical appearance. You can create your own themes,
-    or extend the existing one.
+    For example, a Button chooses the path
 
+        def get_path(self):
+            path = ['button']
+            if self.is_pressed():
+                path.append('down')
+            else:
+                path.append('up')
+            return path
+
+    and the factory produces a vertex list and a texture from the specifications in the JSON file.
 
 Installation
 --------------
@@ -42,7 +55,7 @@ Installation
 Documentation
 --------------
 
-(Under construction)
+The documentation is incomplete, but being
 
 The documentation can be found in the [read the docs](http://pyglet-gui.readthedocs.org/en/latest/index.html).
 
@@ -62,4 +75,4 @@ Contributors
 
 The contributor of Kytten was Conrad "Lynx" Wong, which this project reuses.
 
-Jorge C. Leitão re-formulated the API.
+Jorge C. Leitão designed, tested and documented the API.
