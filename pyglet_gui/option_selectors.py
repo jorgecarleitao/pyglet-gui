@@ -44,12 +44,6 @@ class VerticalButtonSelector(VerticalContainer, Selector):
             widget_options.append(OptionButton(option, label, is_selected=(option == self._selected), parent=self))
         return widget_options
 
-    def set_options(self, options, labels=None):
-        self.unload()
-        Selector.set_options(self, options, labels)
-        self.set(self._options.items())
-        self.reset_size()
-
 
 class Dropdown(Selector, OneTimeButton):
     def __init__(self, options, labels=None, max_height=400, align=VALIGN_TOP, on_select=None):
@@ -124,11 +118,6 @@ class Dropdown(Selector, OneTimeButton):
             window=self._manager.window, batch=self._manager.batch,
             group=self._manager.root_group.parent, theme=self._manager.theme,
             is_movable=False, anchor=anchor, offset=(x, y))
-
-    def set_options(self, options, labels=None):
-        on_select = self._on_select
-        del self
-        self.__init__(options, labels, on_select)
 
     def delete(self):
         self._delete_pulldown_menu()

@@ -90,8 +90,3 @@ class Selector:
         if self._selected is not None:
             self._options[self._selected].change_state()
         self._selected = None
-
-    def set_options(self, options, labels=None):
-        on_select = self._on_select
-        del self
-        self.__init__(options, labels, on_select)
