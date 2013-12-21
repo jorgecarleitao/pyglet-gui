@@ -5,7 +5,7 @@ This document gives an overview of how Pyglet-gui works and what you can do with
 
 Pyglet-gui uses :class:`Viewers <pyglet_gui.core.Viewer>` for defining appearance
 and :class:`Controllers <pyglet_gui.core.Controller>` for defining behaviour.
-For instance, a :class:`Controllers <pyglet_gui.buttons.Button>` is a subclass of a
+For instance, a :class:`Button <pyglet_gui.buttons.Button>` is a subclass of a
 Viewer (for draw) and of a Controller (for behaviour).
 
 .. image:: management.png
@@ -17,7 +17,10 @@ Viewer (for draw) and of a Controller (for behaviour).
 Viewers
 ^^^^^^^^^^^
 
-In Pyglet-gui, viewers are organized in a tree: every viewer has a
+A Viewer is characterized by a rectangular bounding box that implements abstract methods
+to draw :class:`Graphical Elements <pyglet_gui.theme.elements.GraphicalElement>` such as textures, inside it.
+
+In Pyglet-gui, a GUI organizes viewers in a tree: every viewer has a
 parent :class:`~pyglet_gui.containers.Container` (a subclass of Viewer with children viewers)
 and the root of the tree is a :class:`~pyglet_gui.manager.ViewerManager`, a special
 container without parent.
@@ -25,16 +28,32 @@ container without parent.
 .. image:: tree.png
     :scale: 100%
 
-This structure is essentially used to draw elements. Pyglet-gui provides two orthogonal ways
-to update elements in the tree, the top-down and bottom-up,
-that minimize the number of operations in the drawing Batch.
+This structure is essentially used to minimize the number of operations in the drawing Batch
+and Pyglet-gui provides two orthogonal ways to operate on the batch: the top-down and bottom-up:
 
-* Top-down: when a container wants to draw itself (e.g. in the initialization of the :class:`~pyglet_gui.manager.Manager`).
+* Top-down: when a container wants to reload itself in the batch (e.g. in the initialization of the :class:`~pyglet_gui.manager.Manager`).
 
-* Bottom-up: when a single :class:`~pyglet_gui.core.Viewer` wants to be reloaded,
-possibly reloading its container (e.g. when a :class:`Controller <pyglet_gui.core.Controller>` changed a viewer's state).
+* Bottom-up: when a single :class:`~pyglet_gui.core.Viewer` wants to reload itself
+(e.g. when a :class:`Controller <pyglet_gui.core.Controller>` changed a viewer's state).
 
-Most of the times, this is already implemented and you only have to override specific methods, as explained below.
+Pyglet-gui abstracts most of these concepts by a simple interface for doing them. From
+the :class:`Button <pyglet_gui.buttons.Button>`::
+
+     def change_state(self):
+        self._is_pressed = not self._is_pressed
+        self.reload()
+        self.reset_size()
+
+The steps:
+
+1. something makes a change in the state of the Viewer that requires a new appearance;
+2. :meth:`~pyglet_gui.core.Viewer.reload` the Viewer;
+3. :meth:`~pyglet_gui.core.Viewer.reset_size` the viewer.
+
+perform a Bottom-up drawing. If the Viewer changed size when it became pressed,
+this is propagated to the parent container and in the tree up to the container that didn't changed size,
+which means that a relayout of the GUI is only made to a certain branch of the tree, minimizing
+Batch operations.
 
 Theme and Graphics
 ^^^^^^^^^^^^^^^^^^^^^
@@ -43,19 +62,21 @@ Pyglet-gui has a graphics API for handling vertex lists and vertex attributes:
 The developer defines a :class:`~pyglet_gui.theme.theme.Theme` from a dictionary, and viewers select
 the part of the theme they need using a path, :meth:`~pyglet_gui.core.Viewer.get_path`.
 
-This :class:`~pyglet_gui.theme.theme.Theme` is constructed out of a nested dictionary by having :class:`Parsers <pyglet_gui.theme.parsers.Parser>`
+This :class:`~pyglet_gui.theme.theme.Theme` is constructed out of a nested dictionary
+by having :class:`Parsers <pyglet_gui.theme.parsers.Parser>`
 interpreting the dictionary's content and populating the Theme with
 :class:`Templates <pyglet_gui.theme.templates.Template>`.
 
-These templates are able to generate :class:`Graphical Elements <pyglet_gui.theme.elements.GraphicalElement>`,
-which are used by :class:`Viewers <pyglet_gui.core.Viewer>`.
+These templates are able to generate :class:`Graphical Elements <pyglet_gui.theme.elements.GraphicalElement>`
+that are used by :class:`Viewers <pyglet_gui.core.Viewer>`.
 
 Controllers
 ^^^^^^^^^^^^^^
 
-The :class:`~pyglet_gui.manager.ControllerManager` is responsible for handling all events in the GUI
-by handling Pyglet's window events. The manager uses those
-events to call the correct :class:`Controllers' <pyglet_gui.core.Controller>` handlers.
+A Controller represents something that can have behavior, such as something triggered by Pyglet events.
+
+Pyglet-gui uses a :class:`~pyglet_gui.manager.ControllerManager` for handling all window events in the GUI,
+and the manager uses these events to call the correct :class:`Controllers' <pyglet_gui.core.Controller>` handlers.
 
 .. image:: controllers.png
     :scale: 100%
@@ -63,8 +84,8 @@ events to call the correct :class:`Controllers' <pyglet_gui.core.Controller>` ha
     While viewers are organized in a tree, the controllers are organized in a simple list:
     each controller registers itself in the manager and the manager has access to all of them.
 
-A handler in a controller is just a method "on_*" defined on it: the ControllerManager uses :py:meth:`hasattr`
-to check which controllers can receive specific events.
+A handler in a controller is just a defined method "on_*": the ControllerManager uses :py:meth:`hasattr`
+to check which controllers can receive which events.
 
 Examples
 ^^^^^^^^^^^^
@@ -72,7 +93,7 @@ Examples
 In the directory "examples" you can find examples of how to instantiate GUIs and how to use the Pyglet-gui
 to create elements with custom functionality.
 
-In fact, all Pyglet-gui user interfaces are subclasses of
+In fact, all Pyglet-gui user interfaces are examples, since they are just subclasses of
 :class:`~pyglet_gui.core.Controller`, :class:`~pyglet_gui.core.Viewer`,
 or both, that implement custom methods:
 
@@ -109,6 +130,6 @@ Containers:
 End-user controllers:
     * :class:`~pyglet_gui.buttons.Button`: a On/Off button with a label and graphics placed on top off each other.
     * OneTimeButton: a Button which turns off when is released.
-    * Checkbox: a Button where the label is placed next to the graphics (and graphics is a checkbox like button).
+    * Checkbox: a Button where the label is placed next to the graphics (and graphics is a checkbox-like button).
     * HorizontalSlider: an concrete implementation of a Slider, in horizontal position.
     * TextInput: a box for writing text.
