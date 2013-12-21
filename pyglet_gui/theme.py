@@ -350,7 +350,7 @@ class Theme(ScopedDict):
                     else:
                         target[k] = TextureGraphicElementTemplate(texture, width=width, height=height)
                 else:
-                    target[k] = TextureGraphicElementTemplate(self, self._get_texture(v))
+                    target[k] = TextureGraphicElementTemplate(self._get_texture(v))
             elif isinstance(v, dict):
                 temp = ScopedDict(parent=target)
                 self._update_with_images(temp, v)
