@@ -1,4 +1,4 @@
-Manager
+Managers
 ====================
 
 In Pyglet-gui, each independent GUI is a :class:`~pyglet_gui.manager.Manager`,
@@ -128,7 +128,7 @@ Controller Manager
 
 .. currentmodule:: pyglet_gui.manager
 
-.. class::ControllerManager
+.. class:: ControllerManager
 
     A controller manager is the class responsible for
     managing Pyglet-gui :class:`Controllers <pyglet_gui.core.Controller>`.
