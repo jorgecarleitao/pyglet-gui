@@ -11,4 +11,5 @@ Contents:
    container
    controller
    manager
+   theme
    button
