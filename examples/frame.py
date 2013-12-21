@@ -12,7 +12,7 @@ theme = Theme({"font": "Lucida Grande",
                    "image": {
                        "source": "panel.png",
                        "frame": [8, 8, 16, 16],
-                       "padding": [16, 16, 8, 8]
+                       "padding": [8, 8, 0, 0]
                    }
                }
               }, resources_path='../theme/')
