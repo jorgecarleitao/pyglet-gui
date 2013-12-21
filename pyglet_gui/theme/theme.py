@@ -95,40 +95,37 @@ class Theme(ScopedDict):
 
         self._parsers = [TextureParser(resources_path)]
 
-        self._textures = {}
-        self.update_with_textures(self, dictionary)
+        self.build(self, dictionary)
 
     def update(self, E=None, **F):
         super().update(E, **F)
-        self.update_with_textures(self, E)
+        self.build(self, E)
 
-    def update_with_texture(self, key, value, target):
+    def build_element(self, key, value, target):
 
-        was_parsed = False
         for parser in self._parsers:
             if parser.condition_fulfilled(key):
                 target[key] = parser.parse_element(value)
-                was_parsed = True
-                break  # we only parse it once
+                # we only parse one element by parser.
+                # if it is parsed, we are done.
+                return
 
-        if was_parsed:
-            return
-        # if value is a non-parsed dict, we create a new depth.
-        elif isinstance(value, dict):
-            temp = ScopedDict(parent=target)
-            self.update_with_textures(temp, value)
-            target[key] = temp
+        # if value is a non-parsed dict, we add a new depth
+        # and build against the new depth.
+        if isinstance(value, dict):
+            target[key] = ScopedDict(parent=target)
+            self.build(target[key], value)
         else:
             target[key] = value
 
-    def update_with_textures(self, target, input_dict):
+    def build(self, target, input_dict):
         """
         The main function of theme. Called after initialization,
         it crawls the scoped dict and populates
         'target' with templates built from the dict.
         """
         for key, value in input_dict.items():
-            self.update_with_texture(key, value, target)
+            self.build_element(key, value, target)
 
 
 class ThemeFromPath(Theme):
