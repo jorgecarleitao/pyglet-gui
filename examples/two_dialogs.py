@@ -1,7 +1,7 @@
-from pyglet_gui.gui import Label
-from pyglet_gui.manager import Manager
 from setup import *
 
+from pyglet_gui.gui import Label
+from pyglet_gui.manager import Manager
 from pyglet_gui.buttons import Button
 from pyglet_gui.constants import ANCHOR_TOP_LEFT
 from pyglet_gui.theme import Theme

@@ -1,6 +1,6 @@
-from pyglet_gui.manager import Manager
 from setup import *
 
+from pyglet_gui.manager import Manager
 from pyglet_gui.buttons import Button
 from pyglet_gui.containers import VerticalContainer, HorizontalContainer, GridContainer
 from pyglet_gui.theme import Theme

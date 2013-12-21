@@ -1,6 +1,6 @@
-from pyglet_gui.manager import Manager
 from setup import *
 
+from pyglet_gui.manager import Manager
 from pyglet_gui.option_selectors import VerticalButtonSelector
 from pyglet_gui.theme import Theme
 

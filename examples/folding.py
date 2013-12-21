@@ -1,6 +1,6 @@
-from pyglet_gui.manager import Manager
 from setup import *
 
+from pyglet_gui.manager import Manager
 from pyglet_gui.containers import VerticalContainer
 from pyglet_gui.document import Document
 from pyglet_gui.constants import ANCHOR_CENTER, HALIGN_LEFT

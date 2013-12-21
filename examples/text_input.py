@@ -1,6 +1,6 @@
-from pyglet_gui.manager import Manager
 from setup import *
 
+from pyglet_gui.manager import Manager
 from pyglet_gui.text_input import TextInput
 from pyglet_gui.theme import Theme
 
