@@ -421,11 +421,6 @@ class Wrapper(Container):
     def compute_size(self):
         return self.content.width, self.content.height
 
-    def reset_size(self, reset_parent=True):
-        if not reset_parent:
-            self.content.reset_size(reset_parent)
-        super().reset_size(reset_parent)
-
     def layout(self):
         x, y = GetRelativePoint(self, self.anchor, self.content, self.anchor, self.content_offset)
         self.content.set_position(x, y)
