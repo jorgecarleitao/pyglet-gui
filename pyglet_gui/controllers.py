@@ -12,6 +12,7 @@ class TwoStateController(Controller):
         if on_press is not None:
             self._on_press = on_press
 
+    @property
     def is_pressed(self):
         return self._is_pressed
 
