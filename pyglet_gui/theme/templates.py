@@ -1,9 +1,9 @@
-from abc import ABCMeta, abstractmethod
+from abc import abstractmethod
 
 from .elements import GraphicElement, TextureGraphicElement, FrameTextureGraphicElement
 
 
-class GraphicElementTemplate(metaclass=ABCMeta):
+class Template:
     def __init__(self):
         pass
 
@@ -12,9 +12,9 @@ class GraphicElementTemplate(metaclass=ABCMeta):
         return GraphicElement(color, batch, group)
 
 
-class TextureGraphicElementTemplate(GraphicElementTemplate):
+class TextureTemplate(Template):
     def __init__(self, texture, width=None, height=None):
-        GraphicElementTemplate.__init__(self)
+        Template.__init__(self)
 
         self.texture = texture
         self.width = width or texture.width
@@ -24,10 +24,10 @@ class TextureGraphicElementTemplate(GraphicElementTemplate):
         return TextureGraphicElement(self.texture, color, batch, group)
 
 
-class FrameTextureGraphicElementTemplate(TextureGraphicElementTemplate):
+class FrameTextureTemplate(TextureTemplate):
     def __init__(self, texture, frame, padding, width=None, height=None):
+        TextureTemplate.__init__(self, texture, width=width, height=height)
 
-        TextureGraphicElementTemplate.__init__(self, texture, width=width, height=height)
         self._inner_texture = texture.get_region(*frame).get_texture()
         x, y, width, height = frame
         self._margins = (x, texture.width - width - x,    # left, right

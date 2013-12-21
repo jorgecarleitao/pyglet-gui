@@ -2,7 +2,7 @@ from abc import abstractmethod
 
 import pyglet.resource
 
-from .templates import TextureGraphicElementTemplate, FrameTextureGraphicElementTemplate
+from .templates import TextureTemplate, FrameTextureTemplate
 
 
 class Parser:
@@ -56,14 +56,14 @@ class TextureParser(Parser):
             # if it has frame, it is a FrameTexture
             # else, it is a simple texture.
             if 'frame' in element:
-                return FrameTextureGraphicElementTemplate(
+                return FrameTextureTemplate(
                     texture,
                     element['frame'],
                     element.get('padding', [0, 0, 0, 0])  # if padding, else 0.
                 )
             else:
-                return TextureGraphicElementTemplate(texture)
+                return TextureTemplate(texture)
         # if it is of the form {'image': 'test.png'}
         else:
             texture = self._get_texture(element)
-            return TextureGraphicElementTemplate(texture)
+            return TextureTemplate(texture)
