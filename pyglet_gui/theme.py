@@ -4,6 +4,8 @@ import json
 import pyglet
 from pyglet import gl
 
+from pyglet_gui.core import Rectangle
+
 
 class ThemeTextureGroup(pyglet.graphics.TextureGroup):
     """
@@ -55,11 +57,9 @@ class FrameTextureGraphicElementTemplate(TextureGraphicElementTemplate):
             self._margins, self._padding, color, batch, group)
 
 
-class GraphicElement(metaclass=ABCMeta):
+class GraphicElement(Rectangle):
     def __init__(self, color, batch, group, width=0, height=0):
-        self._x = self._y = 0
-        self.width = width
-        self.height = height
+        Rectangle.__init__(self, width=width, height=height)
         self._color = color
         self._batch = batch
         self._group = group
@@ -96,7 +96,9 @@ class GraphicElement(metaclass=ABCMeta):
         return content_width, content_height
 
     def update(self, x, y, width, height):
-        self._x, self._y, self.width, self.height = x, y, width, height
+        self.set_position(x, y)
+        self.width, self.height = width, height
+
         if self._vertex_list is not None:
             self._vertex_list.vertices = self._get_vertices()
 
