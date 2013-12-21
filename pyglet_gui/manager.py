@@ -180,7 +180,10 @@ class ViewerManager(Wrapper):
     def reset_size(self, reset_parent=True):
         # Manager never has parent and thus never reset_parent.
         super().reset_size(reset_parent=False)
-        self.set_position(*self.get_position())
+
+        # if is a bottom-up, we have to reposition ourselves.
+        if reset_parent:
+            self.set_position(*self.get_position())
 
     def draw(self):
         assert self._has_own_batch
