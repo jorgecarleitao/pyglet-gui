@@ -45,7 +45,7 @@ class FrameTextureGraphicElementTemplate(TextureGraphicElementTemplate):
     def __init__(self, texture, frame, padding, width=None, height=None):
 
         TextureGraphicElementTemplate.__init__(self, texture, width=width, height=height)
-        self._frame_texture = texture.get_region(*frame).get_texture()
+        self._inner_texture = texture.get_region(*frame).get_texture()
         x, y, width, height = frame
         self._margins = (x, texture.width - width - x,    # left, right
                          texture.height - height - y, y)  # top, bottom
@@ -53,7 +53,7 @@ class FrameTextureGraphicElementTemplate(TextureGraphicElementTemplate):
 
     def generate(self, color, batch, group):
         return FrameTextureGraphicElement(
-            self.texture, self._frame_texture,
+            self.texture, self._inner_texture,
             self._margins, self._padding, color, batch, group)
 
 
