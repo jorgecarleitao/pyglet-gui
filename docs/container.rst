@@ -9,35 +9,45 @@ Container
 
 .. class:: Container
 
-    A container is the base class of all containers in Pyglet-gui and is used to group
-    viewers and position them in specific ways.
+    A :class:`~pyglet_gui.core.Viewer` that contain other viewers. This is an abstract and base class of
+    all containers in Pyglet-gui and is used to group viewers and position them in specific ways.
 
     In the :class:`~pyglet_gui.core.Viewer` API, a container is a node in the tree of viewers.
 
-    A container is characterized by a set of viewers and how they are positioned in the container's bounding box.
-
     While viewers only have to load graphics, a container has to load both its graphics and its content.
-    Thus, the container provides two aditional methods for those:
+    Thus, the container provides two aditional methods:
 
     .. method:: load_content
 
-        Loads each element inside its content
+        Loads all viewers in the container
 
     .. method:: unload_content
 
-        Unloads each element inside its content
+        Unloads all viewers in the container
 
-    Notice that both these methods are correctly called during a reload.
+    Both these methods are already correctly called during a :meth:`~pyglet_gui.core.Viewer.reload`.
+
     The getters and setters of content are:
 
     .. attribute:: content
 
         A read-only property returning the content of the container.
 
-    .. method:: add
+    .. method:: add(viewer)
 
         Adds the viewer to the container's content.
 
-    .. method:: remove
+    .. method:: remove(viewer)
 
         Removes the viewer from the container's content.
+
+Other containers
+-----------------
+
+.. class:: Wrapper
+
+    A wrapper is a container that contains one and only one Viewer.
+
+    It does not have any graphical appearance and is used
+    by Pyglet-gui for creating more interesting elements such
+    as the :class:`~pyglet_gui.manager.ViewerManager`.
