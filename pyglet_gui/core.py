@@ -110,18 +110,16 @@ class Viewer(Rectangle, Managed):
     def reset_size(self, reset_parent=True):
         width, height = self.compute_size()
 
-        # flag if we changed size.
-        size_changed = False
+        # if out size changes
         if self.width != width or self.height != height:
             self.width, self.height = width, height
-            size_changed = True
+
+            # This will eventually call our layout
+            if reset_parent:
+                self.parent.reset_size(reset_parent)
         # else, the parent is never affected and thus we layout.
         else:
             self.layout()
-
-        if size_changed and reset_parent:
-            # This will eventually call our layout
-            self.parent.reset_size(reset_parent)
 
     def delete(self):
         if self.is_loaded:
