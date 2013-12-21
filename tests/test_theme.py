@@ -107,7 +107,7 @@ class TestLoadGraphics(unittest.TestCase):
 
         self.texture_theme = Theme({'image': 'panel.png'}, 'theme')
         self.texture_region_theme = Theme({'image': {'source': 'panel.png', 'region': [0, 0, 16, 16]}}, 'theme')
-        self.frame_theme = Theme({'image': 'panel.png'}, 'theme')
+        self.frame_theme = Theme({'image': {'source': 'panel.png', 'frame': [8, 8, 16, 16]}}, 'theme')
 
     def test_load_texture(self):
 
@@ -141,5 +141,4 @@ class TestLoadGraphics(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    import unittest
     unittest.main()
