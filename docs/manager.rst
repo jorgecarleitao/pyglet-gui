@@ -1,15 +1,13 @@
 Manager
 ====================
 
-.. currentmodule:: pyglet_gui.manager
-
 In Pyglet-gui, each independent GUI is a :class:`~pyglet_gui.manager.Manager`,
 a subclass of both :class:`~pyglet_gui.manager.ViewerManager` and :class:`~pyglet_gui.manager.ControllerManager`.
 
 This section provides the relevant references for understanding how :class:`~pyglet_gui.manager.Manager` works
 and how you can use it.
 
-This section is most complex of this documentation because it glues all different APIs together.
+This section is most complex of this documentation because it glues different APIs together.
 The references of the classes are themselves divided in APIs, so it is easier for you to understand them.
 
 Viewer Manager
@@ -18,30 +16,32 @@ Viewer Manager
 ViewerManagerGroup
 -------------------
 
-Because each manager is independent of each other, it makes sense to draw them in different vertex groups
-to know which one is drawn on top. :class:`ViewerManagerGroup` is used for that:
+Each :class:`~pyglet_gui.manager.Manager` is independent of each other, but they are drawn on the same window, so,
+they need different vertex groups to know which one is drawn on top. A :class:`ViewerManagerGroup` is defined for that:
+
+.. currentmodule:: pyglet_gui.manager
 
 .. class:: ViewerManagerGroup
 
-    A viewer manager group is a Pyglet's ordered group, i.e. a drawing group that preserves ordering.
+    A Pyglet's ordered group, i.e. a drawing group that preserves ordering with a unique ordering
+    on instances of ViewerManagerGroup.
 
-    To define a order, this class has a class attribute
-
-    This group uses a a distinct order, :attr:`own_order`, to distinguish itself from other Pyglet's Ordered groups.
+    This group uses its own order, :attr:`own_order`, to distinguish itself from other Pyglet's Ordered groups.
 
     .. attribute:: own_order
 
-        The same value as :attr:`order` used for comparisons between ViewerManagerGroup.
+        The same value as :attr:`order`, used for comparisons between ViewerManagerGroup.
 
-    To this, it defines __eq__, __lt__ and __hash__ that compare against ViewerManagerGroup using :attr:`own_order`
+    This group defines `__eq__`, `__lt__` and `__hash__` that compare against ViewerManagerGroup using :attr:`own_order`
     and against other ordered groups using :attr:`order`.
 
-    To send this group to the top, you call :meth:`pop_to_top`:
+    Te different ViewerManagerGroup don't know each other, but always know if they are on top of all.
+    To send this group to the upmost top group, it defines the method :meth:`pop_to_top`:
 
      .. method:: pop_to_top
 
         Sets :attr:`own_order` to the highest value amongst all instances of ViewerManagerGroup, ensuring
-        the particular instance becomes the top on the group.
+        the instance becomes the top.
 
      .. method:: is_on_top
 
@@ -52,25 +52,24 @@ ViewerManager
 
 .. class:: ViewerManager
 
-    Like the name suggests, ViewerManager is a manager of :class:`Viewers <pyglet_gui.core.Viewer>`.
+    A manager of :class:`Viewers <pyglet_gui.core.Viewer>`.
     A ViewerManager is a subclass of :class:`pyglet_gui.containers.Wrapper` that exposes important features
     of Pyglet-gui.
 
-    .. important:: Understanding this class is a pre-requisite to understand :class:`pyglet_gui.manager.Manager`.
-
-    Because it is a container, it is part of the tree structure used by Pyglet-gui to draw viewers. However,
-    this container is special in the sense that it does not have a parent, and thus it only :meth:`pyglet_gui.core.reset_size`
+    Because it is a container, it is part of the tree structure used by Pyglet-gui to draw viewers.
+    However, this container is special in the sense that it does not have a parent,
+    and thus it only :meth:`pyglet_gui.core.Viewer.reset_size`
     with reset_parent=False, i.e. it only uses the top-down drawing.
 
-    One consequence of this is that it has no one to set its position, and thus its position is set by itself,
+    One consequence is that because no one sets its position, it sets its own position
     from the position computed from :meth:`get_position`.
 
-    Moreover, because it is the root of the tree, it is the one to store and expose attributes required for
-    drawing. They are the :class:`pyglet_gui.theme.Theme`, the Batch and batch groups.
+    Because it is the root of the tree, it exposes attributes required for
+    drawing to its viewers. They are the :class:`pyglet_gui.theme.theme.Theme`, the Batch and batch groups.
 
     .. attribute:: theme
 
-        The :class:`pyglet_gui.theme.Theme` of this manager. A read-only property defined in the initialization.
+        The :class:`pyglet_gui.theme.theme.Theme` of this manager. A read-only property defined in the initialization.
 
         One theme can be shared among ViewerManagers.
 
@@ -78,16 +77,15 @@ ViewerManager
 
         The Batch of the manager. A read-only property defined in the initialization.
 
-        If no batch is provided in initialization, this Manager defines its own batch and exposes it draw() method.
+        If no batch is provided in initialization, this Manager defines its own batch and exposes a draw() method.
 
         A Pyglet Batch can be shared among ViewerManagers and is exposed by each
-        viewer by the method :meth:`pyglet_gui.core.Viewer.get_batch`.
+        viewer by the method :meth:`pyglet_gui.core.Managed.get_batch`.
 
-    Pyglet's batch API uses groups and Pyglet-gui Theme API takes advantage of these. When a particular element of the
-    theme is assigned to the batch, it must define which group it belongs to, e.g. for drawing in the right order.
-    The ViewerManager is responsible for defining such groups to its viewers.
+    Because Pyglet-gui Theme API uses groups for drawing,
+    the ViewerManager is responsible for defining such groups to its viewers.
 
-    The first group required is one for the ViewerManager itself, such that different ViewerManagers can
+    The first group required is for the ViewerManager itself, such that different ViewerManagers can
     be drawn in the same window. This is implemented in the :attr:`root_group`:
 
     .. attribute:: root_group
@@ -99,25 +97,25 @@ ViewerManager
 
     .. method:: pop_to_top
 
-        Pops this manager to the top, both in handling window events and drawing in the batch.
+        Calls :meth:`ViewerManagerGroup.pop_to_top`.
 
-    For its viewers, the manager has 4 default sub-groups exposed by the attribute group:
+    For drawing viewers, this manager has 4 sub-groups exposed by the attribute :attr:`group`:
 
     .. attribute:: group
 
-        A dictionary of 4 key-strings 'panel', 'background', 'foreground', 'highlight'
+        A dictionary of 4 key-strings: 'panel', 'background', 'foreground', 'highlight'
         mapping to 4 pyglet.graphics.OrderedGroup with orders 10, 20, 30 and 40 respectively.
 
         When a graphic element is generated by the Viewer, the viewer has to decide which group to use to that element.
-        This property is exposed in each viewer by the method :meth:`pyglet_gui.core.Viewer.get_batch`.
+        This property is exposed in each viewer by the method :meth:`pyglet_gui.core.Managed.get_batch`.
 
     .. attribute:: window
 
-        A Pyglet window where ViewerManagers lives, exposed as a property.
+        A Pyglet window where the ViewerManager lives, exposed as a property.
 
         The manager uses Pyglet's window to know where it has to be positioned, and to assign itself as an handler.
 
-        This property has write permission to assign another window to the manager.
+        This property is writable to assign another window to the manager.
 
     .. method:: get_position
 
@@ -127,6 +125,8 @@ ViewerManager
 
 Controller Manager
 ^^^^^^^^^^^^^^^^^^
+
+.. currentmodule:: pyglet_gui.manager
 
 .. class::ControllerManager
 
@@ -188,5 +188,25 @@ Controller Manager
 
         Sets the wheel hint to be the controller. It has to have implemented the method on_mouse_scroll.
 
-Manager (TODO)
----------------
+Manager
+^^^^^^^^^^^^^^^^
+
+.. currentmodule:: pyglet_gui.manager
+
+.. class:: Manager
+
+    The manager is the Pyglet-gui main element for initializing a new GUI in Pyglet-gui.
+    It is a subclass of both :class:`ViewerManager` and :class:`ControllerManager` which
+    overrides some of the on_* methods to give some functionality to the :class:`ViewerManager`.
+
+    :param content: The content of this manager. An instance of :class:`~pyglet_gui.core.Viewer`.
+    :param theme: The Theme of this manager. An instance of :class:`~pyglet_gui.theme.theme.Theme`.
+    :param window: The window of this manager. An instance of Pyglet Window.
+    :param batch: An optional Batch for this manager. If set, must be an instance of Pyglet Batch.
+    :param group: An optional Group, parent of the group this manager uses. Must be a Pyglet Group
+    :param is_movable: If False, this manager is not movable.
+    :param anchor: A anchor option to position this manager in relation to the window. Default to ALIGN_CENTER.
+    :param offset: The offset of this manager in relation to the anchor point.
+
+    Besides the implementation of ViewerManager and ControllerManager, the manager implements its own movability:
+    it can be optionally dragged and positioned in the window.
