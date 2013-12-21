@@ -49,10 +49,10 @@ Main features
 
     Pyglet-gui already contains some user interfaces implemented, such as:
 
-        * Button, Slider
-        * Option selector, Dropdown
-        * Vertical, Horizontal, Grid containers.
-        * Scrollable content display
+    * Button, Slider
+    * Option selector, Dropdown
+    * Vertical, Horizontal, Grid containers.
+    * Scrollable content display
 
 Installation
 --------------
