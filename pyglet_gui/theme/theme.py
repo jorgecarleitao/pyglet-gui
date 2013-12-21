@@ -120,8 +120,8 @@ class Theme(ScopedDict):
 
     def build(self, target, input_dict):
         """
-        The main function of theme. Called after initialization,
-        it crawls the scoped dict and populates
+        The main function of theme. Called during initialization,
+        it crawls the input_dict and populates
         'target' with templates built from the dict.
         """
         for key, value in input_dict.items():

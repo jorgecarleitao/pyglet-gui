@@ -28,11 +28,12 @@ Main features
 
 * Implements an abstraction for graphical appearance
 
-    Pyglet-gui uses the concept of "theme", on which each (static) resource is defined in a JSON file.
-    This file is loaded into a list of factories, a Theme, and viewers can load specific resources
-    by choosing the factory they want by a path.
+    Pyglet-gui uses the concept of "theme", on which each (static) resource is defined in a
+    JSON file.
+    This file is loaded into a Theme, and viewers can load specific resources
+    by choosing the particular resource they want by a unique path.
 
-    For example, a Button chooses the path
+    For example, the Pyglet-gui standard Button chooses the path
 
         def get_path(self):
             path = ['button']
@@ -42,7 +43,7 @@ Main features
                 path.append('up')
             return path
 
-    and the factory produces a vertex list and a texture from the specifications in the JSON file.
+    and the Theme binds a vertex list and a texture to the OpenGL from the specifications in the JSON file.
 
 Installation
 --------------
@@ -55,14 +56,14 @@ Installation
 Documentation
 --------------
 
-The documentation is incomplete, but being
+The documentation is incomplete.
 
 The documentation can be found in the [read the docs](http://pyglet-gui.readthedocs.org/en/latest/index.html).
 
 Running tests
 --------------
 
-You can run the test suite of pyglet-gui from the root using
+You can run Pyglet-gui test suite from the root using
 
     python -m tests.runtests
 
@@ -75,4 +76,4 @@ Contributors
 
 The contributor of Kytten was Conrad "Lynx" Wong, which this project reuses.
 
-Jorge C. Leitão designed, tested and documented the API.
+Jorge C. Leitão designed, unit tested and documented the API.
