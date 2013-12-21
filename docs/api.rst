@@ -28,11 +28,9 @@ This structure is essentially used to draw elements. Pyglet-gui provides two ort
 to update elements in the tree, the top-down and bottom-up,
 that minimize the number of operations in the drawing Batch.
 
-* Top-down when a container wants
-to draw itself (e.g. in the initialization of the :class:`~pyglet_gui.manager.Manager`).
+* Top-down when a container wants to draw itself (e.g. in the initialization of the :class:`~pyglet_gui.manager.Manager`).
 
-* Bottom-up when a single Viewer wants to be re-drawn, for instance
-when a :class:`Controller's <pyglet_gui.core.Controller>` changed the viewer's appearance.
+* Bottom-up when a single Viewer wants to be re-drawn, for instance when a :class:`Controller's <pyglet_gui.core.Controller>` changed the viewer's appearance.
 
 Graphical elements
 ^^^^^^^^^^^^^^^^^^^^
