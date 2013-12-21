@@ -155,25 +155,25 @@ Viewer
         def reset_size(self, reset_parent=True):
             width, height = self.compute_size()
 
-            # we only reset the parent if we change size
-            changed = False
+            # if out size changes
             if self.width != width or self.height != height:
                 self.width, self.height = width, height
-                changed = True
-            self.layout()
-            # we only reset parent if the parent exists and
-            # the flag to reset it is set.
-            if changed and reset_parent:
-                self.parent.reset_size(reset_parent)
+
+                # This will eventually call our layout
+                if reset_parent:
+                    self.parent.reset_size(reset_parent)
+            # else, the parent is never affected and thus we layout.
+            else:
+                self.layout()
 
     .. method:: reset_size
 
         :param reset_parent: A boolean, see below.
 
-        The case reset_parent=False updates the viewer size and lays out its graphics. This call
+        The case reset_parent=False updates the viewer size and :meth:`layout` if the size changed. This call
         is what we call a top-down draw: it is called when it was the parent's initiative to reset_size of the viewer.
 
-        The reset_parent=True does the same and, if the size changes, it calls the parent's reset_size. This call
+        The reset_parent=True does the same but, if the size changes, it also calls the parent's reset_size. This call
         is the bottom-up draw: the child decided to trigger a reset_size.
 
         In the button-up, the parent will re-calculate its own size, and calls reset_size of all children, with flag
@@ -181,6 +181,16 @@ Viewer
 
         This call can be further propagated to the parent's parent in order to
         accommodate the size changes of all elements.
+
+        In situations where an event was triggered (e.g. by a :class:`Controller`),
+        you want to trigger a bottom-up, and thus you
+        call `reset_size()` after the :meth:`reload()`. For example, Pyglet-gui's
+        :class:`pyglet_gui.button.Button` uses::
+
+            def change_state(self):
+                self._is_pressed = not self._is_pressed
+                self.reload()
+                self.reset_size()
 
     Finally, the viewer implements a :meth:`delete`, used for deleting the element
 
