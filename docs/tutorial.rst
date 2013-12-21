@@ -125,11 +125,11 @@ We do::
 Pyglet-gui is designed to be reusable. All elements in Pyglet-gui are designed to
 be subclassed to fulfill the developer's need.
 
-This is part of it
-^^^^^^^^^^^^^^^^^^^^^
+This is just part of the whole
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This was a minimal overview of how you use Pyglet-gui. As you can find out,
-Pyglet-gui has more. It provides a consistent API to define custom Themes, custom graphics,
+This was a minimal overview of how you use Pyglet-gui, but Pyglet-gui is more.
+It provides a consistent API to define custom Themes, custom graphics,
 and, most importantly, user interfaces.
 
 The next logical step is to have an overview of what Pyglet-gui allows you to do.
