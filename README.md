@@ -45,6 +45,15 @@ Main features
 
     and the Theme binds a vertex list and a texture to the OpenGL from the specifications in the JSON file.
 
+* Ships concrete implementations of some user interfaces:
+
+    Pyglet-gui already contains some user interfaces implemented, such as:
+
+        * Button, Slider
+        * Option selector, Dropdown
+        * Vertical, Horizontal, Grid containers.
+        * Scrollable content display
+
 Installation
 --------------
 
