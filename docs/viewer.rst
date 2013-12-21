@@ -50,9 +50,15 @@ Rectangle
 
     .. method:: is_inside
 
+        :param x:
+        :param y:
+
         Returns True if point (x,y) lies inside the rectangle
 
     .. method:: set_position
+
+        :param x:
+        :param y:
 
         Setter for (x, y).
 
@@ -97,14 +103,14 @@ Viewer
     .. method:: load_graphics
 
         Method used to :meth:`~pyglet_gui.theme.Template.generate` graphics this viewer owns. It
-        normally calls :meth:`get_batch` to retrieve the specific subset of theme it needs::
+        normally calls :meth:`get_path` to retrieve the specific subset of theme it needs::
 
             theme = self.theme[self.get_path()]
 
         followed by calls of the form::
 
-            # _button is a graphic element to be loaded.
             self._button = theme['image'].generate(color=theme['gui_color'], **self.get_batch('background'))
+            # _button is now a loaded graphic element.
 
 
     Analogously, a viewer has to define the method :meth:`unload_graphics` to deconstruct
@@ -112,10 +118,11 @@ Viewer
 
     .. method:: unload_graphics
 
-        Method used to unload graphics loaded in :meth:`load`.
+        Method used to unload graphics loaded in :meth:`load_graphics`.
 
         Example::
 
+            # _button is a loaded graphic element.
             self._button.unload()
 
     Most of the times, load and unload are called consecutively: when the viewer wants to change its appearance,
@@ -127,10 +134,11 @@ Viewer
         Calls unload followed by load. Used in the bottom-up drawing scheme when the element change
         its state (e.g. by an event).
 
+        This is used to update the graphics whenever the Viewer changed state.
+
     One important feature of a viewer is that it is not supposed to overlap with other viewers from the same
-    manager. This means that is its parent who decides its position. However,
-    for the parent to decide, it has to know what are the sizes of the children viewers, which are computed
-    by the method :meth:`compute_size`:
+    GUI. This means that is its parent who decides its position. The method :meth:`compute_size`
+    returns the computed size of the viewer from the Graphics it has.
 
     .. method:: compute_size
 
@@ -139,17 +147,25 @@ Viewer
         The size must include all graphics and possible children the viewer has; this is
         the bounding box of the viewer to avoid overlaps.
 
+        The default implementation returns (self.width, self.height).
+
     When the parent has the size of all its children, it sets the position of the Viewer, using :meth:`set_position`:
 
     .. method:: set_position
 
-        A setter for the position of the viewer. Calls :meth:`layout` afterwards.
+        :param x:
+        :param y:
+
+        A setter for the position of the viewer. Calls :meth:`layout` after to ensure the graphics are also
+        set.
 
     .. method:: layout
 
-        Places graphical elements in the correct positions. Implementation is made by subclasses.
+        Places graphical elements in the correct positions in relation to the viewer's position.
 
-    The glue that defines the functionality of the viewer is the method :meth:`reset_size`, which is worth
+        Default implementations does nothing.
+
+    What defines the functionality of the viewer is the method :meth:`reset_size`, which is worth
     transliterating::
 
         def reset_size(self, reset_parent=True):
@@ -170,21 +186,21 @@ Viewer
 
         :param reset_parent: A boolean, see below.
 
-        The case reset_parent=False updates the viewer size and :meth:`layout` if the size changed. This call
+        The case `reset_parent = False` updates the viewer size and :meth:`layout` if the size changed. This call
         is what we call a top-down draw: it is called when it was the parent's initiative to reset_size of the viewer.
 
-        The reset_parent=True does the same but, if the size changes, it also calls the parent's reset_size. This call
+        The `reset_parent = True` does the same but, if the size changes, it also calls the parent's reset_size. This call
         is the bottom-up draw: the child decided to trigger a reset_size.
 
-        In the button-up, the parent will re-calculate its own size, and calls reset_size of all children, with flag
-        reset_parent=False. This ensures that all its children are affected by the size change of one of them.
+        In the button-up, the parent will re-calculate its own size, and calls reset_size of all children, with
+        `reset_parent = False`. This ensures that all its children are affected by the size change of one of them.
 
         This call can be further propagated to the parent's parent in order to
         accommodate the size changes of all elements.
 
         In situations where an event was triggered (e.g. by a :class:`Controller`),
-        you want to trigger a bottom-up, and thus you
-        call `reset_size()` after the :meth:`reload()`. For example, Pyglet-gui's
+        the bottom-up is the correct way, thus
+        `reset_size()` should be called after :meth:`reload()`. For example, Pyglet-gui's
         :class:`pyglet_gui.button.Button` uses::
 
             def change_state(self):
