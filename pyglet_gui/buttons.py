@@ -113,7 +113,6 @@ class Checkbox(Button):
         return path
 
     def layout(self):
-        Viewer.layout(self)
         if self.align == HALIGN_RIGHT:  # label goes on right
             self._button.update(self.x,
                                 self.y + self.height/2 - self._button.height/2,
