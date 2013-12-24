@@ -34,6 +34,24 @@ class TestContainer(TestPygletGUI):
         for item in self.container.content:
             self.assertFalse(item.has_manager())
 
+    def test_add(self):
+        """
+        Tests that we can add a new item.
+        """
+        item = Viewer(width=50, height=50)
+        self.container.add(item)
+
+        self.assertEqual(item.has_manager(), True)
+
+    def test_remove(self):
+        """
+        Tests that we can remove a new item.
+        """
+        item = self.container.content[0]
+        self.container.remove(item)
+
+        self.assertEqual(item.has_manager(), False)
+
     def tearDown(self):
         self.manager.delete()
         super().tearDown()

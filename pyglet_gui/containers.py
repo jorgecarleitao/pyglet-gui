@@ -62,13 +62,16 @@ class Container(Viewer):
 
         item.load()
         item.reset_size()
-        self._content.insert(position, item)
+        self._content.insert(len(self._content) - position, item)
         self.reset_size()
 
     def remove(self, item):
         assert isinstance(item, Viewer)
         item.unload()
         self._content.remove(item)
+
+        item.delete()
+
         self.reset_size()
 
     def delete(self):
