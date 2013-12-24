@@ -205,14 +205,11 @@ class FoldingSection(VerticalContainer, Controller):
     def set_manager(self, manager):
         Controller.set_manager(self, manager)
 
-        self.folding_content.set_manager(manager)
-        self.folding_content.parent = self
-
         self.header.set_manager(manager)
         self.header.parent = self
 
         for item in self._content:
-            if item in [self.folding_content, self.header]:
+            if item == self.header:
                 continue
             item.set_manager(self._manager)
             item.parent = self
@@ -233,10 +230,7 @@ class FoldingSection(VerticalContainer, Controller):
         self.book.reload()
 
         if self.is_open:
-            self.folding_content.load()
-            self.folding_content.reset_size()
-            self._content.append(self.folding_content)
-            self.reset_size()
+            self.add(self.folding_content)
         else:
             self.remove(self.folding_content)
 
