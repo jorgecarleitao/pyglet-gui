@@ -33,12 +33,10 @@ theme = Theme({"font": "Lucida Grande",
 # Set up a Manager
 Manager(Label("Drag me"), window=window,
         batch=batch,
-        group=fg_group,
         theme=theme)
 
 Manager(Button("Drag me"), window=window,
         batch=batch,
-        group=fg_group,
         anchor=ANCHOR_TOP_LEFT,
         theme=theme)
 
