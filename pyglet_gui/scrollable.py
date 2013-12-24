@@ -74,6 +74,7 @@ class Scrollable(Wrapper, Controller, ControllerManager):
         self.group['foreground'] = pyglet.graphics.OrderedGroup(20, self.root_group)
         self.group['highlight'] = pyglet.graphics.OrderedGroup(30, self.root_group)
         self.content.set_manager(self)
+        self.content.parent = self
 
     def unload_graphics(self):
         Wrapper.unload_graphics(self)
