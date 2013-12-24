@@ -74,7 +74,7 @@ content = Frame(
 Manager(
     content
     ,
-    window=window, batch=batch, group=fg_group,
+    window=window, batch=batch,
     anchor=ANCHOR_CENTER,
     theme=theme)
 
