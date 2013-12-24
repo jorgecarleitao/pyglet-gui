@@ -233,7 +233,10 @@ class FoldingSection(VerticalContainer, Controller):
         self.book.reload()
 
         if self.is_open:
-            self.add(self.folding_content)
+            self.folding_content.load()
+            self.folding_content.reset_size()
+            self._content.append(self.folding_content)
+            self.reset_size()
         else:
             self.remove(self.folding_content)
 
