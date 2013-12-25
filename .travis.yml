@@ -1,0 +1,15 @@
+language: python
+python:
+  - "3.2"
+  - "3.3"
+before_install:
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+install:
+  - "pip install --upgrade http://pyglet.googlecode.com/archive/tip.zip"
+script: 
+  - "python -m tests.runtests"
+notifications:
+  email:
+    on_success: change
+    on_failure: change
