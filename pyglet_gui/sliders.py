@@ -34,13 +34,13 @@ class Slider(ContinuousStateController, Viewer):
         self._bar = theme[self.IMAGE_BAR]['image'].generate(color, **self.get_batch('foreground'))
         self._padding = theme[self.IMAGE_BAR]['padding']
 
-        self._knob = theme[self.IMAGE_KNOB]['image'].generate(color, **self.get_batch('foreground'))
+        self._knob = theme[self.IMAGE_KNOB]['image'].generate(color, **self.get_batch('highlight'))
         self._offset = theme[self.IMAGE_KNOB]['offset']
 
         if self.steps is not None:
             image_path = self.IMAGE_STEP
             for n in range(0, self.steps + 1):
-                self._markers.append(theme[image_path]['image'].generate(color, **self.get_batch('foreground')))
+                self._markers.append(theme[image_path]['image'].generate(color, **self.get_batch('background')))
             self._step_offset = theme[image_path]['offset']
 
     def unload_graphics(self):
