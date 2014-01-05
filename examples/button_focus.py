@@ -26,8 +26,8 @@ theme = Theme({
                           },
                           "image": {
                               "source": "button-down.png",
-                              "frame": [8, 6, 2, 2],
-                              "padding": [18, 18, 8, 6]
+                              "frame": [6, 6, 3, 3],
+                              "padding": [12, 12, 4, 2]
                           },
                           "text_color": [0, 0, 0, 255]
                       },
@@ -41,8 +41,8 @@ theme = Theme({
                           },
                           "image": {
                               "source": "button.png",
-                              "frame": [6, 5, 6, 3],
-                              "padding": [18, 18, 8, 6]
+                              "frame": [6, 6, 3, 3],
+                              "padding": [12, 12, 4, 2]
                           }
                       }
                   }}, resources_path='../theme/')
@@ -69,7 +69,7 @@ class FocusButton(Button, FocusMixin):
         FocusMixin.unload_graphics(self)
 
     def on_key_press(self, symbol, modifiers):
-        # button also changes state on ENTER.
+        # make button change state on press ENTER.
         if symbol == pyglet.window.key.ENTER:
             self.change_state()
 

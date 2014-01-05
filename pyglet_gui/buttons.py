@@ -59,8 +59,6 @@ class Button(TwoStateController, Viewer):
         return self._button.get_needed_size(self._label.content_width, height)
 
     def layout(self):
-        Viewer.layout(self)
-        # lays out graphics
         self._button.update(self.x, self.y, self.width, self.height)
 
         # centers the label on the middle of the button
