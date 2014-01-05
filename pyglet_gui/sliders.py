@@ -110,24 +110,21 @@ class HorizontalSlider(Slider):
         self.min_width = width
 
     def layout(self):
-        super().layout()
-        if self._bar is not None:
-            left, right, top, bottom = self._padding
-            self._bar.update(self.x + left, self.y + bottom,
-                             self.width - left - right,
-                             self.height - top - bottom)
+        left, right, top, bottom = self._padding
+        self._bar.update(self.x + left, self.y + bottom,
+                         self.width - left - right,
+                         self.height - top - bottom)
 
         x, y, width, height = self._bar.get_content_region()
 
-        if self._knob is not None:
-            # knob is positioned with an (x,y) offset
-            # since its graphics are on its bottom-left corner.
-            offset_x, offset_y = self._offset
-            self._knob.update(x + int(width * self._knob_pos()) + offset_x,
-                              y + offset_y,
-                              self._knob.width, self._knob.height)
+        # knob is positioned with an (x,y) offset
+        # since its graphics are on its bottom-left corner.
+        offset_x, offset_y = self._offset
+        self._knob.update(x + int(width * self._knob_pos()) + offset_x,
+                          y + offset_y,
+                          self._knob.width, self._knob.height)
 
-        if self._markers:
+        if self.steps is not None:
             step = float(width) / self.steps
             offset_x, offset_y = self._step_offset
             for n in range(0, self.steps + 1):
