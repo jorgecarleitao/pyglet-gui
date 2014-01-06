@@ -24,14 +24,14 @@ def GetRelativePoint(parent, parent_anchor, child, child_anchor, offset):
     if valign == VALIGN_TOP:
         y = parent.y + parent.height
     elif valign == VALIGN_CENTER:
-        y = parent.y + parent.height / 2
+        y = parent.y + parent.height // 2
     else:  # VALIGN_BOTTOM
         y = parent.y
 
     if halign == HALIGN_LEFT:
         x = parent.x
     elif halign == HALIGN_CENTER:
-        x = parent.x + parent.width / 2
+        x = parent.x + parent.width // 2
     else:  # HALIGN_RIGHT
         x = parent.x + parent.width
 
@@ -41,14 +41,14 @@ def GetRelativePoint(parent, parent_anchor, child, child_anchor, offset):
     if valign == VALIGN_TOP:
         y += offset_y - child.height
     elif valign == VALIGN_CENTER:
-        y += offset_y - child.height / 2
+        y += offset_y - child.height // 2
     else:  # VALIGN_BOTTOM
         y += offset_y
 
     if halign == HALIGN_LEFT:
         x += offset_x
     elif halign == HALIGN_CENTER:
-        x += offset_x - child.width / 2
+        x += offset_x - child.width // 2
     else:  # HALIGN_RIGHT
         x += offset_x - child.width
 
