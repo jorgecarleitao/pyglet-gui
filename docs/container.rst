@@ -46,7 +46,9 @@ Other containers
 
 .. class:: Wrapper
 
-    A wrapper is a container that contains one and only one Viewer.
+    .. _`decorator pattern`: http://en.wikipedia.org/wiki/Decorator_pattern
+
+    A wrapper is a container that contains one and only one Viewer. It follows the `decorator pattern`_.
 
     It does not have any graphical appearance and is used
     by Pyglet-gui for creating more interesting elements such
