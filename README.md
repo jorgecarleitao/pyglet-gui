@@ -4,18 +4,12 @@ Thanks for checking it out.
 This project started as a fork of [Kytten](https://code.google.com/p/kytten/),
 but ended up being a new project by its own right since the API changed dramatically.
 
-This project is in pre-alpha.
-
 Main features
 --------------
 
 * Implements a controller-viewer pattern.
 
     Pyglet-gui uses the concept of "controllers" to handle window events and "viewers" to draw.
-
-    We provide both low-level interfaces such as two-state controllers,
-    and end-user interfaces such as buttons, both of which designed to be extended
-    to the user's need.
 
     For example, a Button is a subclass of a two-state controller and a viewer.
 
@@ -24,14 +18,13 @@ Main features
     Pyglet-gui uses mixins for extending functionality of viewers and controllers.
     This increases code reusability and modularity.
 
-    For example, you add mouse hovering behaviour to a button by mixin a Button with a HoveringMixin.
+    For example, mouse hovering behaviour is added with a HoveringMixin class.
 
 * Implements an abstraction for graphical appearance
 
-    Pyglet-gui uses the concept of "theme", on which each (static) resource is defined in a
-    JSON file.
-    This file is loaded into a Theme, and viewers can load specific resources
-    by choosing the particular resource they want by a unique path.
+    Pyglet-gui uses "themes" where each (static) resource is defined in a JSON file.
+    This file is loaded, and viewers select specific resources
+    from an unique path.
 
     For example, the Pyglet-gui standard Button chooses the path
 
@@ -43,11 +36,7 @@ Main features
                 path.append('up')
             return path
 
-    and the Theme binds a vertex list and a texture to the OpenGL from the specifications in the JSON file.
-
-* Ships concrete implementations of some user interfaces:
-
-    Pyglet-gui already contains some user interfaces implemented, such as:
+* Has some standard user interfaces:
 
     * Button, Slider
     * Option selector, Dropdown
@@ -65,18 +54,16 @@ Installation
 Documentation
 --------------
 
-The documentation is incomplete.
-
 The documentation can be found in the [read the docs](http://pyglet-gui.readthedocs.org/en/latest/index.html).
 
 Running tests
 --------------
 
-You can run Pyglet-gui test suite from the root using
+To run Pyglet-gui full test suite, use
 
     python -m tests.runtests
 
-If you just want to run a specific module, you can use
+To run a specific module, use
 
     python -m tests.specificModule
 
