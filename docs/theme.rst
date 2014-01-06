@@ -3,16 +3,16 @@ Theme
 
 .. currentmodule:: pyglet_gui.theme
 
-Pyglet-gui Theme API defines a systematic approach for mapping a set of resources (e.g. image.png)
+Pyglet-gui Theme API defines a systematic approach for mapping a set of resources (e.g. "image.png")
 and attributes (e.g. color, padding) to lists of vertices and vertex attributes.
 
 The API works as follows:
 
 * The user defines a set of attributes and sources of static resources in a JSON file;
 * A set of :class:`Parsers <parsers.Parser>` translate that to :class:`Templates <templates.Template>`;
-* A :class:`theme.Theme`, a nested dictionary, holds those templates with a unique identifier (a path on the nested dictionary)
+* A :class:`theme.Theme`, a nested dictionary, holds these templates with a unique identifier by a path (e.g. ['button', 'up'])
 * A :class:`theme.Theme` is passed to the :class:`pyglet_gui.manager.ViewerManager`,
-and :class:`Viewers <pyglet_gui.core.Viewer>` load concrete graphical elements, :class:`GraphicElement`.
+and :class:`Viewers <pyglet_gui.core.Viewer>` load concrete graphical elements, :class:`GraphicElement` using the path.
 
 This document explains how this API works in detail. It starts by explaining
 Graphic elements, goes to Templates, Parsers, Theme, and ends in the JSON file.
@@ -25,10 +25,10 @@ Graphic elements
 
     A graphical element is a subclass of :class:`pyglet_gui.core.Rectangle` and an abstract class that
     represents something with a set of vertices and a set of rules
-    to assign a set of attributes (e.g. color, texture coordinate) to the vertices.
+    to assign a set of attributes (e.g. color, texture coordinate) to those vertices.
 
-    A GraphicalElement is normally instantiated by a :class:`templates.Template` because it does not own
-    static resources. The initialization of this element needs a batch and a group to assign its
+    A GraphicalElement is normally instantiated by a :class:`templates.Template`.
+    The initialization needs a batch and a group to assign its
     vertices to a group in the batch.
 
     A graphical element provides three methods for accessing its size:
@@ -47,7 +47,7 @@ Graphic elements
 
     After the element is initialized, its size and position can be updated using :meth:`update`:
 
-    .. method:: update
+    .. method:: update(x, y, width, height)
 
         Updates the position and size of the graphics, updating its vertex list in the Batch.
 
@@ -91,17 +91,18 @@ For generating graphical elements, Pyglet-gui uses the concept of template.
 
     A template is normally instantiated by a Parser, when the Theme is being loaded.
 
-    .. method:: generate
+    .. method:: generate(color, batch, group)
 
         Returns a new instance of a :class:`elements.GraphicalElement`. It is an abstract method.
 
-Pyglet-gui provides two concrete implementations of a templates:
+
+Pyglet-gui provides two concrete implementations of templates:
 
 .. class:: templates.TextureTemplate
 
-    A :class:`templates.Template` that generates a :class:`elements.TextureGraphicElement`.
+    A :class:`~templates.Template` that generates a :class:`elements.TextureGraphicElement`.
 
 
 .. class:: templates.FrameTextureTemplate
 
-    A :class:`templates.TextureTemplate` that generates a :class:`elements.FrameTextureGraphicElement`.
+    A :class:`~templates.TextureTemplate` that generates a :class:`~elements.FrameTextureGraphicElement`.

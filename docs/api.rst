@@ -17,19 +17,21 @@ Viewer (for draw) and of a Controller (for behaviour).
 Viewers
 ^^^^^^^^^^^
 
+.. _`composite pattern`: http://en.wikipedia.org/wiki/Composite_pattern
+
 A Viewer is characterized by a rectangular bounding box that implements abstract methods
 to draw :class:`Graphical Elements <pyglet_gui.theme.elements.GraphicalElement>` such as textures, inside it.
 
 In Pyglet-gui, a GUI organizes viewers in a tree: every viewer has a
 parent :class:`~pyglet_gui.containers.Container` (a subclass of Viewer with children viewers)
 and the root of the tree is a :class:`~pyglet_gui.manager.ViewerManager`, a special
-container without parent.
+container without parent. This is small variation of the `composite pattern`_.
 
 .. image:: tree.png
     :scale: 100%
 
-This structure is essentially used to minimize the number of operations in the drawing Batch
-and Pyglet-gui provides two orthogonal ways to operate on the batch: the top-down and bottom-up:
+This structure is essentially used to minimize the number of operations in the drawing Batch;
+Pyglet-gui provides two orthogonal ways to operate on the batch: the top-down and bottom-up:
 
 * Top-down: when a container wants to reload itself in the batch (e.g. in the initialization of the :class:`~pyglet_gui.manager.Manager`).
 
@@ -50,7 +52,7 @@ The steps:
 2. :meth:`~pyglet_gui.core.Viewer.reload` the Viewer;
 3. :meth:`~pyglet_gui.core.Viewer.reset_size` the viewer.
 
-perform a Bottom-up drawing. If the Viewer changed size when it became pressed,
+perform a bottom-up drawing. If the Viewer changed size when it became pressed,
 this is propagated to the parent container and in the tree up to the container that didn't changed size,
 which means that a relayout of the GUI is only made to a certain branch of the tree, minimizing
 Batch operations.
