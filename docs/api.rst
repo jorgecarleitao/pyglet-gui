@@ -35,34 +35,32 @@ Pyglet-gui provides two orthogonal ways to operate on the batch: the top-down an
 
 * Top-down: when a container wants to reload itself in the batch (e.g. in the initialization of the :class:`~pyglet_gui.manager.Manager`).
 
-* Bottom-up: when a single :class:`~pyglet_gui.core.Viewer` wants to reload itself
-(e.g. when a :class:`Controller <pyglet_gui.core.Controller>` changed a viewer's state).
+* Bottom-up: when a single :class:`~pyglet_gui.core.Viewer` wants to reload itself (e.g. when a :class:`Controller <pyglet_gui.core.Controller>` changed a viewer's state).
 
-Pyglet-gui abstracts most of these concepts by a simple interface for doing them. From
-the :class:`Button <pyglet_gui.buttons.Button>`::
+Pyglet-gui abstracts most of these concepts by a simple interface. The procedure can be decomposed in three steps,
+as exemplified in :class:`Button <pyglet_gui.buttons.Button>` source code::
 
      def change_state(self):
         self._is_pressed = not self._is_pressed
         self.reload()
         self.reset_size()
 
-The steps:
+1. the state of the Viewer changes, and that requires a new appearance;
+2. :meth:`~pyglet_gui.core.Viewer.reload` the graphics of the Viewer;
+3. :meth:`~pyglet_gui.core.Viewer.reset_size` reset size of the viewer bounding box.
 
-1. something makes a change in the state of the Viewer that requires a new appearance;
-2. :meth:`~pyglet_gui.core.Viewer.reload` the Viewer;
-3. :meth:`~pyglet_gui.core.Viewer.reset_size` the viewer.
-
-perform a bottom-up drawing. If the Viewer changed size when it became pressed,
-this is propagated to the parent container and in the tree up to the container that didn't changed size,
-which means that a relayout of the GUI is only made to a certain branch of the tree, minimizing
-Batch operations.
+If the Viewer changed size when it became pressed, the method :meth:`~pyglet_gui.core.Viewer.reset_size`
+is propagated to the parent container and in the tree up to the container that didn't changed size,
+which means that a relayout of the GUI is only made to a certain level in the tree, minimizing
+Batch operations. The complete references of this API can be found in :class:`Viewer <pyglet_gui.core.Viewer>`.
 
 Theme and Graphics
 ^^^^^^^^^^^^^^^^^^^^^
 
 Pyglet-gui has a graphics API for handling vertex lists and vertex attributes:
 The developer defines a :class:`~pyglet_gui.theme.theme.Theme` from a dictionary, and viewers select
-the part of the theme they need using a path, :meth:`~pyglet_gui.core.Viewer.get_path`.
+the part of the theme they need using a path computed from the viewer's current state,
+:meth:`~pyglet_gui.core.Viewer.get_path`.
 
 This :class:`~pyglet_gui.theme.theme.Theme` is constructed out of a nested dictionary
 by having :class:`Parsers <pyglet_gui.theme.parsers.Parser>`
@@ -70,7 +68,7 @@ interpreting the dictionary's content and populating the Theme with
 :class:`Templates <pyglet_gui.theme.templates.Template>`.
 
 These templates are able to generate :class:`Graphical Elements <pyglet_gui.theme.elements.GraphicalElement>`
-that are used by :class:`Viewers <pyglet_gui.core.Viewer>`.
+that are used by :class:`Viewers <pyglet_gui.core.Viewer>` to compose their appearance.
 
 Controllers
 ^^^^^^^^^^^^^^
@@ -86,8 +84,8 @@ and the manager uses these events to call the correct :class:`Controllers' <pygl
     While viewers are organized in a tree, the controllers are organized in a simple list:
     each controller registers itself in the manager and the manager has access to all of them.
 
-A handler in a controller is just a defined method "on_*": the ControllerManager uses :py:meth:`hasattr`
-to check which controllers can receive which events.
+A handler in a controller is just a method "on_*": the ControllerManager only handles specific Pyglet events 
+and uses :py:meth:`hasattr` to check which controllers receive those events.
 
 Examples
 ^^^^^^^^^^^^
