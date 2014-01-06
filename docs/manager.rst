@@ -7,8 +7,8 @@ a subclass of both :class:`~pyglet_gui.manager.ViewerManager` and :class:`~pygle
 This section provides the relevant references for understanding how :class:`~pyglet_gui.manager.Manager` works
 and how you can use it.
 
-This section is most complex of this documentation because it glues different APIs together.
-The references of the classes are themselves divided in APIs, so it is easier for you to understand them.
+This section is the most complex of this documentation because it glues different APIs together.
+The references of the classes are themselves divided in APIs, so it is hopefully easier to understand.
 
 Viewer Manager
 ^^^^^^^^^^^^^^^^^^
@@ -35,17 +35,18 @@ they need different vertex groups to know which one is drawn on top. A :class:`V
     This group defines `__eq__`, `__lt__` and `__hash__` that compare against ViewerManagerGroup using :attr:`own_order`
     and against other ordered groups using :attr:`order`.
 
-    Te different ViewerManagerGroup don't know each other, but always know if they are on top of all.
-    To send this group to the upmost top group, it defines the method :meth:`pop_to_top`:
+    The different ViewerManagerGroup don't know each other, but always know if they are on top of all.
+
+    .. method:: is_on_top
+
+        Returns true if the particular instance is on top amongst all instances of ViewerManagerGroup.
+
+    To set this group to be the top group, use :meth:`pop_to_top`:
 
      .. method:: pop_to_top
 
         Sets :attr:`own_order` to the highest value amongst all instances of ViewerManagerGroup, ensuring
         the instance becomes the top.
-
-     .. method:: is_on_top
-
-        Returns true if the particular instance is on top amongst all instances of ViewerManagerGroup.
 
 ViewerManager
 -------------------
@@ -61,8 +62,8 @@ ViewerManager
     and thus it only :meth:`pyglet_gui.core.Viewer.reset_size`
     with reset_parent=False, i.e. it only uses the top-down drawing.
 
-    One consequence is that because no one sets its position, it sets its own position
-    from the position computed from :meth:`get_position`.
+    One consequence is that because no one sets its position, it sets its own position,
+    from a position computed from :meth:`get_position`.
 
     Because it is the root of the tree, it exposes attributes required for
     drawing to its viewers. They are the :class:`pyglet_gui.theme.theme.Theme`, the Batch and batch groups.
@@ -71,11 +72,11 @@ ViewerManager
 
         The :class:`pyglet_gui.theme.theme.Theme` of this manager. A read-only property defined in the initialization.
 
-        One theme can be shared among ViewerManagers.
+        One theme can be shared among different ViewerManagers.
 
     .. attribute:: batch
 
-        The Batch of the manager. A read-only property defined in the initialization.
+        The Batch of the manager. A read-only property defined on the initialization.
 
         If no batch is provided in initialization, this Manager defines its own batch and exposes a draw() method.
 
@@ -119,9 +120,10 @@ ViewerManager
 
     .. method:: get_position
 
-        Computes and returns its position (x, y) on the window.
+        Computes and returns its position (x, y) on its window.
 
         Used with :meth:`pyglet_gui.core.Viewer.set_position` to set the position of this manager in the window.
+
 
 Controller Manager
 ^^^^^^^^^^^^^^^^^^
@@ -138,7 +140,7 @@ Controller Manager
 
     .. attribute:: controllers
 
-        The list of controllers assigned to him. Exposed by a read-only property.
+        The list of controllers assigned to him. Exposed as a read-only property.
 
     .. method:: add_controller
 
@@ -149,11 +151,11 @@ Controller Manager
         Removes the controller from :attr:`controllers`.
 
     This manager assumes the user is only interested in using one controller at the time.
-    It tracks down the mouse position on the window and tests when the mouse entered in a controller bounding box, saving
-    that controller as the "hovering" controller.
+    It tracks down the mouse position and tests when the mouse entered in a controller bounding box, saving
+    that controller as the current "hovering" controller.
 
     When the mouse is pressed, the "hovering" controller also becomes the "focus" controller.
-    These must be unique within a manager because Pyglet-gui :class:`~pyglet_gui.containers.Container` don't
+    These are unique within a manager because :class:`Containers <pyglet_gui.containers.Container>` don't
     overlap viewers.
 
     The class exposes two methods for this behaviour:
@@ -177,16 +179,16 @@ Controller Manager
 
     This manager has two other special controllers, the "wheel target" and
     "wheel hint" (in case wheel target don't handle the event), used to handle mouse wheel events.
-    This is useful when you want to set a scrollbar to receive a wheel without requiring the user
-    to click on it to "focus it".
+    This is useful for allowing scrollbars to receive wheel events without requiring the user
+    to click on them to "focus it".
 
     .. method:: set_wheel_target
 
-        Sets the wheel target to be the controller. It has to have implemented the method on_mouse_scroll.
+        Sets the wheel target to be the controller. The controller has to have the method on_mouse_scroll.
 
     .. method:: set_wheel_hint
 
-        Sets the wheel hint to be the controller. It has to have implemented the method on_mouse_scroll.
+        Sets the wheel hint to be the controller. The controller has to have the method on_mouse_scroll.
 
 Manager
 ^^^^^^^^^^^^^^^^
@@ -209,4 +211,4 @@ Manager
     :param offset: The offset of this manager in relation to the anchor point.
 
     Besides the implementation of ViewerManager and ControllerManager, the manager implements its own movability:
-    it can be optionally dragged and positioned in the window.
+    it can be dragged if the parameter 'is_movable' is true.
