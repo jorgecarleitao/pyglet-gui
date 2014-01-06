@@ -106,3 +106,27 @@ Pyglet-gui provides two concrete implementations of templates:
 .. class:: templates.FrameTextureTemplate
 
     A :class:`~templates.TextureTemplate` that generates a :class:`~elements.FrameTextureGraphicElement`.
+
+
+Parser
+^^^^^^^^^^^^
+
+.. class:: parsers.Parser
+
+    A parser is a class responsible for parsing elements during the Theme loading. The Theme has a set of parsers
+    and they read "string-keys" and interpret the values of those keys into a :class:`Template <templates.Template>`.
+
+    .. method:: condition_fulfilled(key)
+
+        This abstract method receives a string and returns a boolean value when it is able to interpret that key.
+        If two parsers accept the same key, the first in the list of parsers in the Theme is chosen.
+
+    .. method:: parse_element(element)
+
+        This abstract method receives a dictionary and returns a :class:`~templates.Template`, effectively interpreting
+        the element.
+
+.. class:: parsers.TextureParser
+
+    A concrete parser that accepts the key "image", and interprets it into a :class:`~templates.TextureTemplate`
+    or a :class:`~templates.FrameTextureTemplate`.
