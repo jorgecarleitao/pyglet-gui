@@ -125,6 +125,7 @@ class Document(Controller, Viewer):
 
     def set_text(self, text):
         self._document.text = text
+        self.compute_size()
         self.layout()
 
     def delete(self):
