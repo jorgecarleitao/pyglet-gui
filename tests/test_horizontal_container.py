@@ -42,8 +42,8 @@ class TestHorizontalContainer(TestPygletGUI):
         self.assertEqual(self.manager.height, 50)
 
         # widget is centered in the window
-        self.assertEqual(self.container.x, self.window.width/2 - self.container.width/2)
-        self.assertEqual(self.container.y, self.window.height/2 - self.container.height/2)
+        self.assertEqual(self.container.x, self.window.width//2 - self.container.width//2)
+        self.assertEqual(self.container.y, self.window.height//2 - self.container.height//2)
 
         self._test_content_position()
 
@@ -62,8 +62,8 @@ class TestHorizontalContainer(TestPygletGUI):
         self.assertEqual(self.container.height, 60)
 
         # container and manager were re-centered in the window
-        self.assertEqual(self.container.x, self.window.width/2 - self.container.width/2)
-        self.assertEqual(self.manager.y, self.window.height/2 - self.manager.height/2)
+        self.assertEqual(self.container.x, self.window.width//2 - self.container.width//2)
+        self.assertEqual(self.manager.y, self.window.height//2 - self.manager.height//2)
 
         self._test_content_position()
 
