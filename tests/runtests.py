@@ -1,7 +1,7 @@
 import glob
 import os
 import unittest
-
+import sys
 
 def build_test_suite():
     suite = unittest.TestSuite()
@@ -19,4 +19,5 @@ if __name__ == "__main__":
     suite = build_test_suite()
     runner = unittest.TextTestRunner()
 
-    runner.run(suite)
+    result = runner.run(suite)
+    sys.exit(not result.wasSuccessful())
