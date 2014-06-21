@@ -131,5 +131,6 @@ End-user controllers:
     * :class:`~pyglet_gui.buttons.Button`: a On/Off button with a label and graphics placed on top off each other.
     * OneTimeButton: a Button which turns off when is released.
     * Checkbox: a Button where the label is placed next to the graphics (and graphics is a checkbox-like button).
+    * FocusButton: a Button that can have focus and is selectable with TAB.
     * HorizontalSlider: an concrete implementation of a Slider, in horizontal position.
     * TextInput: a box for writing text.

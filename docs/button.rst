@@ -65,3 +65,25 @@ because it is a controllable viewer with two states ("is pressed" and "is not pr
     .. attribute:: ['checkbox', 'checked'], ['checkbox', 'unchecked']
 
         default path in the theme.
+
+.. class:: FocusButton
+
+    A :class:`Button` that is focusable and thus can be selected with TAB.
+
+    :param label: The string written in the button.
+    :param is_pressed: True if the button starts pressed
+    :param on_press: A callback function of one argument called when the button is pressed  (optional).
+
+    Accepted events:
+
+    .. method:: on_mouse_press
+
+        Switches the state of the button.
+    
+    .. method:: on_key_press
+
+        If the Button have focus and ENTER is pressed the state of the button is switched.
+
+    .. attribute:: [button, down], [button, up]
+
+        default path in the theme.

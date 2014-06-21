@@ -1,8 +1,11 @@
+import pyglet.window
+
 from pyglet_gui.override import Label
 from pyglet_gui.constants import HALIGN_LEFT, HALIGN_RIGHT
 
 from pyglet_gui.controllers import TwoStateController
 from pyglet_gui.core import Viewer
+from pyglet_gui.mixins import FocusMixin
 
 
 class Button(TwoStateController, Viewer):
@@ -134,3 +137,16 @@ class Checkbox(Button):
         height = font.ascent - font.descent
 
         return self._button.width + self._padding + self._label.content_width, max(self._button.height, height)
+
+
+class FocusButton(Button, FocusMixin):
+    """
+    Button that is focusable and thus can be selected with TAB.
+    """
+    def __init__(self, label="", is_pressed=False, on_press=None):
+        Button.__init__(self, label, is_pressed, on_press)
+        FocusMixin.__init__(self)
+
+    def on_key_press(self, symbol, modifiers):
+        if symbol == pyglet.window.key.ENTER:
+            self.change_state()

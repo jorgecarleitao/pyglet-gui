@@ -3,7 +3,7 @@ from pyglet_gui.constants import VALIGN_BOTTOM, HALIGN_LEFT, HALIGN_CENTER, ANCH
 from pyglet_gui.core import Rectangle, Viewer
 from pyglet_gui.controllers import Controller
 from pyglet_gui.containers import HorizontalContainer, VerticalContainer, Wrapper
-from pyglet_gui.buttons import Button
+from pyglet_gui.buttons import Button, FocusButton
 from pyglet_gui.manager import Manager
 
 
@@ -245,16 +245,18 @@ class PopupMessage(Manager):
     """A simple fire-and-forget manager."""
 
     def __init__(self, text="", window=None, batch=None, group=None,
-                 theme=None, on_escape=None):
+                 theme=None, on_escape=None, have_focus=False):
         def on_ok(_):
             if on_escape is not None:
                 on_escape(self)
             self.delete()
 
-        Manager.__init__(self, content=Frame(VerticalContainer([Label(text),
-                                                                Button("Ok", on_press=on_ok)])),
+        button = FocusButton("Ok", on_press=on_ok)
+        Manager.__init__(self, content=Frame(VerticalContainer(
+                         [Label(text), button])),
                          window=window, batch=batch, group=group,
                          theme=theme, is_movable=True)
+        Manager.set_next_focus(self, 1)
 
 
 class PopupConfirm(Manager):

@@ -1,8 +1,7 @@
 from setup import *
 
 from pyglet_gui.buttons import Button
-from pyglet_gui.mixins import FocusMixin
-from pyglet_gui.gui import Label
+from pyglet_gui.gui import Label, FocusButton
 from pyglet_gui.manager import Manager
 from pyglet_gui.containers import VerticalContainer
 from pyglet_gui.theme import Theme
@@ -46,32 +45,6 @@ theme = Theme({
                           }
                       }
                   }}, resources_path='../theme/')
-
-
-class FocusButton(Button, FocusMixin):
-    """
-    An example of a Button that is focusable and thus can be selected with TAB.
-    """
-    def __init__(self, text, is_pressed=False, on_press=None):
-        Button.__init__(self, text, is_pressed, on_press)
-        FocusMixin.__init__(self)
-
-    def load_graphics(self):
-        super().load_graphics()
-        FocusMixin.load_graphics(self)
-
-    def layout(self):
-        super().layout()
-        FocusMixin.layout(self)
-
-    def unload_graphics(self):
-        super().unload_graphics()
-        FocusMixin.unload_graphics(self)
-
-    def on_key_press(self, symbol, modifiers):
-        # make button change state on press ENTER.
-        if symbol == pyglet.window.key.ENTER:
-            self.change_state()
 
 
 # Set up a Manager
