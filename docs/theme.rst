@@ -73,9 +73,9 @@ Pyglet-gui provides two concrete implementations of a Graphical element:
        :align: center
        :alt: Diagram of how frame texture works.
 
-        How the :class:`FrameTextureGraphicElement` maps an image into a rectangle. Notice that if the rectangle
-        changes size, each of the 9 rectangles will increase independently, and the image will be stretched on each one
-        independently.
+       How the :class:`FrameTextureGraphicElement` maps an image into a rectangle. Notice that if the rectangle
+       changes size, each of the 9 rectangles will increase independently, and the image will be stretched on each one
+       independently.
 
     The :meth:`elements.GraphicElement.get_content_size` is overridden to return the size of the inner rectangle.
 
