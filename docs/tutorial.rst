@@ -112,7 +112,7 @@ We do::
     from pyglet_gui.buttons import Button
 
     class MyButton(Button):
-        def get_path():
+        def get_path(self):
             path = ['my_path']
             if self.is_pressed:
                 path.append('down')
