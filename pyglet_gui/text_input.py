@@ -39,7 +39,10 @@ class TextInput(FocusMixin, Viewer):
         self._label = InputLabel(self._document.text,
                                  multiline=False,
                                  width=self.width-self._padding*2,
-                                 color=theme['text_color'], **self.get_batch('foreground'))
+                                 color=theme['text_color'],
+                                 font_name=theme['font'],
+                                 font_size=theme['font_size'],
+                                 **self.get_batch('foreground'))
 
     def _load_writing(self, theme):
         needed_width, needed_height = self._compute_needed_size()
