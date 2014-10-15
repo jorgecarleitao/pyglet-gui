@@ -24,7 +24,7 @@ class Spacer(Viewer):
 class Container(Viewer):
     def __init__(self, content, width=0, height=0):
         assert isinstance(content, list)
-        super().__init__(width, height)
+        super(Container, self).__init__(width, height)
         self._content = [x or Spacer() for x in content]
 
     @property
@@ -42,7 +42,7 @@ class Container(Viewer):
             item.load()
 
     def load(self):
-        super().load()
+        super(Container, self).load()
         self.load_content()
 
     def unload_content(self):
@@ -50,7 +50,7 @@ class Container(Viewer):
             item.unload()
 
     def unload(self):
-        super().unload()
+        super(Container, self).unload()
         self.unload_content()
 
     def add(self, item, position=0):
@@ -84,13 +84,13 @@ class Container(Viewer):
         if not reset_parent:
             for item in self._content:
                 item.reset_size(reset_parent=False)
-        super().reset_size(reset_parent)
+        super(Container, self).reset_size(reset_parent)
 
 
 class VerticalContainer(Container):
     def __init__(self, content, align=HALIGN_CENTER, padding=5):
         assert align in (HALIGN_CENTER, HALIGN_LEFT, HALIGN_RIGHT)
-        super().__init__(content)
+        super(VerticalContainer, self).__init__(content)
         self.align = align
         self.padding = padding
         self._expandable = []
@@ -152,7 +152,7 @@ class VerticalContainer(Container):
 class HorizontalContainer(Container):
     def __init__(self, content, align=VALIGN_CENTER, padding=5):
         assert align in (HALIGN_CENTER, HALIGN_LEFT, HALIGN_RIGHT)
-        super().__init__(content)
+        super(HorizontalContainer, self).__init__(content)
         self.align = align
         self.padding = padding
         self._expandable = []
@@ -373,7 +373,7 @@ class GridContainer(Container):
         return width, height
 
     def delete(self):
-        super().delete()
+        super(GridContainer, self).delete()
         self._matrix = [[]]
 
 

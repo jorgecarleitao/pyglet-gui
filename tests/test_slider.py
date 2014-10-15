@@ -27,4 +27,4 @@ class TestSlider(TestPygletGUI):
 
     def tearDown(self):
         self.manager.delete()
-        super().tearDown()
+        super(TestSlider, self).tearDown()

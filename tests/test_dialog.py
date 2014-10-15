@@ -13,7 +13,7 @@ class TestDialog(TestPygletGUI):
     """
 
     def setUp(self):
-        super().setUp()
+        super(TestDialog, self).setUp()
 
         self.widget = Viewer(width=50, height=50)
         self.manager = Manager(self.widget, window=self.window, batch=self.batch, theme=self.theme)
@@ -121,7 +121,7 @@ class TestDialog(TestPygletGUI):
 
     def tearDown(self):
         self.manager.delete()
-        super().tearDown()
+        super(TestDialog, self).tearDown()
 
 if __name__ == "__main__":
     import unittest

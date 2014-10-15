@@ -1,4 +1,4 @@
-class Managed():
+class Managed(object):
     def __init__(self):
         self._manager = None
 
@@ -20,7 +20,7 @@ class Managed():
         self._manager = None
 
 
-class Rectangle():
+class Rectangle(object):
     def __init__(self, x=0, y=0, width=0, height=0):
         self._x = x
         self._y = y
@@ -53,7 +53,7 @@ class Rectangle():
 
 class Viewer(Rectangle, Managed):
     def __init__(self, width=0, height=0):
-        super().__init__()
+        super(Managed, self).__init__()
         self._parent = None
         self._is_loaded = False
 
@@ -75,7 +75,7 @@ class Viewer(Rectangle, Managed):
         return False
 
     def set_position(self, x, y):
-        super().set_position(x, y)
+        super(Viewer, self).set_position(x, y)
         self.layout()
 
     def get_path(self):
@@ -138,4 +138,4 @@ class Controller(Managed):
 
     def delete(self):
         self._manager.remove_controller(self)
-        super().delete()
+        super(Controller, self).delete()

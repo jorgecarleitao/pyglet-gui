@@ -12,7 +12,7 @@ class TestVerticalContainer(TestPygletGUI):
     """
 
     def setUp(self):
-        super().setUp()
+        super(TestVerticalContainer, self).setUp()
 
         self.container = VerticalContainer([Viewer(width=50, height=50),
                                          Viewer(width=50, height=50)])
@@ -85,7 +85,7 @@ class TestVerticalContainer(TestPygletGUI):
 
     def tearDown(self):
         self.manager.delete()
-        super().tearDown()
+        super(TestVerticalContainer, self).tearDown()
 
 
 if __name__ == "__main__":

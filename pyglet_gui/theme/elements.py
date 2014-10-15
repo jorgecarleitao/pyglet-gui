@@ -13,7 +13,7 @@ class ThemeTextureGroup(pyglet.graphics.TextureGroup):
     """
 
     def set_state(self):
-        super().set_state()
+        super(ThemeTextureGroup, self).set_state()
         gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MAG_FILTER, gl.GL_NEAREST)
         gl.glTexParameteri(gl.GL_TEXTURE_2D, gl.GL_TEXTURE_MIN_FILTER, gl.GL_NEAREST)
 

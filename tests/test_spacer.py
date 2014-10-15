@@ -45,7 +45,7 @@ class TestSpacer(TestPygletGUI):
 
     def tearDown(self):
         self.manager.delete()
-        super().tearDown()
+        super(TestSpacer, self).tearDown()
 
 if __name__ == "__main__":
     import unittest

@@ -12,7 +12,7 @@ class TestHorizontalContainer(TestPygletGUI):
     """
 
     def setUp(self):
-        super().setUp()
+        super(TestHorizontalContainer, self).setUp()
 
         self.container = HorizontalContainer([Viewer(width=50, height=50),
                                            Viewer(width=50, height=50)])
@@ -83,7 +83,7 @@ class TestHorizontalContainer(TestPygletGUI):
 
     def tearDown(self):
         self.manager.delete()
-        super().tearDown()
+        super(TestHorizontalContainer, self).tearDown()
 
 if __name__ == "__main__":
     import unittest

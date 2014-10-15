@@ -12,7 +12,7 @@ class TestGridContainer(TestPygletGUI):
     """
 
     def setUp(self):
-        super().setUp()
+        super(TestGridContainer, self).setUp()
 
         self.container = GridContainer([[Viewer(width=50, height=50), Viewer(width=50, height=50)],
                                      [Viewer(width=50, height=50), Viewer(width=50, height=50)]])
@@ -82,7 +82,7 @@ class TestGridContainer(TestPygletGUI):
 
     def tearDown(self):
         self.manager.delete()
-        super().tearDown()
+        super(TestGridContainer, self).tearDown()
 
 
 if __name__ == "__main__":

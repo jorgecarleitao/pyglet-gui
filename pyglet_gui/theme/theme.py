@@ -18,7 +18,7 @@ class ScopedDict(dict):
     def __init__(self, arg=None, parent=None):
         if arg is None:
             arg = {}
-        super().__init__()
+        super(ScopedDict, self).__init__()
         self.parent = parent
         for k, v in arg.items():
             if isinstance(v, dict):
@@ -98,7 +98,7 @@ class Theme(ScopedDict):
         self.build(self, dictionary)
 
     def update(self, E=None, **F):
-        super().update(E, **F)
+        super(Theme, self).update(E, **F)
         self.build(self, E)
 
     def build_element(self, key, value, target):
@@ -140,4 +140,4 @@ class ThemeFromPath(Theme):
             dictionary = json.loads(theme_file.read().decode("utf-8"))
         finally:
             theme_file.close()
-        super().__init__(dictionary, resources_path)
+        super(ThemeFromPath, self).__init__(dictionary, resources_path)

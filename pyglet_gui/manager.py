@@ -80,7 +80,7 @@ class ViewerManager(Wrapper):
                  group=None,
                  anchor=ANCHOR_CENTER,
                  offset=(0, 0)):
-        super().__init__(content, anchor=anchor)
+        super(ViewerManager, self).__init__(content, anchor=anchor)
 
         assert isinstance(theme, dict)
         self._theme = theme
@@ -179,7 +179,7 @@ class ViewerManager(Wrapper):
 
     def reset_size(self, reset_parent=True):
         # Manager never has parent and thus never reset_parent.
-        super().reset_size(reset_parent=False)
+        super(ViewerManager, self).reset_size(reset_parent=False)
 
         # if is a bottom-up, we have to reposition ourselves.
         if reset_parent:
