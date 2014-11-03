@@ -60,10 +60,13 @@ Supported Versions
 Installation
 --------------
 
-1. Get a copy of the source from [GitHub](https://github.com/jorgecarleitao/pyglet-gui).
+1. Install Pyglet:
 
-2. python setup.py install
+     pip install --upgrade http://pyglet.googlecode.com/archive/tip.zip
 
+2. Install Pyglet-gui:
+
+     pip install git+https://github.com/jorgecarleitao/pyglet-gui.git
 
 Documentation
 --------------
