@@ -47,3 +47,15 @@ class TestInput(TestPygletGUI):
         self.input.on_text_motion(pyglet.window.key.MOTION_DELETE)
         # 't|s'
         self.assertEqual(self.input.get_text(), "ts")
+
+    def test_delete(self):
+        self.manager.delete()
+
+    def test_delete_without_focus(self):
+        self.input.on_gain_focus()
+        self.input.on_lose_focus()
+        self.manager.delete()
+
+    def test_delete_with_focus(self):
+        self.input.on_gain_focus()
+        self.manager.delete()

@@ -74,13 +74,21 @@ class TextInput(FocusMixin, Viewer):
         else:
             self._load_label(theme)
 
+    def _unload_writing(self):
+        self._caret.delete()  # it should be .unload(), but Caret does not have it.
+        self._document.remove_handlers(self._text_layout)
+        self._text_layout.delete()  # it should also be .unload().
+        self._caret = self._text_layout = None
+
+    def _unload_label(self):
+        self._label.delete()
+        self._label = None
+
     def unload_graphics(self):
-        if not self.is_focus():
-            self._caret.delete()
-            self._document.remove_handlers(self._text_layout)
-            self._text_layout.delete()
+        if self.is_focus():
+            self._unload_writing()
         else:
-            self._label.delete()
+            self._unload_label()
 
         self._field.unload()
 
@@ -117,18 +125,22 @@ class TextInput(FocusMixin, Viewer):
             self._label.end_update()
 
     def on_gain_focus(self):
-        FocusMixin.on_gain_focus(self)
+        self.unload()
+        FocusMixin.on_gain_focus(self)  # changes is_focus()
+        self.load()
 
-        self.reload()
         self.reset_size()
         self.layout()
 
     def on_lose_focus(self):
-        FocusMixin.on_lose_focus(self)
+        # send text to callback _on_input
         if self._on_input is not None:
             self._on_input(self.get_text())
 
-        self.reload()
+        self.unload()
+        FocusMixin.on_lose_focus(self)  # changes is_focus()
+        self.load()
+
         self.reset_size()
         self.layout()
 
@@ -136,15 +148,15 @@ class TextInput(FocusMixin, Viewer):
         return self.is_inside(x, y)
 
     def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
-        if self._caret is not None:
+        if self.is_focus():
             return self._caret.on_mouse_drag(x, y, dx, dy, buttons, modifiers)
 
     def on_mouse_press(self, x, y, button, modifiers):
-        if self._caret is not None:
+        if self.is_focus():
             return self._caret.on_mouse_press(x, y, button, modifiers)
 
     def on_text(self, text):
-        assert self._caret is not None
+        assert self.is_focus()
 
         self._caret.on_text(text)
         if self._max_length and len(self._document.text) > self._max_length:
@@ -162,9 +174,9 @@ class TextInput(FocusMixin, Viewer):
 
     def set_text(self, text):
         self._document.text = text
-        if self._caret:
+        if self.is_focus():
             self._caret.mark = self._caret.position = len(self._document.text)
-        elif self._label:
+        else:
             self._label.text = text
 
     def compute_size(self):
@@ -172,5 +184,5 @@ class TextInput(FocusMixin, Viewer):
         return self._field.get_needed_size(needed_width, needed_height)
 
     def delete(self):
-        Viewer.delete(self)
         FocusMixin.delete(self)
+        Viewer.delete(self)

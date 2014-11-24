@@ -68,10 +68,12 @@ class FocusMixin(Controller, Viewer):
 
     def unload_graphics(self):
         self._focus.unload()
+        self._focus = None
 
     def layout(self):
         if self._focus is not None:
             self._focus.update(self.x, self.y, self.width, self.height)
 
     def delete(self):
-        FocusMixin.unload_graphics(self)
+        if self._focus is not None:
+            FocusMixin.unload_graphics(self)
