@@ -1,7 +1,7 @@
 from setup import *
 
 from pyglet_gui.manager import Manager
-from pyglet_gui.buttons import Button, OneTimeButton, Checkbox
+from pyglet_gui.buttons import Button, OneTimeButton, Checkbox, GroupButton
 from pyglet_gui.containers import VerticalContainer
 from pyglet_gui.theme import Theme
 
@@ -43,7 +43,13 @@ theme = Theme({"font": "Lucida Grande",
 # Set up a Manager
 Manager(VerticalContainer([Button(label="Persistent button"),
                            OneTimeButton(label="One time button"),
-                           Checkbox(label="Checkbox")]),
+                           Checkbox(label="Checkbox"),
+                           GroupButton(group_id='1', label="Group 1:Button 1"),
+                           GroupButton(group_id='1', label="Group 1:Button 2"),
+                           GroupButton(group_id='2', label="Group 2:Button 1"),
+                           GroupButton(group_id='2', label="Group 2:Button 2"),
+                           GroupButton(group_id='2', label="Group 2:Button 3"),
+                           ]),
         window=window,
         batch=batch,
         theme=theme)

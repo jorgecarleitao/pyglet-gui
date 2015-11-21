@@ -7,7 +7,6 @@ from pyglet_gui.controllers import TwoStateController
 from pyglet_gui.core import Viewer
 from pyglet_gui.mixins import FocusMixin
 
-
 class Button(TwoStateController, Viewer):
     def __init__(self, label="", is_pressed=False, on_press=None):
         TwoStateController.__init__(self, is_pressed=is_pressed, on_press=on_press)
@@ -75,6 +74,21 @@ class Button(TwoStateController, Viewer):
     def delete(self):
         TwoStateController.delete(self)
         Viewer.delete(self)
+
+
+class GroupButton(Button):
+    button_groups = {}
+
+    def __init__(self, group_id="", label="", is_pressed=False, on_press=None):
+        Button.__init__(self, label=label, is_pressed=is_pressed, on_press=on_press)
+        self.button_groups.setdefault(group_id, []).append(self)
+        self.group_id = group_id
+
+    def change_state(self):
+        for button in self.button_groups[self.group_id]:
+            if button._is_pressed and button is not self:
+                button.change_state()
+        super(GroupButton, self).change_state()
 
 
 class OneTimeButton(Button):
