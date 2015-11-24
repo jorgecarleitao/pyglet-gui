@@ -299,7 +299,7 @@ class ControllerManager:
         elif self.wheel_hint in self._controllers:
             return self.wheel_hint.on_mouse_scroll(x, y, scroll_x, scroll_y)
         else:
-            return True
+            return False
 
     def on_text(self, text):
         if self._focus and text != '\r' and hasattr(self._focus, 'on_text'):
